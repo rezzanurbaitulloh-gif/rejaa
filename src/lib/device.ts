@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 export type DeviceTier = "high" | "medium" | "low";
 export type Choreo = "desktop" | "mobile";
@@ -14,14 +14,21 @@ export function getDeviceTier(): DeviceTier {
   return "high";
 }
 
-function subscribeMq(mq: MediaQueryList, cb: () => void) {
+function subscribeQuery(query: string, cb: () => void) {
+  const mq = window.matchMedia(query);
   mq.addEventListener("change", cb);
   return () => mq.removeEventListener("change", cb);
 }
 
+/**
+ * Hydration-safe: saat hydration React memakai server snapshot
+ * (identik dengan HTML server), lalu update post-hydration. Tidak ada #418.
+ */
 export function useDeviceTier(): DeviceTier {
-  const [tier] = useState<DeviceTier>(() =>
-    typeof window === "undefined" ? "high" : getDeviceTier(),
+  const tier = useSyncExternalStore(
+    () => () => {},
+    (): DeviceTier => (typeof window === "undefined" ? "high" : getDeviceTier()),
+    (): DeviceTier => "high",
   );
   useEffect(() => {
     try {
@@ -34,26 +41,17 @@ export function useDeviceTier(): DeviceTier {
 }
 
 export function useChoreo(): Choreo {
-  const get = () =>
-    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches
-      ? ("mobile" as Choreo)
-      : ("desktop" as Choreo);
-  const [c, setC] = useState<Choreo>(get);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    return subscribeMq(mq, () => setC(mq.matches ? "mobile" : "desktop"));
-  }, []);
-  return c;
+  return useSyncExternalStore(
+    (cb) => subscribeQuery("(max-width: 768px)", cb),
+    () => (window.matchMedia("(max-width: 768px)").matches ? "mobile" : "desktop"),
+    () => "desktop",
+  );
 }
 
 export function useReducedMotion(): boolean {
-  const get = () =>
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [rm, setRm] = useState<boolean>(get);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    return subscribeMq(mq, () => setRm(mq.matches));
-  }, []);
-  return rm;
+  return useSyncExternalStore(
+    (cb) => subscribeQuery("(prefers-reduced-motion: reduce)", cb),
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
 }

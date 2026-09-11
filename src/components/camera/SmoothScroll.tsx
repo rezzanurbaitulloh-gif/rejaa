@@ -2,23 +2,26 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/** SCROLL = CAMERA. Lenis smooth scroll, dimatikan saat reduced-motion. */
+gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * SCROLL = CAMERA. Lenis + ScrollTrigger di-sinkron via gsap ticker —
+ * WAJIB agar pin/scrub presisi (tanpa ini pin akan drift).
+ */
 export function SmoothScroll() {
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
-    let raf = 0;
-    const loop = (t: number) => {
-      lenis.raf(t);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    // Simpan instance untuk integrasi ScrollTrigger.
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove(tick);
       lenis.destroy();
     };
   }, []);

@@ -91,11 +91,10 @@ export const projectsFallback: Project[] = [
   },
 ];
 
-export const pklFallback: PklProfile = {
-  enabled: true,
+export const pklFallback: PklProfile = {  enabled: true,
   company: "PT Solusi Digital Nusantara",
   company_profile:
-    "Perusahaan teknologi yang membangun solusi digital untuk operasional bisnis. (Placeholder — ubah via /admin.)",
+    "Perusahaan teknologi yang membangun solusi digital untuk operasional bisnis.",
   division: "Divisi Engineering",
   address: "Jakarta, Indonesia",
   goals: [
@@ -152,3 +151,30 @@ export const pklFallback: PklProfile = {
     after: "AI sebagai partner berpikir; proses sebagai identitas.",
   },
 };
+
+/**
+ * §30 honesty: CMS boleh mengembalikan profil PKL parsial/minimal.
+ * Normalisasi menjamin struktur aman (array/string default) TANPA mengarang
+ * isi — field kosong di-omit oleh komponen, bukan diisi karangan.
+ */
+export function normalizePkl(p: Partial<PklProfile> | null | undefined): PklProfile {
+  return {
+    enabled: p?.enabled ?? true,
+    company: p?.company ?? "",
+    company_profile: p?.company_profile ?? "",
+    division: p?.division ?? "",
+    address: p?.address ?? "",
+    goals: p?.goals ?? [],
+    rules: p?.rules ?? [],
+    people: p?.people ?? [],
+    routine: p?.routine ?? [],
+    activities: p?.activities ?? [],
+    challenges: p?.challenges ?? [],
+    lessons: p?.lessons ?? [],
+    growth: {
+      before: p?.growth?.before ?? "",
+      during: p?.growth?.during ?? "",
+      after: p?.growth?.after ?? "",
+    },
+  };
+}

@@ -2,122 +2,95 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Scene } from "@/components/camera/Scene";
-import { ChapterHeading, CinematicFrame } from "./ui";
+import { useRef } from "react";
+import gsap from "gsap";
+import { CameraWorld } from "@/components/camera/CameraWorld";
+import type { Move } from "@/components/camera/cameraRig";
 import { useContent } from "@/components/story/StoryProvider";
 import { useStory } from "@/lib/store";
-import { useChoreo } from "@/lib/device";
 
-/** WORK CONSTELLATION — spatial orbit (desktop) / depth stack (mobile). Bukan carousel. */
+/**
+ * WORK CONSTELLATION — kamera scrub melintasi field spasial; karya aktif
+ * tajam/foreground, sisanya recede ke depth. Drag mengorbit lapisan drift
+ * (independen dari kamera). Klik = MENYELAM ke project (route detail).
+ */
+const POS: [number, number, number][] = [
+  [8, 30, 0.4], [42, 16, 0.7], [70, 34, 0.5], [24, 58, 0.65], [58, 62, 0.35],
+];
+
 export function WorkChapter() {
   const { projects } = useContent();
   const setLens = useStory((s) => s.setLens);
-  const choreo = useChoreo();
   const router = useRouter();
-  const [active, setActive] = useState(0);
+  const drift = useRef<HTMLDivElement>(null);
   const list = projects.filter((p) => p.visible).sort((a, b) => a.order - b.order);
-  const current = list[Math.min(active, Math.max(0, list.length - 1))];
+
+  const moves: Move[] = list.length
+    ? [
+        { pose: { scale: 1.1, xPercent: 6 }, focus: [`p-${list[0].slug}`], dur: 1 },
+        ...list.slice(1).map((p, i): Move => ({
+          pose: { scale: 1.2, xPercent: 6 - ((i + 1) / list.length) * 12 },
+          focus: [`p-${p.slug}`],
+          dur: 1,
+        })),
+        { pose: { scale: 1, xPercent: 0 }, focus: ["cap"], dur: 0.8 },
+      ]
+    : [{ pose: { scale: 1 }, dur: 1 }];
+
+  const onDrag = (e: React.PointerEvent) => {
+    const el = drift.current;
+    if (!el) return;
+    const sx = e.clientX;
+    const base = Number(el.dataset.x ?? 0);
+    const move = (ev: PointerEvent) => {
+      const dx = Math.max(-60, Math.min(60, base + (ev.clientX - sx) * 0.2));
+      el.dataset.x = String(dx);
+      gsap.set(el, { x: dx });
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
 
   return (
-    <Scene id="karya" label="Work Constellation" preset="zoom-in" intensity={2} node={5} className="scene-editorial">
-      <div className="mx-auto max-w-6xl px-5 md:px-8" data-exit>
-        <ChapterHeading
-          index="17"
-          eyebrow="KARYA SAYA"
-          title={<>Work constellation.</>}
-          lede={
-            choreo === "mobile"
-              ? "Depth stack: karya aktif di foreground. Ketuk untuk masuk."
-              : "Orbit spasial: karya aktif di tengah, sisanya mengorbit. Klik untuk masuk."
-          }
-        />
+    <CameraWorld id="karya" label="Work Constellation" durationVh={120 + list.length * 90} moves={moves}>
+      <div data-f="cap" data-depth={0.3} className="absolute left-[8%] top-[5%] max-w-xl md:left-[10%]">
+        <p className="chapter-label">17 / KARYA SAYA</p>
+        <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Work constellation.</h2>
+      </div>
 
-        {/* Desktop: orbit spasial */}
-        <div
-          className="relative mt-10 hidden h-[420px] md:block"
-          role="listbox"
-          aria-label="Constellation project"
-          data-reveal
-          onMouseEnter={() => setLens("drag")}
-          onMouseLeave={() => setLens("default")}
-        >
-          {list.map((p, i) => {
-            const isActive = i === active;
-            const angle = (i / Math.max(1, list.length)) * Math.PI * 2 - Math.PI / 2;
-            const r = 150;
-            const x = Math.cos(angle) * r * 1.6;
-            const y = Math.sin(angle) * r * 0.55;
-            return (
-              <button
-                key={p.slug}
-                type="button"
-                role="option"
-                aria-selected={isActive}
-                onClick={() => setActive(i)}
-                onDoubleClick={() => router.push(`/work/${p.slug}`)}
-                className={`focus-item absolute left-1/2 top-1/2 w-64 rounded-2xl border p-5 text-left transition-all ${
-                  isActive ? "focus-live z-10 border-accent bg-panel" : "focus-dim z-0 bg-ink"
-                }`}
-                style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${isActive ? 1.12 : 0.88})` }}
-              >
-                <p className="chapter-label">PROJECT 0{i + 1}</p>
-                <p className="font-display mt-1 text-lg font-extrabold uppercase">{p.title}</p>
-                <p className="mt-1 line-clamp-2 text-xs text-muted">{p.summary}</p>
-              </button>
-            );
-          })}
-          <div className="accent-dot absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden />
-        </div>
+      <div ref={drift} data-x="0" className="absolute inset-0 touch-pan-y"
+        onPointerDown={onDrag}
+        onMouseEnter={() => setLens("drag")} onMouseLeave={() => setLens("default")}>
+        {list.map((p, i) => {
+          const [x, y, z] = POS[i % POS.length];
+          return (
+            <button key={p.slug} type="button" data-f={`p-${p.slug}`} data-depth={z}
+              onClick={() => router.push(`/work/${p.slug}`)}
+              onMouseEnter={() => setLens("project")} onMouseLeave={() => setLens("drag")}
+              className="absolute w-60 p-5 text-left panel md:w-72"
+              style={{ left: `${x}%`, top: `${y}%` }}
+              aria-label={`Masuk ke project ${p.title}`}>
+              <p className="chapter-label">PROJECT 0{i + 1}</p>
+              <p className="font-display mt-1 text-xl font-extrabold uppercase md:text-2xl">{p.title}</p>
+              <p className="mt-1 line-clamp-2 text-xs text-muted">{p.summary}</p>
+              <p className="chapter-label mt-2">{p.technologies.slice(0, 3).join(" · ")}</p>
+            </button>
+          );
+        })}
+      </div>
 
-        {/* Mobile: depth stack */}
-        <div className="mt-8 space-y-[-2.5rem] md:hidden" data-reveal>
-          {list.map((p, i) => {
-            const isActive = i === active;
-            return (
-              <button
-                key={p.slug}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-pressed={isActive}
-                className={`block w-full rounded-2xl border p-5 text-left transition-all ${
-                  isActive ? "relative z-10 border-accent bg-panel" : "relative border-white/10 bg-ink opacity-70"
-                }`}
-                style={{ transform: `scale(${isActive ? 1 : 0.94})` }}
-              >
-                <p className="chapter-label">0{i + 1} / {p.technologies.join(" · ")}</p>
-                <p className="font-display mt-1 text-xl font-extrabold uppercase">{p.title}</p>
-                <p className="mt-1 text-sm text-muted">{p.summary}</p>
-              </button>
-            );
-          })}
-          <div className="h-10" aria-hidden />
-        </div>
-
-        {current && (
-          <div className="panel mt-6 grid gap-6 p-6 md:grid-cols-2" data-reveal>
-            <div>
-              <p className="chapter-label">FOKUS / {current.title}</p>
-              <h3 className="font-display mt-2 text-2xl font-extrabold uppercase">{current.title}</h3>
-              <p className="body-muted mt-3 text-sm">{current.summary}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {current.technologies.map((t) => (
-                  <span key={t} className="chip">{t}</span>
-                ))}
-              </div>
-              <Link
-                href={`/work/${current.slug}`}
-                className="mt-5 inline-block rounded-full bg-cream px-6 py-3 text-xs font-semibold tracking-[0.2em] text-black"
-                onMouseEnter={() => setLens("project")}
-                onMouseLeave={() => setLens("default")}
-              >
-                MASUK KE PROJECT →
-              </Link>
-            </div>
-            <CinematicFrame label={`Preview ${current.title}`} ratio="4/3" caption="Camera masuk ke project — bukan modal generik." />
-          </div>
+      <div data-f="cap" data-depth={0.8} className="absolute bottom-[4%] left-0 right-0 text-center">
+        <p className="chapter-label">Klik karya untuk menyelam ↘ · drag untuk mengorbit ↔</p>
+        {list[0] && (
+          <Link href={`/work/${list[0].slug}`} className="mt-3 inline-block rounded-full bg-cream px-6 py-3 text-xs font-semibold tracking-[0.2em] text-black">
+            MASUK KE PROJECT →
+          </Link>
         )}
       </div>
-    </Scene>
+    </CameraWorld>
   );
 }

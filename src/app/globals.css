@@ -165,6 +165,17 @@ body {
   z-index: 200;
   pointer-events: none;
   mix-blend-mode: normal;
+  display: none;
+}
+@media (pointer: fine) {
+  #lens {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #lens {
+    display: none;
+  }
 }
 #lens .lens-ring {
   transform: translate(-50%, -50%);
@@ -193,25 +204,19 @@ body {
 /* ---------- process line ---------- */
 #process-rail {
   position: fixed;
-  left: clamp(0.6rem, 2.5vw, 1.75rem);
+  left: 0;
   top: 0;
   bottom: 0;
-  width: 2px;
+  width: clamp(1.25rem, 5vw, 3.5rem);
   z-index: 60;
   pointer-events: none;
 }
-#process-rail .rail-track {
+#process-rail .rail-svg {
   position: absolute;
   inset: 0;
-  background: rgba(245, 241, 234, 0.08);
-}
-#process-rail .rail-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  background: linear-gradient(180deg, var(--color-cream), var(--color-accent));
-  transform-origin: top;
+  height: 100%;
+  overflow: visible;
 }
 #process-rail .rail-node {
   position: absolute;
@@ -276,7 +281,29 @@ body {
   scrollbar-width: none;
 }
 
-/* ---------- reduced motion: editorial choreography, content intact ---------- */
+/* ---------- reduced motion: editorial statis, konten utuh tersusun vertikal ---------- */
+[data-static="1"] [data-camera] {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 6rem 8% 4rem;
+}
+[data-static="1"] [data-camera] > * {
+  position: static !important;
+  transform: none !important;
+  width: auto !important;
+  max-width: 44rem;
+  opacity: 1 !important;
+  filter: none !important;
+}
+[data-static="1"] [data-camera] > svg,
+[data-static="1"] [data-camera] [data-depth].chip,
+[data-static="1"] [data-static-hide] {
+  display: none;
+}
+[data-static="1"] .chip {
+  position: static !important;
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

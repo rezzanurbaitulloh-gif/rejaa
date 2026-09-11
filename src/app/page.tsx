@@ -1,23 +1,27 @@
 import { Opening } from "@/components/chapters/Opening";
-import { CoreNarrative } from "@/components/chapters/CoreNarrative";
-import { AiChapter } from "@/components/chapters/AiChapter";
+import { AboutWorld } from "@/components/chapters/About";
+import { ThinkingWorld } from "@/components/chapters/Thinking";
+import { TechFieldWorld } from "@/components/chapters/TechField";
+import { AIWorld } from "@/components/chapters/AISecondMind";
+import { TransitionWorld } from "@/components/chapters/Transition";
 import { PklChapter } from "@/components/chapters/PklChapter";
 import { WorkChapter } from "@/components/chapters/WorkChapter";
-import { ClosingChapter } from "@/components/chapters/ClosingChapter";
+import { ClosingChapter } from "@/components/chapters/Closing";
 
 /**
- * STORY ARCHITECTURE (§4 MASTER SPEC):
- * Preloader → Opening → DALAM PROSES → Tentang → Bukan stack →
- * Berpikir → Bekerja → Technology Field → AI Second Mind →
- * Transisi → PKL chapter → Work Constellation → Project Detail →
- * Lessons → Growth → Kembali → Future → Ending → Contact.
+ * SATU DUNIA BERKELANJUTAN — setiap world adalah pin kamera.
+ * POINT (opening) → IDENTITAS → PROSES → MATERIAL → SECOND MIND →
+ * TRANSISI → DUNIA NYATA (PKL) → KARYA → REFLEKSI → POINT (ending).
  */
 export default function Home() {
   return (
     <>
       <Opening />
-      <CoreNarrative />
-      <AiChapter />
+      <AboutWorld />
+      <ThinkingWorld />
+      <TechFieldWorld />
+      <AIWorld />
+      <TransitionWorld />
       <PklChapter />
       <WorkChapter />
       <ClosingChapter />

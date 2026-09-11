@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useStory } from "@/lib/store";
 
 const LABEL: Record<string, string> = {
@@ -21,22 +21,16 @@ const SIZE: Record<string, number> = {
   external: 76,
 };
 
-/** CURSOR = LENS. Dot → membesar dengan label sesuai konteks (VIEW/DRAG/OPEN). */
+/** CURSOR = LENS. Dot → membesar dengan label sesuai konteks (VIEW/DRAG/OPEN).
+ *  Selalu di-render (paritas SSR); visibility diatur CSS via media query. */
 export function LensCursor() {
   const lens = useStory((s) => s.lens);
   const dot = useRef<HTMLDivElement>(null);
   const pos = useRef({ x: -100, y: -100 });
   const cur = useRef({ x: -100, y: -100 });
-  const [fine] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(pointer: fine)").matches &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
 
   useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    document.documentElement.classList.toggle("lens-cursor", mq.matches);
+    document.documentElement.classList.add("lens-cursor");
     let raf = 0;
     const move = (e: PointerEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
@@ -58,7 +52,6 @@ export function LensCursor() {
     };
   }, []);
 
-  if (!fine) return null;
   const size = SIZE[lens.state] ?? 12;
   return (
     <div id="lens" aria-hidden>

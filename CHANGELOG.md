@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-11 — Deploy: GitHub + Supabase + Vercel
+
+- GitHub: push `main` ke `rezzanurbaitulloh-gif/rejaa` (merge unrelated histories, `.gitignore` lokal dipertahankan). Catatan: `GITHUB_TOKEN` di MASTER SPEC invalid (bad credentials) → push memakai kredensial `~/.git-credentials` yang sudah ada di mesin.
+- Supabase (`reja`, ap-southeast-2): migrasi `0001_dalam_proses.sql` via pooler IPv4 (koneksi direct 5432 IPv6-only tak terjangkau dari sini). 7 tabel, RLS aktif semua, seed (settings, pkl, 10 tech, 3 projects). Verifikasi: anon read OK, anon write ditolak RLS, service_role OK.
+- Vercel: project `dalam-proses`, env production (Supabase URL + anon key + site URL), deploy produksi → https://dalam-proses.vercel.app (`/api/content` → `fromCms:true`).
+
 ## 2026-09-11 — Implementasi penuh MASTER SPEC (Phase 0–11, lokal)
 
 - Phase 0: audit — tidak ada project DALAM PROSES sebelumnya (`portotional/` adalah SaaS CV-builder yang tidak terkait → project baru `dalam-proses/`); Node 24, Supabase/Vercel CLI tersedia; referensi `alurweb.png` dipetakan ke 23 scene.
@@ -10,3 +16,12 @@
 - Phase 9–11: responsive choreography (hook `useChoreo`), reduced-motion editorial, keyboard/fokus/semantik/skip-link, AVIF/WebP + lazy, device tiers, cursor lens (pointer-fine saja), sound toggle default OFF.
 - Verifikasi: `eslint` bersih, `tsc --noEmit` bersih, `next build` sukses (11 routes).
 - Belum dilakukan (butuh kredensial + keputusan user): migrasi Supabase live, `git push`, deploy Vercel, verifikasi produksi. Kredensial di MASTER SPEC wajib di-rotate sebelum dipakai.
+
+## 2026-09-12 — Rebuild visual/interaction architecture (camera-first)
+
+- Phase 0: AUDIT.md — pola lama (section + fade trigger-once) dinyatakan gagal brutal test; fondasi CMS/auth/routes/deploy dipertahankan.
+- Phase 1–2: camera engine baru (`cameraRig` pinned+scrub, `CameraWorld`), Lenis↔ScrollTrigger ticker sync, process line SVG spasial (spine draw + cabang AI/PKL + arc karya + 8 node).
+- Phase 3–7: Opening dolly (dot→node→pan→pullback→push→through), About spasial, Thinking path (kamera menyusuri 7 node + path draw), Tech field dolly + focus-siklus + `data-tech` memory, AI split/converge, transisi collapse-to-light + push-through.
+- Phase 8–11: PKL per-scene choreography (push/pan/time-scrub/galeri horizontal), constellation scrub + drag-orbit + dive, detail dive + memory halo, closing pullback + memory convergence POINT→…→POINT. `normalizePkl` + omission + badge PLACEHOLDER di admin (§30); catatan placeholder dihapus dari konten publik; DB pkl_profile di-backfill struktur storyboard.
+- Phase 12–13: mobile dampening amplitudo, reduced-motion editorial statis penuh (tanpa crop), hooks hydration-safe (useSyncExternalStore), lens cursor CSS-gated.
+- Phase 14: visual QA via Playwright headless (desktop 15 state, mobile, reduced-motion) — 0 console/page error; temuan dead-zone/off-screen/overflow/clip diperbaiki berbasis screenshot.

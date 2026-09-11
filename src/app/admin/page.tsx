@@ -61,6 +61,15 @@ export default function AdminPage() {
         Sumber konten: {fromCms ? "Supabase (live)" : "fallback lokal — isi .env.local agar CMS aktif"}.
         PKL ON/OFF di sini mengontrol visibility seluruh chapter PKL tanpa halaman kosong.
       </p>
+      <div className="mt-4 rounded-xl border border-accent/50 bg-accent/10 p-4 text-sm" role="note" aria-label="Status data">
+        <p className="font-display font-bold tracking-wide">
+          {fromCms ? "DATA STORYBOARD — verifikasi sebelum publikasi" : "DATA PLACEHOLDER — belum terhubung CMS"}
+        </p>
+        <p className="body-muted mt-1 text-xs">
+          §30: jangan publikasikan nama orang, perusahaan, lokasi, atau pencapaian yang belum terverifikasi.
+          Field kosong otomatis di-omit dari tampilan publik (tidak dikarang). Ganti setiap placeholder dengan data asli di tabel Supabase.
+        </p>
+      </div>
 
       {!configured && (
         <div className="panel mt-6 p-5 text-sm">

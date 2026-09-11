@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projectsFallback } from "@/data/content";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Project } from "@/data/types";
+import { ProjectDiveArticle } from "./dive";
 
 async function getProject(slug: string): Promise<Project | null> {
   try {
@@ -53,37 +53,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   ];
 
   return (
-    <article className="mx-auto max-w-4xl px-5 pb-24 pt-28 md:px-8">
-      <p className="chapter-label">PROJECT / {p.slug.toUpperCase()}</p>
-      <h1 className="font-display mt-4 text-4xl font-extrabold uppercase md:text-6xl">{p.title}</h1>
-      <p className="body-lead mt-4">{p.summary}</p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {p.technologies.map((t) => (
-          <span key={t} className="chip">{t}</span>
-        ))}
-      </div>
-
-      <div className="mt-12 space-y-4">
-        {steps.map((s) => (
-          <div key={s.label} className="panel p-6">
-            <p className="chapter-label">{s.label}</p>
-            <p className="mt-2 leading-relaxed">{s.body}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-8 flex flex-wrap gap-3">
-        {p.links.map((l) => (
-          <a key={l.label} href={l.href} className="rounded-full bg-cream px-6 py-3 text-xs font-semibold tracking-[0.2em] text-black">
-            {l.label} ↗
-          </a>
-        ))}
-        <Link href="/#karya" className="chip hover:text-cream">
-          ← KEMBALI KE CONSTELLATION
-        </Link>
-      </div>
-      <p className="body-muted mt-8 text-sm">Camera pull back → Work Constellation.</p>
-    </article>
+    <ProjectDiveArticle title={p.title} slug={p.slug} summary={p.summary} technologies={p.technologies} links={p.links} steps={steps} />
   );
 }
 
