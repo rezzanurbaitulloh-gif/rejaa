@@ -25,3 +25,10 @@
 - Phase 8–11: PKL per-scene choreography (push/pan/time-scrub/galeri horizontal), constellation scrub + drag-orbit + dive, detail dive + memory halo, closing pullback + memory convergence POINT→…→POINT. `normalizePkl` + omission + badge PLACEHOLDER di admin (§30); catatan placeholder dihapus dari konten publik; DB pkl_profile di-backfill struktur storyboard.
 - Phase 12–13: mobile dampening amplitudo, reduced-motion editorial statis penuh (tanpa crop), hooks hydration-safe (useSyncExternalStore), lens cursor CSS-gated.
 - Phase 14: visual QA via Playwright headless (desktop 15 state, mobile, reduced-motion) — 0 console/page error; temuan dead-zone/off-screen/overflow/clip diperbaiki berbasis screenshot.
+
+## 2026-09-12 — Fix scroll-stuck: Lenis dihapus
+
+- Diagnosis (Playwright, produksi): wheel jalan, tapi End/PageDown/scrollTo/anchor dilawan balik oleh Lenis (virtual scroll menegaskan ulang posisi lama) — keyboard, scrollbar, dan anchor terasa stuck. Tanpa Lenis semua native 100% jalan.
+- Fix: Lenis di-uninstall; `SmoothScroll` menjadi anchor-handler + scroll-behavior smooth (hormat reduced-motion); kamera tetap buttery via ScrollTrigger scrub. [data-world] scroll-margin-top 72px.
+- Temuan samping: satu build inkremental korup (chunk 500) — clean rebuild (`rm -rf .next`) memperbaikinya.
+- Verifikasi lokal: wheel/End/Home/scrollTo/PageDown/anchor semua tepat + 0 error.
