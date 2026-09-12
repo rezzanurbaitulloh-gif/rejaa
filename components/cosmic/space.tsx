@@ -83,12 +83,20 @@ export function EarthPlanet({
 }) {
   const group = useRef<THREE.Group>(null);
   const mesh = useRef<THREE.Mesh>(null);
+  const rim = useRef<THREE.Mesh>(null);
+  const rimMat = useRef<THREE.MeshBasicMaterial>(null);
   const reduced = prefersReducedMotion();
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
     // AUTONOMOUS MOTION — keeps breathing when scroll stops
     if (mesh.current) mesh.current.rotation.y += delta * (reduced ? 0.008 : 0.045);
+    // atmosphere breathe (§02 idle motion) — static when reduced motion
+    if (rim.current && rimMat.current && !reduced) {
+      const b = Math.sin(t * 0.5);
+      rim.current.scale.setScalar(1.025 + b * 0.004);
+      rimMat.current.opacity = 0.08 + b * 0.02;
+    }
     if (!group.current) return;
     const k = sampleCamera(scrollStore.camera);
     const narrow = typeof window !== "undefined" && window.innerWidth < 820;
@@ -120,9 +128,16 @@ export function EarthPlanet({
         )}
       </mesh>
       {/* thin atmosphere rim */}
-      <mesh scale={1.025}>
+      <mesh ref={rim} scale={1.025}>
         <sphereGeometry args={[2, low ? 24 : 48, low ? 24 : 48]} />
-        <meshBasicMaterial color="#4d6dff" transparent opacity={0.08} side={THREE.BackSide} depthWrite={false} />
+        <meshBasicMaterial
+          ref={rimMat}
+          color="#4d6dff"
+          transparent
+          opacity={0.08}
+          side={THREE.BackSide}
+          depthWrite={false}
+        />
       </mesh>
     </group>
   );
