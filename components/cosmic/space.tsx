@@ -106,7 +106,8 @@ export function EarthPlanet({
     const ty = k.planet.y + breathe * 0.4;
     group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, tx, Math.min(1, delta * 1.6));
     group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, ty, Math.min(1, delta * 1.6));
-    const s = k.planet.s;
+    // mobile: half scale excursion around 1 (same direction, gentler)
+    const s = narrow && !reduced ? 1 + (k.planet.s - 1) * 0.5 : k.planet.s;
     group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, s, Math.min(1, delta * 1.6)));
   });
 
@@ -164,10 +165,19 @@ export function CameraRig() {
       Math.min(1, delta * (reduced ? 10 : 2.2))
     );
     const k = sampleCamera(scrollStore.camera);
+    const cam = camera as THREE.PerspectiveCamera;
     const t = state.clock.elapsedTime;
     const driftX = reduced ? 0 : Math.sin(t * 0.12) * 0.12;
     const driftY = reduced ? 0 : Math.cos(t * 0.09) * 0.08;
-    target.set(k.pos[0] + driftX, k.pos[1] + driftY, k.pos[2]);
+    // mobile: half zoom intensity around neutral (less sickness, same direction)
+    const narrow = typeof window !== "undefined" && window.innerWidth < 820;
+    let fovT = THREE.MathUtils.lerp(cam.fov, k.fov, Math.min(1, delta * 2));
+    let tz = k.pos[2];
+    if (narrow && !reduced) {
+      fovT = 42 + (fovT - 42) * 0.5;
+      tz = 12 + (tz - 12) * 0.5;
+    }
+    target.set(k.pos[0] + driftX, k.pos[1] + driftY, tz);
     camera.position.lerp(target, Math.min(1, delta * (reduced ? 10 : 2.4)));
     // max zoom / clipping guard (§03): hard bounds even if keys misbehave
     camera.position.x = THREE.MathUtils.clamp(camera.position.x, -4, 4);
@@ -175,7 +185,6 @@ export function CameraRig() {
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, 6, 19);
     look.set(k.look[0], k.look[1], k.look[2]);
     // lookAt via damped direction
-    const cam = camera as THREE.PerspectiveCamera;
     cam.lookAt(look);
     // tilt (roll) applied post-lookAt, damped — chapter orientation change
     rollRef.current = THREE.MathUtils.lerp(
@@ -184,13 +193,9 @@ export function CameraRig() {
       Math.min(1, delta * 2)
     );
     cam.rotateZ(rollRef.current);
-    const fovT = THREE.MathUtils.clamp(
-      THREE.MathUtils.lerp(cam.fov, k.fov, Math.min(1, delta * 2)),
-      35,
-      50
-    );
-    if (Math.abs(fovT - cam.fov) > 0.01) {
-      cam.fov = fovT;
+    const fovClamped = THREE.MathUtils.clamp(fovT, 35, 50);
+    if (Math.abs(fovClamped - cam.fov) > 0.01) {
+      cam.fov = fovClamped;
       cam.updateProjectionMatrix();
     }
   });
