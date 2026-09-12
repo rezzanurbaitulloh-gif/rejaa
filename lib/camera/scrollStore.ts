@@ -19,6 +19,7 @@ export type SceneCameraKey = {
   pos: [number, number, number];
   look: [number, number, number];
   fov: number;
+  roll: number; // tilt (radians, applied post-lookAt)
   planet: { x: number; y: number; s: number };
 };
 
@@ -51,20 +52,21 @@ export type SceneProfile = {
   pos: [number, number, number];
   look: [number, number, number];
   fov: number;
+  roll: number;
   planet: { x: number; y: number; s: number };
 };
 
 export const SCENE_PROFILES: SceneProfile[] = [
-  { sceneId: "opening", at: 0.0, move: "drift", entry: "far space, planet partial", hold: "first statement", exit: "push begins", easing: "smoothstep", safeText: "left", pos: [0, 0.4, 15], look: [0, 0, 0], fov: 42, planet: { x: 4.6, y: -0.6, s: 1.6 } },
-  { sceneId: "opening-push", at: 0.1, move: "push-in", entry: "camera advances", hold: "second statement", exit: "line ignites", easing: "smoothstep", safeText: "left", pos: [0, 0.2, 10.5], look: [0, 0, 0], fov: 42, planet: { x: 3.4, y: -0.3, s: 1.35 } },
-  { sceneId: "identity", at: 0.2, move: "hold", entry: "settle on voice", hold: "SAYA REZZA", exit: "pan to thinking", easing: "smoothstep", safeText: "left", pos: [-1.2, 0.1, 8.5], look: [-0.4, 0, 0], fov: 40, planet: { x: 2.6, y: 0, s: 1.1 } },
-  { sceneId: "thinking", at: 0.32, move: "orbit", entry: "swing to orbit", hold: "node-to-node travel", exit: "leave orbit", easing: "smoothstep", safeText: "left", pos: [1.6, -0.4, 9.5], look: [0.3, 0, 0], fov: 40, planet: { x: 3.4, y: 0.2, s: 0.9 } },
-  { sceneId: "ai", at: 0.42, move: "pan", entry: "two bodies reveal", hold: "second mind", exit: "pull far back", easing: "smoothstep", safeText: "left", pos: [0, 0.6, 11], look: [0, 0.2, 0], fov: 44, planet: { x: 3.6, y: -0.2, s: 0.8 } },
-  { sceneId: "transition", at: 0.52, move: "pull-back", entry: "cosmos recedes to point", hold: "DUNIA NYATA", exit: "dive to reality", easing: "smoothstep", safeText: "center", pos: [0, 0, 13.5], look: [0, 0, 0], fov: 46, planet: { x: 0, y: -3.4, s: 0.5 } },
-  { sceneId: "pkl", at: 0.62, move: "follow-path", entry: "enter routine", hold: "time-based travel", exit: "lift to constellation", easing: "smoothstep", safeText: "left", pos: [-1.8, 0.2, 9], look: [-0.5, 0, 0], fov: 40, planet: { x: 3.0, y: 0.2, s: 0.7 } },
-  { sceneId: "projects", at: 0.74, move: "orbit", entry: "constellation approach", hold: "world dive", exit: "pull back to orbit", easing: "smoothstep", safeText: "left", pos: [1.8, -0.3, 8], look: [0.5, 0, 0], fov: 39, planet: { x: 2.8, y: 0.3, s: 1.0 } },
-  { sceneId: "growth", at: 0.85, move: "hold", entry: "quiet settle", hold: "before/during/after", exit: "rise to ending", easing: "smoothstep", safeText: "left", pos: [0, 0.3, 10], look: [0, 0.1, 0], fov: 41, planet: { x: 2.2, y: -0.2, s: 0.9 } },
-  { sceneId: "ending", at: 1.0, move: "pull-back", entry: "return to space", hold: "MASIH DALAM PROSES", exit: "line leaves viewport", easing: "smoothstep", safeText: "center", pos: [0, 0.8, 16], look: [0, 0.3, 0], fov: 46, planet: { x: 0, y: 3.0, s: 1.4 } },
+  { sceneId: "opening", at: 0.0, move: "drift", entry: "far space, planet partial", hold: "first statement", exit: "push begins", easing: "smoothstep", safeText: "left", pos: [0, 0.4, 15], look: [0, 0, 0], fov: 42, roll: 0, planet: { x: 4.6, y: -0.6, s: 1.6 } },
+  { sceneId: "opening-push", at: 0.1, move: "push-in", entry: "camera advances", hold: "second statement", exit: "line ignites", easing: "smoothstep", safeText: "left", pos: [0, 0.2, 10.5], look: [0, 0, 0], fov: 42, roll: 0, planet: { x: 3.4, y: -0.3, s: 1.35 } },
+  { sceneId: "identity", at: 0.2, move: "hold", entry: "settle on voice", hold: "SAYA REZZA", exit: "pan to thinking", easing: "smoothstep", safeText: "left", pos: [-1.2, 0.1, 8.5], look: [-0.4, 0, 0], fov: 40, roll: 0, planet: { x: 2.6, y: 0, s: 1.1 } },
+  { sceneId: "thinking", at: 0.32, move: "orbit", entry: "swing to orbit", hold: "node-to-node travel", exit: "leave orbit", easing: "smoothstep", safeText: "left", pos: [1.6, -0.4, 9.5], look: [0.3, 0, 0], fov: 40, roll: 0, planet: { x: 3.4, y: 0.2, s: 0.9 } },
+  { sceneId: "ai", at: 0.42, move: "pan", entry: "two bodies reveal", hold: "second mind", exit: "pull far back", easing: "smoothstep", safeText: "left", pos: [0, 0.6, 11], look: [0, 0.2, 0], fov: 44, roll: 0, planet: { x: 3.6, y: -0.2, s: 0.8 } },
+  { sceneId: "transition", at: 0.52, move: "pull-back", entry: "cosmos recedes to point", hold: "DUNIA NYATA", exit: "dive to reality", easing: "smoothstep", safeText: "center", pos: [0, 0, 13.5], look: [0, 0, 0], fov: 46, planet: { x: 0, y: -3.4, s: 0.5 }, roll: 0.04 },
+  { sceneId: "pkl", at: 0.62, move: "follow-path", entry: "enter routine", hold: "time-based travel", exit: "lift to constellation", easing: "smoothstep", safeText: "left", pos: [-1.8, 0.2, 9], look: [-0.5, 0, 0], fov: 40, roll: 0, planet: { x: 3.0, y: 0.2, s: 0.7 } },
+  { sceneId: "projects", at: 0.74, move: "orbit", entry: "constellation approach", hold: "world dive", exit: "pull back to orbit", easing: "smoothstep", safeText: "left", pos: [1.8, -0.3, 8], look: [0.5, 0, 0], fov: 39, roll: 0, planet: { x: 2.8, y: 0.3, s: 1.0 } },
+  { sceneId: "growth", at: 0.85, move: "hold", entry: "quiet settle", hold: "before/during/after", exit: "rise to ending", easing: "smoothstep", safeText: "left", pos: [0, 0.3, 10], look: [0, 0.1, 0], fov: 41, roll: 0, planet: { x: 2.2, y: -0.2, s: 0.9 } },
+  { sceneId: "ending", at: 1.0, move: "pull-back", entry: "return to space", hold: "MASIH DALAM PROSES", exit: "line leaves viewport", easing: "smoothstep", safeText: "center", pos: [0, 0.8, 16], look: [0, 0.3, 0], fov: 46, planet: { x: 0, y: 3.0, s: 1.4 }, roll: -0.02 },
 ];
 
 /**
@@ -76,6 +78,7 @@ export const CAMERA_KEYS: SceneCameraKey[] = SCENE_PROFILES.map((s) => ({
   pos: s.pos,
   look: s.look,
   fov: s.fov,
+  roll: s.roll,
   planet: s.planet,
 }));
 
@@ -94,6 +97,7 @@ export function sampleCamera(p: number): SceneCameraKey {
         pos: [lerp(a.pos[0], b.pos[0]), lerp(a.pos[1], b.pos[1]), lerp(a.pos[2], b.pos[2])],
         look: [lerp(a.look[0], b.look[0]), lerp(a.look[1], b.look[1]), lerp(a.look[2], b.look[2])],
         fov: lerp(a.fov, b.fov),
+        roll: lerp(a.roll, b.roll),
         planet: {
           x: lerp(a.planet.x, b.planet.x),
           y: lerp(a.planet.y, b.planet.y),

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { scrollStore, sampleCamera } from "@/lib/camera/scrollStore";
@@ -142,11 +142,19 @@ export function EarthPlanet({
     </group>
   );
 }
-
-export function CameraRig() {  const { camera } = useThree();
+export function CameraRig() {
+  const { camera } = useThree();
   const look = useMemo(() => new THREE.Vector3(), []);
   const target = useMemo(() => new THREE.Vector3(), []);
+  const rollRef = useRef(0);
   const reduced = prefersReducedMotion();
+
+  // dev-only measurement hook (demo wajib §03) — stripped from production
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      (window as unknown as { __camera?: unknown }).__camera = { camera };
+    }
+  }, [camera]);
 
   useFrame((state, delta) => {
     // damped follow — never snaps
@@ -161,11 +169,26 @@ export function CameraRig() {  const { camera } = useThree();
     const driftY = reduced ? 0 : Math.cos(t * 0.09) * 0.08;
     target.set(k.pos[0] + driftX, k.pos[1] + driftY, k.pos[2]);
     camera.position.lerp(target, Math.min(1, delta * (reduced ? 10 : 2.4)));
+    // max zoom / clipping guard (§03): hard bounds even if keys misbehave
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -4, 4);
+    camera.position.y = THREE.MathUtils.clamp(camera.position.y, -2, 3);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, 6, 19);
     look.set(k.look[0], k.look[1], k.look[2]);
     // lookAt via damped direction
     const cam = camera as THREE.PerspectiveCamera;
     cam.lookAt(look);
-    const fovT = THREE.MathUtils.lerp(cam.fov, k.fov, Math.min(1, delta * 2));
+    // tilt (roll) applied post-lookAt, damped — chapter orientation change
+    rollRef.current = THREE.MathUtils.lerp(
+      rollRef.current,
+      reduced ? 0 : k.roll,
+      Math.min(1, delta * 2)
+    );
+    cam.rotateZ(rollRef.current);
+    const fovT = THREE.MathUtils.clamp(
+      THREE.MathUtils.lerp(cam.fov, k.fov, Math.min(1, delta * 2)),
+      35,
+      50
+    );
     if (Math.abs(fovT - cam.fov) > 0.01) {
       cam.fov = fovT;
       cam.updateProjectionMatrix();
