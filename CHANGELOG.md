@@ -49,3 +49,8 @@
 - Navigasi: StoryTimeline bawah (counter 01/09, progress fill, dot klik lompat chapter) menggantikan rail kiri; counter memakai peta world→chapter agar akurat di semua sub-dunia.
 - Cursor ala ref1: VIEW / EXPLORE / → / OPEN↗ + click pulse.
 - Fix: backdrop sempat tak terlihat karena wrapper data-depth bertransformasi menjadi containing block 0x0 — backdrop kini direct child stage.
+
+## 2026-09-12 — Root cause scroll-lama: rig lupa /100 + anti-tumpuk
+
+- AKAR MASALAH sesungguhnya: `end: innerHeight * durationVh` tanpa /100 — pin 100× lebih panjang dari niat (450vh dibaca 450 viewport). Total journey 5,2 juta px. Fix + kembalikan durasi ke skala vh yang benar (total ~52k px).
+- Anti-tumpuk: skala dolly ditarik mundur ~30% global, DIM diperkuat (0.14/blur 6px), handoff fokus sekuensial (redup dulu, tajam kemudian), glow space dijinakkan, skyline jadi bokeh, pernyataan opening dikecilkan.

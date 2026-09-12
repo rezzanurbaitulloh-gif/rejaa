@@ -28,15 +28,15 @@ export function TechFieldWorld() {
   const items = tech.filter((t) => t.in_field).slice(0, max);
 
   const moves: Move[] = [
-    { pose: { scale: 1 }, focus: ["lede"], dur: 1 },
-    { pose: { scale: 1.3, xPercent: 2 }, focus: ["tech-0"], dur: 1 },
-    { pose: { scale: 1.3, xPercent: -2 }, focus: ["tech-1"], dur: 1 },
-    { pose: { scale: 1.3, xPercent: 2, yPercent: -2 }, focus: ["tech-2"], dur: 1 },
-    { pose: { scale: 1, xPercent: 0, yPercent: 0 }, focus: ["claim"], dur: 1.2 },
+    { pose: { scale: 1.0 }, focus: ["lede"], dur: 1 },
+    { pose: { scale: 1.21, xPercent: 1.4 }, focus: ["tech-0"], dur: 1 },
+    { pose: { scale: 1.21, xPercent: -1.4 }, focus: ["tech-1"], dur: 1 },
+    { pose: { scale: 1.21, xPercent: 1.4, yPercent: -1.4 }, focus: ["tech-2"], dur: 1 },
+    { pose: { scale: 1.0, xPercent: 0.0, yPercent: 0.0 }, focus: ["claim"], dur: 1.2 },
   ];
 
   return (
-    <CameraWorld id="technology-field" label="Technology Field" durationVh={50} moves={moves}>
+    <CameraWorld id="technology-field" label="Technology Field" durationVh={300} moves={moves}>
       <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[6%] max-w-xl md:left-[10%]">
         <p className="eyebrow">04 / SKILLS &amp; TOOLS</p>
         <h2 className="font-display mt-3 text-3xl font-extrabold uppercase md:text-5xl">Skills<br />&amp; Tools</h2>

@@ -13,12 +13,12 @@ import { useReducedMotion } from "@/lib/device";
  * kamera mendekat → pullback → push ke DALAM PROSES → THROUGH.
  */
 const MOVES: Move[] = [
-  { pose: { scale: 1, yPercent: 0 }, focus: ["dot", "tag"], dur: 1 },
-  { pose: { scale: 1.7, yPercent: 8 }, focus: ["dot", "s1"], dur: 1.4 },
-  { pose: { scale: 1.7, yPercent: -8 }, focus: ["s2"], dur: 1.4 },
-  { pose: { scale: 1, yPercent: 0 }, focus: ["s1", "s2"], dur: 1.2 },
-  { pose: { scale: 2, yPercent: 0 }, focus: ["hero"], dur: 1.4 },
-  { pose: { scale: 3.2, yPercent: 0 }, focus: [], dur: 1 },
+  { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["dot", "tag"], dur: 1 },
+  { pose: { scale: 1.49, yPercent: 5.6 }, focus: ["dot", "s1"], dur: 1.4 },
+  { pose: { scale: 1.49, yPercent: -5.6 }, focus: ["s2"], dur: 1.4 },
+  { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["s1", "s2"], dur: 1.2 },
+  { pose: { scale: 1.7, yPercent: 0.0 }, focus: ["hero"], dur: 1.4 },
+  { pose: { scale: 2.54, yPercent: 0.0 }, focus: [], dur: 1 },
 ];
 
 export function Opening() {
@@ -66,7 +66,7 @@ export function Opening() {
         </div>
       )}
 
-      <CameraWorld id="opening" label="Opening" durationVh={75} moves={MOVES}>
+      <CameraWorld id="opening" label="Opening" durationVh={350} moves={MOVES}>
         <PhotoBackdrop kind="space" opacity={0.9} />
         <p data-depth={0.2} className="eyebrow absolute left-[8%] top-[11%] md:left-[10%]">01 / OPENING</p>
 
@@ -80,15 +80,15 @@ export function Opening() {
         </p>
 
         {/* Pernyataan 1 — kamera menemukan karena MENDEKAT */}
-        <div data-f="s1" data-depth={0.6} className="absolute left-[8%] right-[8%] top-[13%] md:left-[10%] md:max-w-3xl">
-          <p className="font-display mt-4 text-3xl font-extrabold uppercase leading-[1.02] md:text-6xl">
+        <div data-f="s1" data-depth={0.6} className="absolute left-[8%] right-[8%] top-[9%] md:left-[10%] md:max-w-2xl">
+          <p className="font-display mt-4 text-2xl font-extrabold uppercase leading-[1.05] md:text-5xl">
             Saya tidak selalu tahu bagaimana sesuatu harus dibuat.
           </p>
         </div>
 
         {/* Pernyataan 2 — kamera PAN ke sini */}
-        <div data-f="s2" data-depth={0.6} className="absolute bottom-[16%] left-[8%] right-[8%] md:left-[10%] md:max-w-3xl">
-          <p className="font-display mt-4 text-3xl font-extrabold uppercase leading-[1.02] md:text-6xl">
+        <div data-f="s2" data-depth={0.6} className="absolute bottom-[12%] left-[8%] right-[8%] md:left-[10%] md:max-w-2xl">
+          <p className="font-display mt-4 text-2xl font-extrabold uppercase leading-[1.05] md:text-5xl">
             Tapi saya tahu bagaimana <span className="text-accent">memulainya.</span>
           </p>
         </div>

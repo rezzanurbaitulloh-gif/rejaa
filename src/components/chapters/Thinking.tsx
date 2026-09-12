@@ -20,10 +20,10 @@ const NODES = [
 ];
 
 const MOVES: Move[] = [
-  { pose: { scale: 1.1, yPercent: 8 }, focus: ["n1", "n2"], dur: 1 },
-  { pose: { scale: 1.2, yPercent: 2 }, focus: ["n3", "n4"], dur: 1 },
-  { pose: { scale: 1.2, yPercent: -4 }, focus: ["n5", "n6"], dur: 1 },
-  { pose: { scale: 1, yPercent: -4 }, focus: ["n7", "lede"], dur: 1 },
+  { pose: { scale: 1.07, yPercent: 5.6 }, focus: ["n1", "n2"], dur: 1 },
+  { pose: { scale: 1.14, yPercent: 1.4 }, focus: ["n3", "n4"], dur: 1 },
+  { pose: { scale: 1.14, yPercent: -2.8 }, focus: ["n5", "n6"], dur: 1 },
+  { pose: { scale: 1.0, yPercent: -2.8 }, focus: ["n7", "lede"], dur: 1 },
 ];
 
 export function ThinkingWorld() {
@@ -38,7 +38,7 @@ export function ThinkingWorld() {
   };
 
   return (
-    <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={40} moves={MOVES} onProgress={draw}>
+    <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={300} moves={MOVES} onProgress={draw}>
       <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[2%] max-w-xl md:left-[10%]">
         <p className="chapter-label">04 / CARA SAYA BERPIKIR</p>
         <p className="body-lead mt-2">Mulai dari masalah. Ikuti jalurnya.</p>

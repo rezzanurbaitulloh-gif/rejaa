@@ -33,8 +33,8 @@ interface RigOpts {
 }
 
 const LIVE = { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "none" as const };
-const DIM_BLUR = { opacity: 0.3, scale: 0.94, filter: "blur(5px)", duration: 0.6, ease: "none" as const };
-const DIM_FLAT = { opacity: 0.45, scale: 0.96, filter: "blur(0px)", duration: 0.6, ease: "none" as const };
+const DIM_BLUR = { opacity: 0.14, scale: 0.92, filter: "blur(6px)", duration: 0.6, ease: "none" as const };
+const DIM_FLAT = { opacity: 0.3, scale: 0.95, filter: "blur(0px)", duration: 0.6, ease: "none" as const };
 
 /**
  * CAMERA RIG — pinned + scrubbed.
@@ -82,7 +82,7 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
     scrollTrigger: {
       trigger: outer,
       start: "top top",
-      end: () => `+=${Math.round(window.innerHeight * opts.durationVh)}`,
+      end: () => `+=${Math.round((window.innerHeight * opts.durationVh) / 100)}`,
       pin: true,
       scrub: 0.6,
       anticipatePin: 1,
@@ -95,11 +95,17 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
   for (const move of opts.moves) {
     const d = move.dur ?? 1;
     tl.to(stage, { ...poseDefaults(dampPose(move.pose)), duration: d }, t);
-    // FOCUS PULL tersinkron kamera: yang fokus → live, sisanya recede.
+    // FOCUS PULL tersinkron kamera: yang lama meredup DULU (paruh awal),
+    // yang baru menajam SETELAHNYA (paruh akhir) — jeda hening sinematik,
+    // bukan tabrakan dua objek setengah-terlihat.
+    const live = new Set(move.focus ?? []);
     for (const el of focusables) {
       const name = el.dataset.f ?? "";
-      const live = !move.focus || move.focus.includes(name);
-      tl.to(el, { ...(live ? LIVE : DIM), duration: d, overwrite: "auto" }, t);
+      if (!move.focus || live.has(name)) {
+        tl.to(el, { ...LIVE, duration: d * 0.55, overwrite: "auto" }, t + d * 0.45);
+      } else {
+        tl.to(el, { ...DIM, duration: d * 0.55, overwrite: "auto" }, t);
+      }
     }
     t += d;
   }
@@ -117,7 +123,7 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
   function applyFocus(focus?: string[]) {
     for (const el of focusables) {
       const live = !focus || focus.includes(el.dataset.f ?? "");
-      gsap.set(el, live ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0.3, scale: 0.94, filter: lowTier ? "blur(0px)" : "blur(5px)" });
+      gsap.set(el, live ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0.14, scale: 0.92, filter: lowTier ? "blur(0px)" : "blur(6px)" });
     }
   }
 

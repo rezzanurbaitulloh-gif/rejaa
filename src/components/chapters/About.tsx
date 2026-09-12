@@ -16,11 +16,11 @@ export function AboutWorld() {
       <CameraWorld
         id="tentang"
         label="Tentang Saya"
-        durationVh={35}
+        durationVh={220}
         moves={[
-          { pose: { scale: 1.35 }, focus: ["name"], dur: 1 },
-          { pose: { scale: 1, yPercent: 4 }, focus: ["name", "claim"], dur: 1.2 },
-          { pose: { scale: 1.5, yPercent: -6 }, focus: ["frag"], dur: 1.2 },
+          { pose: { scale: 1.25 }, focus: ["name"], dur: 1 },
+          { pose: { scale: 1.0, yPercent: 2.8 }, focus: ["name", "claim"], dur: 1.2 },
+          { pose: { scale: 1.35, yPercent: -4.2 }, focus: ["frag"], dur: 1.2 },
         ]}
       >
         {/* BACKGROUND — senja kota sebagai environment */}
@@ -55,10 +55,10 @@ export function AboutWorld() {
       <CameraWorld
         id="bukan-stack"
         label="Bukan tentang stack"
-        durationVh={25}
+        durationVh={120}
         moves={[
-          { pose: { scale: 1 }, focus: ["quote"], dur: 1 },
-          { pose: { scale: 1.25 }, focus: ["quote", "note"], dur: 1 },
+          { pose: { scale: 1.0 }, focus: ["quote"], dur: 1 },
+          { pose: { scale: 1.18 }, focus: ["quote", "note"], dur: 1 },
         ]}
       >
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">

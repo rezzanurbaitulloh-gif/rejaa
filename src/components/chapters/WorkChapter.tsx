@@ -27,15 +27,15 @@ export function WorkChapter() {
 
   const moves: Move[] = list.length
     ? [
-        { pose: { scale: 1.1, xPercent: 6 }, focus: [`p-${list[0].slug}`], dur: 1 },
+        { pose: { scale: 1.07, xPercent: 4.2 }, focus: [`p-${list[0].slug}`], dur: 1 },
         ...list.slice(1).map((p, i): Move => ({
-          pose: { scale: 1.2, xPercent: 6 - ((i + 1) / list.length) * 12 },
+          pose: { scale: 1.14, xPercent: 4.2 - ((i + 1) / list.length) * 12 },
           focus: [`p-${p.slug}`],
           dur: 1,
         })),
-        { pose: { scale: 1, xPercent: 0 }, focus: ["cap"], dur: 0.8 },
+        { pose: { scale: 1.0, xPercent: 0.0 }, focus: ["cap"], dur: 0.8 },
       ]
-    : [{ pose: { scale: 1 }, dur: 1 }];
+    : [{ pose: { scale: 1.0 }, dur: 1 }];
 
   const onDrag = (e: React.PointerEvent) => {
     const el = drift.current;
@@ -56,7 +56,7 @@ export function WorkChapter() {
   };
 
   return (
-    <CameraWorld id="karya" label="Work Constellation" durationVh={25 + list.length * 15} moves={moves}>
+    <CameraWorld id="karya" label="Work Constellation" durationVh={100 + list.length * 70} moves={moves}>
       <div data-f="cap" data-depth={0.3} className="absolute left-[8%] top-[5%] max-w-xl md:left-[10%]">
         <p className="eyebrow">05 / PROJECTS — 01 / {String(Math.max(1, list.length)).padStart(2, "0")}</p>
         <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Karya saya.</h2>

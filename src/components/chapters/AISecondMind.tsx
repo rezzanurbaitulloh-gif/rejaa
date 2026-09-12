@@ -12,13 +12,13 @@ export function AIWorld() {
     <CameraWorld
       id="ai"
       label="AI sebagai Partner"
-      durationVh={50}
+      durationVh={260}
       moves={[
-        { pose: { scale: 1.2, yPercent: 8 }, focus: ["idea"], dur: 1 },
-        { pose: { scale: 1.25, yPercent: 3, xPercent: 8 }, focus: ["human"], dur: 1 },
-        { pose: { scale: 1.25, yPercent: 3, xPercent: -8 }, focus: ["ai"], dur: 1 },
-        { pose: { scale: 1.4, yPercent: -4 }, focus: ["decide", "claim"], dur: 1.2 },
-        { pose: { scale: 1.8, yPercent: -8 }, focus: ["build"], dur: 1 },
+        { pose: { scale: 1.14, yPercent: 5.6 }, focus: ["idea"], dur: 1 },
+        { pose: { scale: 1.18, yPercent: 2.1, xPercent: 5.6 }, focus: ["human"], dur: 1 },
+        { pose: { scale: 1.18, yPercent: 2.1, xPercent: -5.6 }, focus: ["ai"], dur: 1 },
+        { pose: { scale: 1.28, yPercent: -2.8 }, focus: ["decide", "claim"], dur: 1.2 },
+        { pose: { scale: 1.56, yPercent: -5.6 }, focus: ["build"], dur: 1 },
       ]}
     >
       <p data-f="idea" data-depth={0.4} className="chapter-label absolute left-0 right-0 top-[4%] text-center">
