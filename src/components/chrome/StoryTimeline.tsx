@@ -27,7 +27,7 @@ const WORLD_CHAPTER: Record<string, number> = {
   "technology-field": 3,
   ai: 4, transisi: 4,
   "pkl-intro": 5, "pkl-apa": 5, "pkl-tujuan": 5, "pkl-aturan": 5, "pkl-tempat": 5,
-  "pkl-people": 5, "pkl-hari": 5, "pkl-aktivitas": 5, "pkl-tantangan": 5,
+  "pkl-people": 5, "pkl-hari": 5, "pkl-aktivitas": 5, "pkl-project": 5, "pkl-tantangan": 5,
   karya: 6,
   pelajaran: 7, tumbuh: 7, kembali: 7, "masa-depan": 7, ending: 7,
   kontak: 8,

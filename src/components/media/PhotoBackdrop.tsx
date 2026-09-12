@@ -29,7 +29,8 @@ export function PhotoBackdrop({ kind, opacity = 1 }: { kind: BackdropKind; opaci
     <div className="photo-backdrop" aria-hidden style={{ opacity }}>
       {kind === "space" && (
         <>
-          <div className="absolute inset-0" style={{ boxShadow: stars, borderRadius: "50%" }} />
+          {/* Titik nol: setiap star = dot seukuran spread, bukan selebar viewport. */}
+          <div className="absolute left-0 top-0 h-0 w-0" style={{ boxShadow: stars }} />
           <div className="absolute -right-[20%] -top-[30%] h-[45vmax] w-[45vmax] rounded-full"
             style={{ background: "radial-gradient(closest-side, rgba(64,110,255,0.10), rgba(20,40,120,0.05) 55%, transparent 72%)" }} />
           <div className="absolute -left-[30%] bottom-[-40%] h-[40vmax] w-[40vmax] rounded-full"

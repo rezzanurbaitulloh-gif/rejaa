@@ -66,7 +66,7 @@ export function Opening() {
         </div>
       )}
 
-      <CameraWorld id="opening" label="Opening" durationVh={350} moves={MOVES}>
+      <CameraWorld id="opening" label="Opening" durationVh={350} moves={MOVES} fadeIn={false}>
         <PhotoBackdrop kind="space" opacity={0.9} />
         <p data-depth={0.2} className="eyebrow absolute left-[8%] top-[11%] md:left-[10%]">01 / OPENING</p>
 

@@ -344,6 +344,19 @@ html[data-tier="low"] .glass {
   transform-origin: left;
   border-radius: 999px;
 }
+/* Cahaya yang berjalan di ujung process line (§9: proses terus bergerak). */
+#story-timeline .tl-fill::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-cream);
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px 2px rgba(245, 241, 234, 0.55);
+}
 #story-timeline .tl-dots {
   display: flex;
   justify-content: space-between;

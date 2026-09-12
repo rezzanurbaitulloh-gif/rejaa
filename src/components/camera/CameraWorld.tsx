@@ -14,6 +14,8 @@ interface CameraWorldProps {
   /** Progress kamera 0..1 (untuk menggambar path, counter waktu, dsb). */
   onProgress?: (p: number) => void;
   disablePinOnMobile?: boolean;
+  /** World pertama: tampil sejak load, tanpa fade-in dari hitam. */
+  fadeIn?: boolean;
   children: React.ReactNode;
 }
 
@@ -32,6 +34,7 @@ export function CameraWorld({
   className = "",
   onProgress,
   disablePinOnMobile,
+  fadeIn,
   children,
 }: CameraWorldProps) {
   const outer = useRef<HTMLElement>(null);
@@ -49,6 +52,7 @@ export function CameraWorld({
       durationVh,
       moves,
       disablePinOnMobile,
+      fadeIn,
       onProgress: (p) => progress.current?.(p),
     });
     return () => {

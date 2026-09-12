@@ -26,7 +26,17 @@ export function PklChapter() {
     const el = timeRef.current;
     if (!el || !pkl.routine.length) return;
     const i = Math.min(pkl.routine.length - 1, Math.floor(pr * pkl.routine.length));
-    el.textContent = pkl.routine[i].time;
+    const next = pkl.routine[i].time;
+    if (el.textContent === next) return;
+    // Jam raksasa berganti dengan morph lembut, bukan swap instan.
+    el.textContent = next;
+    el.animate(
+      [
+        { opacity: 0.1, filter: "blur(10px)" },
+        { opacity: 1, filter: "blur(0px)" },
+      ],
+      { duration: 500, easing: "cubic-bezier(.22,1,.36,1)" },
+    );
   };
   const half = (arr: unknown[]) => Math.ceil(arr.length / 2);
 

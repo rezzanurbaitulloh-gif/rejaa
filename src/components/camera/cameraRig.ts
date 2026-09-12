@@ -30,11 +30,14 @@ interface RigOpts {
   onProgress?: (p: number) => void;
   /** Matikan pin di mobile (fallback: flow normal + focus penuh). */
   disablePinOnMobile?: boolean;
+  /** World pertama (opening): jangan fade-in dari hitam saat load. */
+  fadeIn?: boolean;
 }
 
-const LIVE = { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "none" as const };
-const DIM_BLUR = { opacity: 0.14, scale: 0.92, filter: "blur(6px)", duration: 0.6, ease: "none" as const };
-const DIM_FLAT = { opacity: 0.3, scale: 0.95, filter: "blur(0px)", duration: 0.6, ease: "none" as const };
+const LIVE = { opacity: 1, scale: 1, filter: "blur(0px)" };
+const DIM_BLUR = { opacity: 0.2, scale: 0.94, filter: "blur(6px)" };
+const DIM_FLAT = { opacity: 0.32, scale: 0.96, filter: "blur(0px)" };
+const FOCUS_EASE = "sine.inOut" as const;
 
 /**
  * CAMERA RIG — pinned + scrubbed.
@@ -84,27 +87,34 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
       start: "top top",
       end: () => `+=${Math.round((window.innerHeight * opts.durationVh) / 100)}`,
       pin: true,
-      scrub: 0.6,
+      scrub: 1,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => opts.onProgress?.(self.progress),
     },
   });
 
+  // §6 TRANSISI sinematik: fade-through-black di batas world — chapter
+  // berganti lewat kegelapan, bukan hard cut. Reversibel via scrub.
+  const edge = Math.min(0.35, total * 0.08);
+  if (opts.fadeIn !== false) {
+    tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: edge, ease: "sine.inOut" }, 0);
+  }
+  tl.to(stage, { opacity: 0, duration: edge, ease: "sine.inOut" }, Math.max(0, total - edge));
+
   let t = 0;
   for (const move of opts.moves) {
     const d = move.dur ?? 1;
-    tl.to(stage, { ...poseDefaults(dampPose(move.pose)), duration: d }, t);
-    // FOCUS PULL tersinkron kamera: yang lama meredup DULU (paruh awal),
-    // yang baru menajam SETELAHNYA (paruh akhir) — jeda hening sinematik,
-    // bukan tabrakan dua objek setengah-terlihat.
+    tl.to(stage, { ...poseDefaults(dampPose(move.pose)), duration: d, ease: "sine.inOut" }, t);
+    // §8 FOCUS PULL sebagai crossfade yang overlap: yang lama meredup
+    // sementara yang baru sudah menajam — tidak ada momen dua-duanya hilang.
     const live = new Set(move.focus ?? []);
     for (const el of focusables) {
       const name = el.dataset.f ?? "";
       if (!move.focus || live.has(name)) {
-        tl.to(el, { ...LIVE, duration: d * 0.55, overwrite: "auto" }, t + d * 0.45);
+        tl.to(el, { ...LIVE, duration: d * 0.6, ease: FOCUS_EASE, overwrite: "auto" }, t + d * 0.25);
       } else {
-        tl.to(el, { ...DIM, duration: d * 0.55, overwrite: "auto" }, t);
+        tl.to(el, { ...DIM, duration: d * 0.5, ease: FOCUS_EASE, overwrite: "auto" }, t);
       }
     }
     t += d;
@@ -123,7 +133,7 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
   function applyFocus(focus?: string[]) {
     for (const el of focusables) {
       const live = !focus || focus.includes(el.dataset.f ?? "");
-      gsap.set(el, live ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0.14, scale: 0.92, filter: lowTier ? "blur(0px)" : "blur(6px)" });
+      gsap.set(el, live ? { opacity: 1, scale: 1, filter: "blur(0px)" } : { opacity: 0.2, scale: 0.94, filter: lowTier ? "blur(0px)" : "blur(6px)" });
     }
   }
 
