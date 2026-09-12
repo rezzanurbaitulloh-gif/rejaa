@@ -46,8 +46,7 @@ export default function SmoothScroll() {
     // per-scene activation + physical reveals
     const sections = gsap.utils.toArray<HTMLElement>("[data-scene]");
     const triggers: ScrollTrigger[] = [];
-    sections.forEach((el) => {
-      const id = el.dataset.scene ?? "unknown";
+    sections.forEach((el) => {      const id = el.dataset.scene ?? "unknown";
       triggers.push(
         ScrollTrigger.create({
           trigger: el,
@@ -95,6 +94,24 @@ export default function SmoothScroll() {
           },
         });
       });
+
+      // foreground-coupled dolly: sticky stage breathes with camera travel
+      // (zoom is felt because the text you read grows, not just background)
+      if (!reduced) {
+        const stage = el.querySelector<HTMLElement>(".sticky-stage");
+        if (stage) {
+          gsap.fromTo(
+            stage,
+            { scale: 1 },
+            {
+              scale: 1.12,
+              transformOrigin: "50% 50%",
+              ease: "none",
+              scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.6 },
+            }
+          );
+        }
+      }
     });
 
     // process line draw: lineProgress = cameraProgress
