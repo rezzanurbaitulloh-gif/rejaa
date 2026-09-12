@@ -34,7 +34,7 @@ export function TransitionWorld() {
       durationVh={200}
       moves={[
         { pose: { scale: 1.0 }, focus: ["field"], dur: 1 },
-        { pose: { scale: 1.56 }, focus: ["point"], dur: 1.3 },
+        { pose: { scale: 1.32 }, focus: ["point"], dur: 1.3 },
         { pose: { scale: 1.0 }, focus: ["real"], dur: 1.2 },
       ]}
       onProgress={drive}

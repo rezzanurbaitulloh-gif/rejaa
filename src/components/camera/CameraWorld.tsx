@@ -16,6 +16,8 @@ interface CameraWorldProps {
   disablePinOnMobile?: boolean;
   /** World pertama: tampil sejak load, tanpa fade-in dari hitam. */
   fadeIn?: boolean;
+  /** Mobile (§17): jadikan aliran editorial statis anti-kepotong. */
+  mobileStatic?: boolean;
   children: React.ReactNode;
 }
 
@@ -35,6 +37,7 @@ export function CameraWorld({
   onProgress,
   disablePinOnMobile,
   fadeIn,
+  mobileStatic,
   children,
 }: CameraWorldProps) {
   const outer = useRef<HTMLElement>(null);
@@ -53,6 +56,7 @@ export function CameraWorld({
       moves,
       disablePinOnMobile,
       fadeIn,
+      mobileStatic,
       onProgress: (p) => progress.current?.(p),
     });
     return () => {

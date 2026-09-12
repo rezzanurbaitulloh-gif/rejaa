@@ -32,16 +32,15 @@ export function AboutWorld() {
           </p>
         </div>
         {/* MIDGROUND — identitas ala ref1 #02 */}
-        <div data-f="name" data-depth={0.55} className="absolute right-[8%] top-[22%] text-right md:right-[12%]">
+        <div data-f="name" data-depth={0.55} className="absolute right-[10%] top-[20%] text-right md:right-[12%]">
           <p className="eyebrow">01 / TENTANG SAYA</p>
-          <h2 className="font-display mt-3 text-5xl font-extrabold uppercase leading-[0.95] md:text-8xl">
+          <h2 className="font-display mt-3 text-4xl font-extrabold uppercase leading-[0.95] md:text-7xl">
             Saya<br />Rezza.
           </h2>
         </div>
         <div data-f="claim" data-depth={0.6} className="absolute bottom-[24%] left-[8%] grid max-w-3xl gap-5 md:left-[12%] md:grid-cols-2 md:items-center">
           <PhotoPanel kind="silhouette" label="Sosok menatap kota senja" ratio="4/3" caption="Menatap proses yang sedang berjalan." />
           <div>
-            <p className="eyebrow">01 / TENTANG SAYA</p>
             <p className="body-lead mt-2">Saya Rezza. Saya tertarik pada bagaimana sebuah ide dapat berubah menjadi sesuatu yang benar-benar bisa digunakan.</p>
             <p className="body-muted mt-3 text-sm">{site.tagline} Ini bukan CV digital — ini satu perjalanan.</p>
           </div>

@@ -43,11 +43,11 @@ export function PklChapter() {
   return (
     <div id="pkl">
       {/* INTRO — push through gerbang chapter */}
-      <CameraWorld id="pkl-intro" label="PKL Intro" durationVh={180}
+      <CameraWorld id="pkl-intro" label="PKL Intro" durationVh={180} mobileStatic
         moves={[
           { pose: { scale: 1.0 }, focus: ["t"], dur: 1 },
-          { pose: { scale: 1.84 }, focus: ["t"], dur: 1.2 },
-          { pose: { scale: 2.4 }, focus: [], dur: 0.8 },
+          { pose: { scale: 1.5 }, focus: ["t"], dur: 1.2 },
+          { pose: { scale: 1.7 }, focus: [], dur: 0.8 },
         ]}>
         <PhotoBackdrop kind="workspace" opacity={0.55} />
         <div data-f="t" className="absolute inset-0 grid items-center gap-6 px-[8%] md:grid-cols-2 md:px-[10%]">
@@ -63,10 +63,10 @@ export function PklChapter() {
       </CameraWorld>
 
       {/* APA ITU PKL — pan */}
-      <CameraWorld id="pkl-apa" label="Apa itu PKL" durationVh={150}
+      <CameraWorld id="pkl-apa" label="Apa itu PKL" durationVh={150} mobileStatic
         moves={[
-          { pose: { scale: 1.0, xPercent: 4.2 }, focus: ["a"], dur: 1 },
-          { pose: { scale: 1.21, xPercent: -4.2 }, focus: ["b"], dur: 1 },
+          { pose: { scale: 1.0, xPercent: 3 }, focus: ["a"], dur: 1 },
+          { pose: { scale: 1.15, xPercent: -3 }, focus: ["b"], dur: 1 },
         ]}>
         <div data-f="a" data-depth={0.6} className="absolute left-[8%] top-[20%] max-w-xl md:left-[10%]">
           <ChapterHeading index="10" eyebrow="APA ITU PKL" title={<>PKL</>}
@@ -79,10 +79,10 @@ export function PklChapter() {
 
       {/* TUJUAN — push, fokus berpasangan + foto server */}
       {pkl.goals.length > 0 && (
-        <CameraWorld id="pkl-tujuan" label="Tujuan PKL" durationVh={160}
+        <CameraWorld id="pkl-tujuan" label="Tujuan PKL" durationVh={160} mobileStatic
           moves={[
             { pose: { scale: 1 }, focus: ["g1"], dur: 1 },
-            { pose: { scale: 1.21 }, focus: ["g2"], dur: 1 },
+            { pose: { scale: 1.15 }, focus: ["g2"], dur: 1 },
           ]}>
           <div className="absolute inset-0 grid items-center gap-6 px-[8%] md:grid-cols-2 md:px-[10%]">
             <div>
@@ -113,7 +113,7 @@ export function PklChapter() {
 
       {/* ATURAN — slow push hold */}
       {pkl.rules.length > 0 && (
-        <CameraWorld id="pkl-aturan" label="Aturan dan Tanggung Jawab" durationVh={140}
+        <CameraWorld id="pkl-aturan" label="Aturan dan Tanggung Jawab" durationVh={140} mobileStatic
           moves={[
             { pose: { scale: 1.0 }, focus: ["r"], dur: 1 },
             { pose: { scale: 1.1 }, focus: ["r"], dur: 1 },
@@ -126,10 +126,10 @@ export function PklChapter() {
       )}
 
       {/* TEMPAT — push; stub jujur bila kosong */}
-      <CameraWorld id="pkl-tempat" label="Tempat PKL" durationVh={150}
+      <CameraWorld id="pkl-tempat" label="Tempat PKL" durationVh={150} mobileStatic
         moves={[
-          { pose: { scale: 1.0, yPercent: 2.8 }, focus: ["p"], dur: 1 },
-          { pose: { scale: 1.35, yPercent: -2.8 }, focus: ["p"], dur: 1 },
+          { pose: { scale: 1.0, yPercent: 2 }, focus: ["p"], dur: 1 },
+          { pose: { scale: 1.2, yPercent: -2 }, focus: ["p"], dur: 1 },
         ]}>
         <div data-f="p" className="absolute inset-0 flex flex-col justify-center px-[8%] md:px-[10%]">
           <ChapterHeading index="13" eyebrow="TEMPAT SAYA BELAJAR" title={<>Tempat PKL</>} />
@@ -163,7 +163,7 @@ export function PklChapter() {
 
       {/* PEOPLE — pan (omit bila kosong) */}
       {pkl.people.length > 0 && (
-        <CameraWorld id="pkl-people" label="Pimpinan dan Pembimbing" durationVh={160}
+        <CameraWorld id="pkl-people" label="Pimpinan dan Pembimbing" durationVh={160} mobileStatic
           moves={[
             { pose: { scale: 1.0, xPercent: 3.5 }, focus: ["w1"], dur: 1 },
             { pose: { scale: 1.14, xPercent: -3.5 }, focus: ["w2"], dur: 1 },
@@ -208,9 +208,9 @@ export function PklChapter() {
       {pkl.routine.length > 0 && (
         <CameraWorld id="pkl-hari" label="Hari-hari Saya" durationVh={240}
           moves={[
-            { pose: { scale: 1.21 }, focus: ["morn"], dur: 1 },
-            { pose: { scale: 1.35 }, focus: ["mid"], dur: 1 },
-            { pose: { scale: 1.07 }, focus: ["eve", "cap"], dur: 1 },
+            { pose: { scale: 1.15 }, focus: ["morn"], dur: 1 },
+            { pose: { scale: 1.25 }, focus: ["mid"], dur: 1 },
+            { pose: { scale: 1.05 }, focus: ["eve", "cap"], dur: 1 },
           ]}
           onProgress={driveTime}>
           <p ref={timeRef} aria-hidden data-depth={0.2}
@@ -238,15 +238,15 @@ export function PklChapter() {
 
       {/* AKTIVITAS — pan horizontal sinematik */}
       {pkl.activities.length > 0 && (
-        <CameraWorld id="pkl-aktivitas" label="Aktivitas PKL" durationVh={200}
+        <CameraWorld id="pkl-aktivitas" label="Aktivitas PKL" durationVh={200} mobileStatic
           moves={[
             { pose: { scale: 1.0, xPercent: 0.0 }, focus: ["h", "a0"], dur: 1 },
-            { pose: { scale: 1.1, xPercent: -15.4 }, focus: ["a1"], dur: 1.2 },
+            { pose: { scale: 1.08, xPercent: -10 }, focus: ["a1"], dur: 1.2 },
           ]}>
           <div data-f="h" className="absolute left-[8%] top-[10%] max-w-md md:left-[10%]">
             <ChapterHeading index="16" eyebrow="AKTIVITAS" title={<>Aktivitas.</>} lede="Mempelajari sistem kerja — memahami operasional, alur kerja, dan bagaimana pekerjaan dilakukan langsung di lapangan." />
           </div>
-          <div className="absolute top-[38%] flex w-[190%] gap-4 pl-[8%] md:w-[140%] md:pl-[10%]">
+          <div className="drift-track absolute top-[38%] flex w-[190%] gap-4 pl-[8%] md:w-[140%] md:pl-[10%]">
             {pkl.activities.map((a, i) => (
               <article key={a.title} data-f={i === 0 ? "a0" : "a1"} className="w-72 shrink-0 md:w-96">
                 <PhotoPanel kind={i % 3 === 0 ? "office" : i % 3 === 1 ? "meeting" : "desk"} label={a.title} ratio="16/9" />
@@ -260,10 +260,10 @@ export function PklChapter() {
       )}
 
       {/* PROJECT PKL — frame 17: Sistem Operasional Catering + laptop */}
-      <CameraWorld id="pkl-project" label="Project PKL" durationVh={150}
+      <CameraWorld id="pkl-project" label="Project PKL" durationVh={150} mobileStatic
         moves={[
-          { pose: { scale: 1.0, xPercent: 4.2 }, focus: ["j"], dur: 1 },
-          { pose: { scale: 1.21, xPercent: -4.2 }, focus: ["j2"], dur: 1 },
+          { pose: { scale: 1.0, xPercent: 3 }, focus: ["j"], dur: 1 },
+          { pose: { scale: 1.15, xPercent: -3 }, focus: ["j2"], dur: 1 },
         ]}>
         <div className="absolute inset-0 grid items-center gap-6 px-[8%] md:grid-cols-2 md:px-[10%]">
           <div data-f="j">
@@ -303,10 +303,10 @@ export function PklChapter() {
 
       {/* TANTANGAN — frame 18: pipeline horizontal + detail CMS */}
       {pkl.challenges.length > 0 && (
-        <CameraWorld id="pkl-tantangan" label="Problem ke Solution" durationVh={170}
+        <CameraWorld id="pkl-tantangan" label="Problem ke Solution" durationVh={170} mobileStatic
           moves={[
             { pose: { scale: 1.0 }, focus: ["c0"], dur: 1 },
-            { pose: { scale: 1.28 }, focus: ["c1"], dur: 1 },
+            { pose: { scale: 1.18 }, focus: ["c1"], dur: 1 },
           ]}>
           <div className="absolute inset-0 flex flex-col justify-center px-[8%] md:px-[10%]">
             <div data-f="c0"><ChapterHeading index="18" eyebrow="PROBLEM → SOLUTION" title={<>Masalah → proses → solusi.</>} /></div>

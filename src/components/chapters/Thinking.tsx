@@ -18,9 +18,9 @@ const NODES = [
 ];
 
 const MOVES: Move[] = [
-  { pose: { scale: 1.1, yPercent: 6 }, focus: ["ide", "n1"], dur: 1 },
-  { pose: { scale: 1.2, yPercent: 0 }, focus: ["n2", "n3"], dur: 1 },
-  { pose: { scale: 1.2, yPercent: -6 }, focus: ["n4", "q"], dur: 1 },
+  { pose: { scale: 1.08, yPercent: 4 }, focus: ["ide", "n1"], dur: 1 },
+  { pose: { scale: 1.14, yPercent: 0 }, focus: ["n2", "n3"], dur: 1 },
+  { pose: { scale: 1.14, yPercent: -4 }, focus: ["n4", "q"], dur: 1 },
   { pose: { scale: 1, yPercent: -2 }, focus: ["lede", "q"], dur: 1 },
 ];
 
@@ -48,7 +48,7 @@ export function ThinkingWorld() {
 
   return (
     <>
-      <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={150} moves={MOVES} onProgress={draw}>
+      <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={150} moves={MOVES} onProgress={draw} mobileStatic>
         <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[4%] max-w-xl md:left-[10%]">
           <p className="eyebrow">02 / CARA SAYA BERPIKIR</p>
         </div>
@@ -80,10 +80,10 @@ export function ThinkingWorld() {
         </p>
       </CameraWorld>
 
-      <CameraWorld id="bekerja" label="Cara Saya Bekerja" durationVh={130}
+      <CameraWorld id="bekerja" label="Cara Saya Bekerja" durationVh={130} mobileStatic
         moves={[
           { pose: { scale: 1, xPercent: 0 }, focus: ["pipe", "c0"], dur: 1 },
-          { pose: { scale: 1.1, xPercent: -12 }, focus: ["c1"], dur: 1.2 },
+          { pose: { scale: 1.08, xPercent: -8 }, focus: ["c1"], dur: 1.2 },
         ]}>
         <div data-f="pipe" className="absolute left-[8%] top-[8%] right-[8%] md:left-[10%]">
           <p className="eyebrow">03 / CARA SAYA BEKERJA</p>
@@ -96,7 +96,7 @@ export function ThinkingWorld() {
             ))}
           </div>
         </div>
-        <div className="absolute top-[34%] flex w-[200%] gap-4 pl-[8%] md:w-[150%] md:pl-[10%]">
+        <div className="drift-track absolute top-[34%] flex w-[200%] gap-4 pl-[8%] md:w-[150%] md:pl-[10%]">
           {CARDS.map((c, i) => (
             <article key={c.t} data-f={i < 3 ? "c0" : "c1"} className="w-60 shrink-0 md:w-72">
               <PhotoPanel kind={c.k} label={`${c.t} — ${c.d}`} ratio="4/3" />

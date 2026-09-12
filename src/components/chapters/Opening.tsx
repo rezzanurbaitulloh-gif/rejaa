@@ -14,11 +14,11 @@ import { useReducedMotion } from "@/lib/device";
  */
 const MOVES: Move[] = [
   { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["dot", "tag"], dur: 1 },
-  { pose: { scale: 1.49, yPercent: 5.6 }, focus: ["dot", "s1"], dur: 1.4 },
-  { pose: { scale: 1.49, yPercent: -5.6 }, focus: ["s2"], dur: 1.4 },
+  { pose: { scale: 1.3, yPercent: 4 }, focus: ["dot", "s1"], dur: 1.4 },
+  { pose: { scale: 1.3, yPercent: -4 }, focus: ["s2"], dur: 1.4 },
   { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["s1", "s2"], dur: 1.2 },
-  { pose: { scale: 1.7, yPercent: 0.0 }, focus: ["hero"], dur: 1.4 },
-  { pose: { scale: 2.54, yPercent: 0.0 }, focus: [], dur: 1 },
+  { pose: { scale: 1.45, yPercent: 0.0 }, focus: ["hero"], dur: 1.4 },
+  { pose: { scale: 1.9, yPercent: 0.0 }, focus: [], dur: 1 },
 ];
 
 export function Opening() {

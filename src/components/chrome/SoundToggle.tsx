@@ -12,7 +12,7 @@ export function SoundToggle() {
       onClick={toggleSound}
       aria-pressed={soundOn}
       aria-label={soundOn ? "Matikan suara" : "Nyalakan suara"}
-      className="fixed bottom-5 right-5 z-[80] chip bg-void/70 backdrop-blur hover:text-cream"
+      className="fixed bottom-24 right-4 z-[80] chip bg-void/70 backdrop-blur hover:text-cream md:bottom-5 md:right-5"
     >
       <span className="accent-dot" style={{ opacity: soundOn ? 1 : 0.25 }} />
       SOUND {soundOn ? "ON" : "OFF"}

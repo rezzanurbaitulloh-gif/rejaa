@@ -400,6 +400,99 @@ html[data-tier="low"] .glass {
   }
 }
 
+/* ---------- mobile static (§17): aliran editorial, tanpa pin/crop ---------- */
+[data-mobile-static="1"] {
+  height: auto !important;
+  min-height: 100svh;
+  overflow: visible !important;
+}
+[data-mobile-static="1"] [data-camera] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding: 5rem 6% 3.5rem;
+}
+[data-mobile-static="1"] [data-camera] > * {
+  position: static !important;
+  transform: none !important;
+  width: auto !important;
+  max-width: 100%;
+  opacity: 1 !important;
+  filter: none !important;
+}
+[data-mobile-static="1"] [data-camera] > svg,
+[data-mobile-static="1"] .photo-backdrop,
+[data-mobile-static="1"] [data-static-hide] {
+  display: none;
+}
+[data-mobile-static="1"] .drift-track {
+  width: auto !important;
+  margin: 0 -6%;
+  padding: 0.5rem 6% 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+[data-mobile-static="1"] .orbit-drift {
+  position: static !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transform: none !important;
+}
+[data-mobile-static="1"] .orbit-card {
+  position: static !important;
+  width: 100% !important;
+  transform: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+[data-mobile-static="1"] .drift-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- mobile chrome: timeline + sound tidak bertumpuk ---------- */
+@media (max-width: 768px) {
+  #story-timeline .tl-dots {
+    overflow-x: auto;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    gap: 1.1rem;
+  }
+  #story-timeline .tl-dots::-webkit-scrollbar {
+    display: none;
+  }
+  #story-timeline {
+    padding-bottom: 1rem;
+  }
+}
+
+/* ---------- surfaces: depth + shade ala ref ---------- */
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015) 40%, rgba(0, 0, 0, 0.25));
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+/* ---------- photo shade: vignette + cahaya atas + bloom bawah ---------- */
+.photo-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90% 55% at 50% 0%, rgba(160, 190, 255, 0.14), transparent 60%),
+    radial-gradient(120% 100% at 50% 45%, transparent 52%, rgba(3, 4, 7, 0.66) 100%),
+    linear-gradient(180deg, rgba(3, 4, 7, 0.28), transparent 26%, transparent 62%, rgba(3, 4, 7, 0.72));
+}
+.photo-shade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
+}
+
 /* ---------- device tier: hemat GPU di perangkat lemah ---------- */
 html[data-tier="low"] .grain::after {
   display: none;

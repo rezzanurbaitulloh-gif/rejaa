@@ -27,9 +27,9 @@ export function WorkChapter() {
 
   const moves: Move[] = list.length
     ? [
-        { pose: { scale: 1.07, xPercent: 4.2 }, focus: [`p-${list[0].slug}`], dur: 1 },
+        { pose: { scale: 1.05, xPercent: 3 }, focus: [`p-${list[0].slug}`], dur: 1 },
         ...list.slice(1).map((p, i): Move => ({
-          pose: { scale: 1.14, xPercent: 4.2 - ((i + 1) / list.length) * 12 },
+          pose: { scale: 1.1, xPercent: 3 - ((i + 1) / list.length) * 8 },
           focus: [`p-${p.slug}`],
           dur: 1,
         })),
@@ -56,13 +56,13 @@ export function WorkChapter() {
   };
 
   return (
-    <CameraWorld id="karya" label="Work Constellation" durationVh={100 + list.length * 70} moves={moves}>
+    <CameraWorld id="karya" label="Work Constellation" durationVh={100 + list.length * 70} moves={moves} mobileStatic>
       <div data-f="cap" data-depth={0.3} className="absolute left-[8%] top-[5%] max-w-xl md:left-[10%]">
         <p className="eyebrow">19 / PORTFOLIO — ORBIT PROJECT</p>
         <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Karya saya.</h2>
       </div>
 
-      <div ref={drift} data-x="0" className="absolute inset-0 touch-pan-y"
+      <div ref={drift} data-x="0" className="orbit-drift absolute inset-0 touch-pan-y"
         onPointerDown={onDrag}
         onMouseEnter={() => setLens("drag")} onMouseLeave={() => setLens("default")}>
         {list.map((p, i) => {
@@ -71,7 +71,7 @@ export function WorkChapter() {
             <button key={p.slug} type="button" data-f={`p-${p.slug}`} data-depth={z}
               onClick={() => router.push(`/work/${p.slug}`)}
               onMouseEnter={() => setLens("project")} onMouseLeave={() => setLens("drag")}
-              className="absolute w-64 text-left md:w-80"
+              className="orbit-card absolute w-64 text-left md:w-80"
               style={{ left: `${x}%`, top: `${y}%` }}
               aria-label={`Masuk ke project ${p.title}`}>
               <span className="eyebrow">PROJECT 0{i + 1}</span>

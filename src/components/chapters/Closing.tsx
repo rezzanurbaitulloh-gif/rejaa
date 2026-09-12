@@ -17,7 +17,7 @@ export function ClosingChapter() {
 
   return (
     <>
-      <CameraWorld id="pelajaran" label="Lessons Learned" durationVh={150}
+      <CameraWorld id="pelajaran" label="Lessons Learned" durationVh={150} mobileStatic
         moves={[
           { pose: { scale: 1.0 }, focus: ["l0"], dur: 1 },
           { pose: { scale: 1.14 }, focus: ["l1"], dur: 1 },
@@ -52,11 +52,11 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      <CameraWorld id="tumbuh" label="Growth" durationVh={200}
+      <CameraWorld id="tumbuh" label="Growth" durationVh={200} mobileStatic
         moves={[
-          { pose: { scale: 1.07, yPercent: 4.2 }, focus: ["b"], dur: 1 },
-          { pose: { scale: 1.07, yPercent: -1.4 }, focus: ["d"], dur: 1 },
-          { pose: { scale: 1.07, yPercent: -7.0 }, focus: ["a"], dur: 1 },
+          { pose: { scale: 1.05, yPercent: 3 }, focus: ["b"], dur: 1 },
+          { pose: { scale: 1.05, yPercent: -1 }, focus: ["d"], dur: 1 },
+          { pose: { scale: 1.05, yPercent: -5 }, focus: ["a"], dur: 1 },
         ]}>
         <p data-depth={0.3} className="chapter-label absolute left-[8%] top-[10%] md:left-[12%]">22 / PERUBAHAN DIRI</p>
         {/* Frame 22: DULU vs SEKARANG */}
@@ -85,7 +85,7 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      <CameraWorld id="kembali" label="Kembali ke Dalam Proses" durationVh={120}
+      <CameraWorld id="kembali" label="Kembali ke Dalam Proses" durationVh={120} mobileStatic
         moves={[{ pose: { scale: 1.1 }, focus: ["k"], dur: 1 }]}>
         <div data-f="k" className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
           <p className="chapter-label">23 / KEMBALI KE ‘DALAM PROSES’</p>
@@ -99,7 +99,7 @@ export function ClosingChapter() {
       <CameraWorld id="masa-depan" label="Masa Depan" durationVh={140}
         moves={[
           { pose: { scale: 1.0 }, focus: ["m"], dur: 1 },
-          { pose: { scale: 1.28 }, focus: ["m"], dur: 1 },
+          { pose: { scale: 1.2 }, focus: ["m"], dur: 1 },
         ]}>
         <PhotoBackdrop kind="mountains" opacity={0.9} />
         <div data-f="m" className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
@@ -111,8 +111,8 @@ export function ClosingChapter() {
 
       <CameraWorld id="ending" label="Ending" durationVh={220}
         moves={[
-          { pose: { scale: 1.35 }, focus: ["mem"], dur: 1 },
-          { pose: { scale: 1.07 }, focus: ["rezza"], dur: 1.2 },
+          { pose: { scale: 1.2 }, focus: ["mem"], dur: 1 },
+          { pose: { scale: 1.05 }, focus: ["rezza"], dur: 1.2 },
           { pose: { scale: 0.55 }, focus: ["point"], dur: 1 },
         ]}>
         {/* MEMORY — fragmen perjalanan kembali */}

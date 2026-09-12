@@ -30,6 +30,8 @@ interface RigOpts {
   onProgress?: (p: number) => void;
   /** Matikan pin di mobile (fallback: flow normal + focus penuh). */
   disablePinOnMobile?: boolean;
+  /** Mobile jadi editorial statis anti-kepotong (§17): tanpa pin/crop. */
+  mobileStatic?: boolean;
   /** World pertama (opening): jangan fade-in dari hitam saat load. */
   fadeIn?: boolean;
 }
@@ -75,6 +77,19 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
     return () => {};
   }
 
+  if (mobile && opts.mobileStatic) {
+    // §17 mobile = koreografi sendiri: section jadi aliran editorial biasa
+    // (tinggi natural, tanpa crop) agar daftar panjang tidak kepotong.
+    outer.setAttribute("data-mobile-static", "1");
+    gsap.set(stage, { clearProps: "transform,opacity" });
+    gsap.set(focusables, { opacity: 1, scale: 1, filter: "blur(0px)" });
+    gsap.set(layers, { clearProps: "transform" });
+    opts.onProgress?.(1);
+    return () => {
+      outer.removeAttribute("data-mobile-static");
+    };
+  }
+
   gsap.set(stage, { transformOrigin: "50% 50%" });
   // State awal: kamera di pose "sebelum move pertama" = identitas; fokus move[0].
   applyFocus(opts.moves[0]?.focus);
@@ -94,13 +109,15 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
     },
   });
 
-  // §6 TRANSISI sinematik: fade-through-black di batas world — chapter
-  // berganti lewat kegelapan, bukan hard cut. Reversibel via scrub.
-  const edge = Math.min(0.35, total * 0.08);
+  // §6 TRANSISI sinematik: dissolve antar world — chapter berganti lewat
+  // veil gelap (bukan full black, agar tak terlihat blank), bukan hard cut.
+  // Reversibel via scrub.
+  const FADE_MIN = 0.12;
+  const edge = Math.min(0.18, total * 0.05);
   if (opts.fadeIn !== false) {
-    tl.fromTo(stage, { opacity: 0 }, { opacity: 1, duration: edge, ease: "sine.inOut" }, 0);
+    tl.fromTo(stage, { opacity: FADE_MIN }, { opacity: 1, duration: edge, ease: "sine.inOut" }, 0);
   }
-  tl.to(stage, { opacity: 0, duration: edge, ease: "sine.inOut" }, Math.max(0, total - edge));
+  tl.to(stage, { opacity: FADE_MIN, duration: edge, ease: "sine.inOut" }, Math.max(0, total - edge));
 
   let t = 0;
   for (const move of opts.moves) {
