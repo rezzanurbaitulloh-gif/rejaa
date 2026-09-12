@@ -38,7 +38,6 @@ export default function SmoothScroll() {
       trigger: document.body,
       start: "top top",
       end: "bottom bottom",
-      scrub: reduced ? false : 0.6,
       onUpdate: (self) => {
         scrollStore.progress = self.progress;
         scrollStore.velocity = self.getVelocity() / 1000;

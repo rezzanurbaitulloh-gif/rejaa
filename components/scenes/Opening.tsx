@@ -33,7 +33,7 @@ export default function Opening() {
         </div>
         <div className="pointer-events-none absolute right-[6vw] top-1/2 hidden -translate-y-1/2 text-right lg:block">
           <p className="text-[11px] tracking-[0.3em] text-white/55 uppercase">Scroll — kamera bergerak</p>
-          <p className="mt-2 text-[11px] tracking-[0.3em] text-white/55 uppercase">01 / Far space</p>
+            <p className="mt-2 text-[11px] tracking-[0.3em] text-white/60 uppercase">01 / Ruang jauh</p>
         </div>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2" aria-hidden>
           <div className="h-10 w-px bg-gradient-to-b from-white/60 to-transparent" />

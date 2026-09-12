@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   title: "DALAM PROSES — Dari ide, menjadi sesuatu yang nyata.",
   description:
     "Dokumenter personal sinematik interaktif oleh Rezza: scroll adalah kamera, garis proses adalah tulang punggung — dari ide, cara berpikir, AI, PKL, karya, hingga masa depan.",
-  metadataBase: new URL("https://dalamproses.id"),
+  metadataBase: new URL("https://dalam-proses.vercel.app"),
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "DALAM PROSES",
     description: "Saya tidak browsing website. Saya melakukan perjalanan melalui proses seseorang.",

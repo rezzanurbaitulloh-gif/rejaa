@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AI_ORBIT } from "@/data/content";
 import type { TechItem } from "@/data/content";
+import { prefersReducedMotion } from "@/lib/device";
 
 /**
  * §13 Technology Field — gravitational field, never a logo wall.
@@ -14,9 +15,11 @@ import type { TechItem } from "@/data/content";
  */
 
 function TechnologyField({ items }: { items: TechItem[] }) {
-  const ringA = useRef<HTMLDivElement>(null);
-  const ringB = useRef<HTMLDivElement>(null);
-  const st = useRef({ a: 0, b: 140, dragging: false, lastX: 0, lastFocus: 0 });
+  // Buttons are positioned directly each frame (never children of a rotated
+  // ring) so labels always stay upright. Drag rotates the field honestly.
+  const btns = useRef<(HTMLButtonElement | null)[]>([]);
+  const st = useRef({ a: 0, b: 140, dragging: false, lastX: 0, lastFocus: 0, present: false });
+  const [reduced] = useState(() => prefersReducedMotion());
   const [focus, setFocus] = useState(0);
   const shown = items.slice(0, 8);
   const current = shown[focus % shown.length];
@@ -28,21 +31,30 @@ function TechnologyField({ items }: { items: TechItem[] }) {
       const dt = Math.min(0.05, (t - last) / 1000);
       last = t;
       const s = st.current;
-      if (!s.dragging) {
+      if (!s.dragging && !reduced) {
         s.a += dt * 4; // deg/sec — independent time scales
         s.b -= dt * 2.6;
       }
-      if (ringA.current) ringA.current.style.transform = `rotate(${s.a}deg)`;
-      if (ringB.current) ringB.current.style.transform = `rotate(${s.b}deg)`;
+      const rad = Math.PI / 180;
+      btns.current.forEach((el, k) => {
+        if (!el) return;
+        const ringB = k >= 4;
+        const off = ringB ? s.b : s.a;
+        const ang = (off + (k % 4) * 90) * rad;
+        const r = ringB ? 47 : 34;
+        el.style.left = `${50 + r * Math.cos(ang)}%`;
+        el.style.top = `${50 + r * Math.sin(ang)}%`;
+      });
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [reduced]);
 
   useEffect(() => {
     const id = setInterval(() => {
-      if (Date.now() - st.current.lastFocus > 8000) setFocus((f) => (f + 1) % shown.length);
+      const s = st.current;
+      if (!s.present && Date.now() - s.lastFocus > 8000) setFocus((f) => (f + 1) % shown.length);
     }, 4500);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +91,10 @@ function TechnologyField({ items }: { items: TechItem[] }) {
         onPointerMove={onMove}
         onPointerUp={onUp}
         onPointerCancel={onUp}
+        onMouseEnter={() => (st.current.present = true)}
+        onMouseLeave={() => (st.current.present = false)}
+        onFocus={() => (st.current.present = true)}
+        onBlur={() => (st.current.present = false)}
         role="group"
         aria-label="Medan teknologi — seret untuk memutar, klik untuk fokus"
       >
@@ -93,66 +109,68 @@ function TechnologyField({ items }: { items: TechItem[] }) {
           <p className="narrative-serif mt-1 text-[15px] text-white/60">mulai dari sini</p>
         </div>
         {/* ring A */}
-        <div ref={ringA} className="absolute inset-0 will-change-transform">
-          {shown.slice(0, 4).map((t, i) => {
-            const fi = i;
-            const isF = fi === focus % shown.length;
-            return (
-              <button
-                key={t.name}
-                onClick={() => {
-                  setFocus(fi);
-                  st.current.lastFocus = Date.now();
-                }}
-                data-cursor="view"
-                aria-pressed={isF}
-                className="absolute -translate-x-1/2 -translate-y-1/2 border px-4 py-2 text-[12px] font-bold tracking-[0.12em] backdrop-blur-[2px] transition-all duration-500"
-                style={{
-                  ...place(i, 4, 34),
-                  borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.15)",
-                  background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.72)",
-                  opacity: isF ? 1 : 0.55,
-                  filter: isF ? "blur(0)" : "blur(0.6px)",
-                  scale: isF ? "1.18" : "1",
-                }}
-              >
-                {t.name}
-              </button>
-            );
-          })}
-        </div>
+        {shown.slice(0, 4).map((t, i) => {
+          const fi = i;
+          const isF = fi === focus % shown.length;
+          return (
+            <button
+              key={t.name}
+              ref={(el) => {
+                btns.current[fi] = el;
+              }}
+              onClick={() => {
+                setFocus(fi);
+                st.current.lastFocus = Date.now();
+              }}
+              data-cursor="view"
+              aria-pressed={isF}
+              className="absolute -translate-x-1/2 -translate-y-1/2 border px-4 py-2 text-[12px] font-bold tracking-[0.12em] backdrop-blur-[2px] transition-[opacity,background,border-color,scale,filter] duration-500"
+              style={{
+                ...place(i, 4, 34),
+                borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.15)",
+                background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.72)",
+                opacity: isF ? 1 : 0.55,
+                filter: isF ? "blur(0)" : "blur(0.6px)",
+                scale: isF ? "1.18" : "1",
+              }}
+            >
+              {t.name}
+            </button>
+          );
+        })}
         {/* ring B */}
-        <div ref={ringB} className="absolute inset-0 will-change-transform">
-          {shown.slice(4, 8).map((t, i) => {
-            const fi = i + 4;
-            const isF = fi === focus % shown.length;
-            return (
-              <button
-                key={t.name}
-                onClick={() => {
-                  setFocus(fi);
-                  st.current.lastFocus = Date.now();
-                }}
-                data-cursor="view"
-                aria-pressed={isF}
-                className="absolute -translate-x-1/2 -translate-y-1/2 border px-3 py-1.5 text-[11px] tracking-[0.1em] backdrop-blur-[2px] transition-all duration-500"
-                style={{
-                  ...place(i, 4, 47),
-                  borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.12)",
-                  background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.6)",
-                  opacity: isF ? 1 : 0.4,
-                  filter: isF ? "blur(0)" : "blur(1px)",
-                  scale: isF ? "1.18" : "0.94",
-                }}
-              >
-                {t.name}
-              </button>
-            );
-          })}
-        </div>
+        {shown.slice(4, 8).map((t, i) => {
+          const fi = i + 4;
+          const isF = fi === focus % shown.length;
+          return (
+            <button
+              key={t.name}
+              ref={(el) => {
+                btns.current[fi] = el;
+              }}
+              onClick={() => {
+                setFocus(fi);
+                st.current.lastFocus = Date.now();
+              }}
+              data-cursor="view"
+              aria-pressed={isF}
+              className="absolute -translate-x-1/2 -translate-y-1/2 border px-3 py-1.5 text-[11px] tracking-[0.1em] backdrop-blur-[2px] transition-[opacity,background,border-color,scale,filter] duration-500"
+              style={{
+                ...place(i, 4, 47),
+                borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.12)",
+                background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.6)",
+                opacity: isF ? 1 : 0.4,
+                filter: isF ? "blur(0)" : "blur(1px)",
+                scale: isF ? "1.18" : "0.94",
+              }}
+            >
+              {t.name}
+            </button>
+          );
+        })}
       </div>
-      {/* focus readout */}
-      <div className="mx-auto mt-2 min-h-[86px] max-w-md text-center" aria-live="polite">
+      {/* focus readout (visual only — full list below serves screen readers) */}
+      <div className="mx-auto mt-2 min-h-[86px] max-w-md text-center">
         {current && (
           <>
             <p className="text-[11px] tracking-[0.3em] text-[#8ea2ff] uppercase">
@@ -163,6 +181,14 @@ function TechnologyField({ items }: { items: TechItem[] }) {
           </>
         )}
       </div>
+      {/* screen-reader truth: complete field, no auto-advance spam */}
+      <ol className="sr-only">
+        {shown.map((t) => (
+          <li key={t.name}>
+            {t.name} ({t.category}): {t.usage}
+          </li>
+        ))}
+      </ol>
       <p className="mt-2 text-center text-[11px] tracking-[0.24em] text-white/60 uppercase">
         ↔ seret untuk memutar · klik untuk fokus
       </p>

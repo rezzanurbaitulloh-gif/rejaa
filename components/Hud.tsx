@@ -4,6 +4,19 @@ import { useEffect, useState } from "react";
 import { scrollStore } from "@/lib/camera/scrollStore";
 
 /** HUD: progress tulang punggung + penanda chapter + skip intro (a11y). */
+const SCENE_LABELS: Record<string, string> = {
+  opening: "PEMBUKA",
+  identity: "IDENTITAS",
+  thinking: "CARA BERPIKIR",
+  technology: "TEKNOLOGI",
+  ai: "AI SECOND MIND",
+  transition: "TRANSISI",
+  pkl: "PKL",
+  projects: "KARYA",
+  growth: "TUMBUH",
+  ending: "PENUTUP",
+};
+
 export default function Hud() {
   const [p, setP] = useState(0);
   const [scene, setScene] = useState("opening");
@@ -35,8 +48,8 @@ export default function Hud() {
         <a href="#opening" className="text-[12px] font-bold tracking-[0.34em] text-white" data-cursor="next">
           DALAM PROSES
         </a>
-        <p className="hidden text-[11px] tracking-[0.3em] text-white/70 uppercase sm:block" aria-live="polite">
-          {scene}
+        <p aria-hidden className="hidden text-[11px] tracking-[0.3em] text-white/70 uppercase sm:block">
+          {SCENE_LABELS[scene] ?? scene}
         </p>
         <p className="text-[11px] tracking-[0.3em] text-white/70 tabular-nums" aria-hidden>
           {String(Math.round(p * 100)).padStart(2, "0")} / 100

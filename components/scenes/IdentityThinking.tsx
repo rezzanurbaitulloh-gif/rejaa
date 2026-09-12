@@ -161,8 +161,8 @@ function ThinkingOrbit() {
         })}
       </ol>
 
-      {/* active node readout — focus changes microcopy + material */}
-      <div className="mt-5 hidden min-h-[96px] border-t border-white/10 pt-4 md:block" aria-live="polite">
+      {/* active node readout — visual focus; full journey below for screen readers */}
+      <div className="mt-5 hidden min-h-[96px] border-t border-white/10 pt-4 md:block">
         <p className="text-[11px] tracking-[0.3em] text-[#8ea2ff]">
           0{active + 1} / 07 — {node.label}
         </p>
@@ -171,6 +171,13 @@ function ThinkingOrbit() {
         </p>
         <p className="mt-2 text-[12px] tracking-[0.18em] text-white/60 uppercase">Material: {node.material}</p>
       </div>
+      <ol className="sr-only">
+        {THINKING_NODES.map((n, i) => (
+          <li key={n.id}>
+            0{i + 1} {n.label}: {n.micro} (Material: {n.material})
+          </li>
+        ))}
+      </ol>
       <p className="mt-4 hidden text-[12px] tracking-[0.2em] text-white/55 uppercase md:block">
         Segmen berikutnya baru tergambar saat perjalanan berlangsung
       </p>

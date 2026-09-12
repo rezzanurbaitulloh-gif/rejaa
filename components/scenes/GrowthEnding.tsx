@@ -49,7 +49,7 @@ export default function GrowthEnding({
           <div className="relative z-20 mx-auto w-[min(820px,94vw)]">
             <p className="eyebrow reveal">Kembali ke cosmic space — objek lama muncul lagi</p>
             {/* visual memory returns */}
-            <div className="reveal mt-8 flex items-center justify-center gap-5 opacity-60" aria-hidden>
+            <div className="reveal mt-8 flex flex-wrap items-center justify-center gap-5 opacity-60" aria-hidden>
               {projects.slice(0, 3).map((p, i) => (
                 <span
                   key={p.slug}
@@ -90,8 +90,8 @@ export default function GrowthEnding({
             </p>
             <div className="reveal mx-auto mt-10 h-24 w-px bg-gradient-to-b from-white/60 to-transparent" aria-hidden />
             <nav className="reveal mt-8 flex flex-wrap items-center justify-center gap-6 text-[12px] tracking-[0.24em] uppercase" aria-label="Kontak">
-              <a href="mailto:halo@dalamproses.id" className="border-b border-white/30 pb-1 text-white/75 hover:border-white hover:text-white" data-cursor="open">
-                Email ↗
+              <a href="https://github.com/rezzanurbaitulloh-gif" target="_blank" rel="noopener noreferrer" className="border-b border-white/30 pb-1 text-white/75 hover:border-white hover:text-white" data-cursor="open">
+                GitHub ↗
               </a>
               <a href="#opening" className="border-b border-white/30 pb-1 text-white/75 hover:border-white hover:text-white" data-cursor="next">
                 Putar ulang perjalanan ↑

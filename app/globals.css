@@ -183,7 +183,8 @@ body {
 #lens[data-mode="view"] #lens-ring,
 #lens[data-mode="open"] #lens-ring,
 #lens[data-mode="drag"] #lens-ring,
-#lens[data-mode="next"] #lens-ring { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+#lens[data-mode="next"] #lens-ring,
+#lens[data-mode="project"] #lens-ring { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 @media (pointer: coarse) { #lens { display: none; } }
 @media (pointer: fine) { body.lens-on, body.lens-on a, body.lens-on button { cursor: none; } }
 

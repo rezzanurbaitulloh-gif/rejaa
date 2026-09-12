@@ -50,18 +50,22 @@ export default function Projects({ projects }: { projects: Project[] }) {
             const isActive = p.slug === active;
             const size = isActive ? 128 : 64;
             return (
-              <button
+              <div
                 key={p.slug}
                 role="listitem"
-                onClick={() => setActive(p.slug)}
-                data-cursor="project"
-                aria-pressed={isActive}
-                className="group flex items-center gap-5 text-left transition-all duration-700 lg:block"
+                className="transition-all duration-700"
                 style={{
                   opacity: isActive ? 1 : 0.45,
                   filter: isActive ? "blur(0)" : "blur(2px)",
                   marginLeft: `${i * 28}px`,
                 }}
+              >
+              <button
+                onClick={() => setActive(p.slug)}
+                data-cursor="project"
+                aria-pressed={isActive}
+                aria-label={`Masuk ke dunia ${p.title}`}
+                className="group flex items-center gap-5 text-left lg:block"
               >
                 <span
                   aria-hidden
@@ -85,11 +89,12 @@ export default function Projects({ projects }: { projects: Project[] }) {
                 </span>
                 <span className="mt-0 block lg:mt-3">
                   <span className="block text-[11px] tracking-[0.28em] text-white/60 uppercase">{p.title}</span>
-                  <span className="mt-1 block max-w-[220px] text-[13px] leading-snug text-white/45 lg:hidden">
+                  <span className="mt-1 block max-w-[220px] text-[13px] leading-snug text-white/60 lg:hidden">
                     {p.summary}
                   </span>
                 </span>
               </button>
+              </div>
             );
           })}
         </div>

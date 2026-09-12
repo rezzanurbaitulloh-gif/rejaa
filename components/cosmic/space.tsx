@@ -36,6 +36,7 @@ export function StarLayer({
   tint?: string;
 }) {
   const ref = useRef<THREE.Points>(null);
+  const reduced = prefersReducedMotion();
   const positions = useStarPositions(count, 9, 30);
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -46,9 +47,11 @@ export function StarLayer({
   useFrame((state, delta) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
-    // extremely slow drift — layers must NOT move in sync
-    ref.current.rotation.y = t * drift;
-    ref.current.rotation.x = Math.sin(t * 0.02) * 0.02;
+    // extremely slow drift — layers must NOT move in sync (static if reduced motion)
+    if (!reduced) {
+      ref.current.rotation.y = t * drift;
+      ref.current.rotation.x = Math.sin(t * 0.02) * 0.02;
+    }
     // parallax from scroll velocity (subtle)
     ref.current.position.y = THREE.MathUtils.lerp(
       ref.current.position.y,
@@ -88,8 +91,10 @@ export function EarthPlanet({
     if (mesh.current) mesh.current.rotation.y += delta * (reduced ? 0.008 : 0.045);
     if (!group.current) return;
     const k = sampleCamera(scrollStore.camera);
+    const narrow = typeof window !== "undefined" && window.innerWidth < 820;
     const breathe = reduced ? 0 : Math.sin(t * 0.4) * 0.05;
-    const tx = k.planet.x;
+    // portrait screens: pull planet toward frame so its presence survives
+    const tx = k.planet.x * (narrow ? 0.55 : 1);
     const ty = k.planet.y + breathe * 0.4;
     group.current.position.x = THREE.MathUtils.lerp(group.current.position.x, tx, Math.min(1, delta * 1.6));
     group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, ty, Math.min(1, delta * 1.6));
