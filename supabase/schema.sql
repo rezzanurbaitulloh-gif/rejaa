@@ -1,72 +1,96 @@
 -- DALAM PROSES — Story Engine schema (Supabase / PostgreSQL)
--- Phase 11: hubungkan setelah visual engine stabil. Animasi hanya membaca
--- profil terkontrol (preset/intensity/duration/delay/depth/parallax/focus/camera_preset/path_id).
+-- Canonical + convergent: aman dijalankan ulang (idempotent).
+-- Konvensi mengikuti tabel yang sudah ada: chapters/sections (bukan scenes),
+-- visible (bukan visibility), kind/usage/in_field.
+-- Animation engine hanya membaca profil terkontrol
+-- (scene_type, animation.*, camera_profile.*); tidak ada JS bebas di DB.
 
-create table if not exists site_settings (
-  id bigint generated always as identity primary key,
-  title text not null default 'DALAM PROSES',
-  tagline text not null default 'Dari ide, menjadi sesuatu yang nyata.',
-  intro text,
-  theme text not null default 'void',
-  sound boolean not null default false,
-  performance text not null default 'auto',
-  pkl_experience_enabled boolean not null default true
-);
-
+-- ---------- chapters ----------
 create table if not exists chapters (
-  id bigint generated always as identity primary key,
-  title text not null,
+  id uuid primary key default gen_random_uuid(),
   slug text not null unique,
-  "order" int not null default 0,
-  visibility boolean not null default true,
-  type text not null default 'cosmic',
-  description text
+  title text not null,
+  kind text not null default 'cosmic',
+  description text,
+  visible boolean not null default true,
+  "order" integer not null default 0,
+  created_at timestamptz not null default now()
 );
 
-create table if not exists scenes (
-  id bigint generated always as identity primary key,
-  chapter_id bigint references chapters(id) on delete cascade,
-  "order" int not null default 0,
-  type text not null,
-  visibility boolean not null default true,
+-- ---------- sections (scene per chapter) ----------
+create table if not exists sections (
+  id uuid primary key default gen_random_uuid(),
+  chapter_id uuid references chapters(id) on delete cascade,
+  "order" integer not null default 0,
+  visible boolean not null default true,
   content jsonb not null default '{}',
+  scene_type text not null default 'editorial',
+  animation jsonb not null default '{}',
   camera_profile jsonb not null default '{}',
-  motion_profile jsonb not null default '{}'
+  created_at timestamptz not null default now()
 );
+alter table sections add column if not exists camera_profile jsonb not null default '{}';
 
+-- ---------- media ----------
 create table if not exists media (
-  id bigint generated always as identity primary key,
-  type text not null,
-  desktop_asset text, mobile_asset text, poster text,
-  alt text, caption text, credit text,
-  focal_x float default 0.5, focal_y float default 0.4,
-  opacity_profile jsonb not null default '{"distant":0.2,"approach":0.42,"focus":0.88,"leaving":0.22}'
+  id uuid primary key default gen_random_uuid(),
+  slot text,
+  kind text not null default 'image',
+  desktop_url text,
+  mobile_url text,
+  poster_url text,
+  alt text,
+  focal_point text not null default '50% 40%',
+  caption text,
+  credit text,
+  created_at timestamptz not null default now()
 );
 
+-- ---------- projects ----------
 create table if not exists projects (
-  id bigint generated always as identity primary key,
-  title text not null, slug text not null unique,
-  summary text, context text, problem text, think text,
-  design text, build text, result text, reflection text,
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique,
+  title text not null,
+  summary text,
+  context text,
+  problem text,
+  think text,
+  design text,
+  build text,
+  result text,
+  reflection text,
   technologies text[] not null default '{}',
-  media jsonb not null default '[]', links jsonb not null default '{}',
+  media jsonb not null default '[]',
+  links jsonb not null default '{}',
   featured boolean not null default false,
-  visibility boolean not null default true,
-  "order" int not null default 0
+  visible boolean not null default true,
+  "order" integer not null default 0,
+  created_at timestamptz not null default now()
 );
+alter table projects add column if not exists media jsonb not null default '[]';
 
+-- ---------- technologies ----------
 create table if not exists technologies (
-  id bigint generated always as identity primary key,
-  name text not null unique, category text,
-  logo text, actual_usage text, description text,
-  field_visibility boolean not null default true,
-  "order" int not null default 0
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  category text,
+  usage text,
+  actual_usage text,
+  description text,
+  logo text,
+  in_field boolean not null default true,
+  "order" integer not null default 0
 );
+alter table technologies add column if not exists actual_usage text;
+alter table technologies add column if not exists description text;
+alter table technologies add column if not exists logo text;
 
+-- ---------- pkl ----------
 create table if not exists pkl (
   id bigint generated always as identity primary key,
   enabled boolean not null default true,
-  company text, profile text,
+  company text,
+  profile text,
   people jsonb not null default '[]',
   supervisors jsonb not null default '[]',
   schedule jsonb not null default '[]',
@@ -77,26 +101,31 @@ create table if not exists pkl (
   growth jsonb not null default '{}'
 );
 
--- RLS: baca publik, tulis service-role saja
-alter table site_settings enable row level security;
+-- ---------- site settings (EAV) ----------
+create table if not exists site_settings (
+  id text primary key,
+  data jsonb not null default '{}',
+  updated_at timestamptz not null default now()
+);
+
+-- ---------- RLS: baca publik, tulis via auth (service_role bypasses RLS) ----------
 alter table chapters enable row level security;
-alter table scenes enable row level security;
+alter table sections enable row level security;
 alter table media enable row level security;
 alter table projects enable row level security;
 alter table technologies enable row level security;
 alter table pkl enable row level security;
+alter table site_settings enable row level security;
 
-drop policy if exists "public read" on site_settings;
-create policy "public read" on site_settings for select using (true);
-drop policy if exists "public read" on chapters;
-create policy "public read" on chapters for select using (true);
-drop policy if exists "public read" on scenes;
-create policy "public read" on scenes for select using (true);
-drop policy if exists "public read" on media;
-create policy "public read" on media for select using (true);
-drop policy if exists "public read" on projects;
-create policy "public read" on projects for select using (true);
-drop policy if exists "public read" on technologies;
-create policy "public read" on technologies for select using (true);
-drop policy if exists "public read" on pkl;
-create policy "public read" on pkl for select using (true);
+drop policy if exists "public read visible chapters" on chapters;
+create policy "public read visible chapters" on chapters for select using (visible = true);
+drop policy if exists "public read visible sections" on sections;
+create policy "public read visible sections" on sections for select using (visible = true);
+drop policy if exists "public read media" on media;
+create policy "public read media" on media for select using (true);
+drop policy if exists "public read visible projects" on projects;
+create policy "public read visible projects" on projects for select using (visible = true);
+drop policy if exists "public read tech" on technologies;
+create policy "public read tech" on technologies for select using (true);
+drop policy if exists "public read pkl" on pkl;
+create policy "public read pkl" on pkl for select using (true);
