@@ -15,7 +15,7 @@ export function AboutWorld() {
       <CameraWorld
         id="tentang"
         label="Tentang Saya"
-        durationVh={280}
+        durationVh={70}
         moves={[
           { pose: { scale: 1.35 }, focus: ["name"], dur: 1 },
           { pose: { scale: 1, yPercent: 4 }, focus: ["name", "claim"], dur: 1.2 },
@@ -53,7 +53,7 @@ export function AboutWorld() {
       <CameraWorld
         id="bukan-stack"
         label="Bukan tentang stack"
-        durationVh={160}
+        durationVh={40}
         moves={[
           { pose: { scale: 1 }, focus: ["quote"], dur: 1 },
           { pose: { scale: 1.25 }, focus: ["quote", "note"], dur: 1 },

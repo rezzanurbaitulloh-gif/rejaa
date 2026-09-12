@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * SCROLL = CAMERA — tanpa Lenis. ScrollTrigger scrub (scrub:1 di setiap
@@ -24,7 +28,19 @@ export function SmoothScroll() {
       target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     };
     document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    // Font/aset menggeser layout setelah pin diukur → ukur ulang agar
+    // posisi pin akurat di semua mesin (mencegah kamera macet/offset).
+    const refresh = () => ScrollTrigger.refresh();
+    try {
+      document.fonts?.ready.then(refresh).catch(() => {});
+    } catch {
+      /* noop */
+    }
+    window.addEventListener("load", refresh);
+    return () => {
+      document.removeEventListener("click", onClick);
+      window.removeEventListener("load", refresh);
+    };
   }, []);
   return null;
 }

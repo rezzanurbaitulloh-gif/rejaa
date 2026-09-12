@@ -67,7 +67,7 @@ export function Opening() {
         </div>
       )}
 
-      <CameraWorld id="opening" label="Opening" durationVh={450} moves={MOVES}>
+      <CameraWorld id="opening" label="Opening" durationVh={150} moves={MOVES}>
         {/* DOT — satu titik di kehampaan */}
         <div data-f="dot" data-depth={0.9} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
           <div className="mx-auto h-3 w-3 rounded-full bg-cream" aria-hidden />

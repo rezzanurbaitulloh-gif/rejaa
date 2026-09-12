@@ -72,7 +72,7 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
     return () => {};
   }
 
-  gsap.set(stage, { transformOrigin: "50% 50%", willChange: "transform" });
+  gsap.set(stage, { transformOrigin: "50% 50%" });
   // State awal: kamera di pose "sebelum move pertama" = identitas; fokus move[0].
   applyFocus(opts.moves[0]?.focus);
 

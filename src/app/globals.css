@@ -224,6 +224,14 @@ body {
   transform: translate(-50%, -50%);
   background: var(--color-void);
   border: 1px solid rgba(245, 241, 234, 0.4);
+  pointer-events: auto;
+  padding: 0;
+}
+/* Area sentuh lebih besar dari titik visual */
+#process-rail .rail-node::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
 }
 #process-rail .rail-node.lit {
   background: var(--color-accent);
@@ -278,7 +286,14 @@ body {
   scrollbar-width: none;
 }
 
-/* ---------- reduced motion: editorial statis, konten utuh tersusun vertikal ---------- */
+/* ---------- device tier: hemat GPU di perangkat lemah ---------- */
+html[data-tier="low"] .grain::after {
+  display: none;
+}
+html[data-tier="low"] .tech-chip,
+html[data-tier="low"] #lens .lens-ring {
+  backdrop-filter: none;
+}
 [data-static="1"] [data-camera] {
   display: flex;
   flex-direction: column;

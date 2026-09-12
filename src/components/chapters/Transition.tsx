@@ -30,7 +30,7 @@ export function TransitionWorld() {
     <CameraWorld
       id="transisi"
       label="Transisi ke Dunia Nyata"
-      durationVh={260}
+      durationVh={60}
       moves={[
         { pose: { scale: 1 }, focus: ["field"], dur: 1 },
         { pose: { scale: 1.8 }, focus: ["point"], dur: 1.3 },

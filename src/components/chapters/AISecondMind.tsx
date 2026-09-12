@@ -12,7 +12,7 @@ export function AIWorld() {
     <CameraWorld
       id="ai"
       label="AI sebagai Partner"
-      durationVh={340}
+      durationVh={100}
       moves={[
         { pose: { scale: 1.2, yPercent: 8 }, focus: ["idea"], dur: 1 },
         { pose: { scale: 1.25, yPercent: 3, xPercent: 8 }, focus: ["human"], dur: 1 },

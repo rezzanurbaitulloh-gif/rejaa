@@ -12,14 +12,14 @@ gsap.registerPlugin(ScrollTrigger);
  * cabang PKL (0.46–0.60), arc karya (0.62–0.78). Node menyala saat terlewati.
  */
 const NODES = [
-  { at: 0.03, label: "Titik awal" },
-  { at: 0.18, label: "Identitas" },
-  { at: 0.3, label: "Proses" },
-  { at: 0.4, label: "Second mind" },
-  { at: 0.54, label: "Dunia nyata" },
-  { at: 0.68, label: "Karya" },
-  { at: 0.84, label: "Tumbuh" },
-  { at: 0.96, label: "Titik kembali" },
+  { at: 0.03, label: "Titik awal", target: "opening" },
+  { at: 0.18, label: "Identitas", target: "tentang" },
+  { at: 0.3, label: "Proses", target: "berpikir" },
+  { at: 0.4, label: "Second mind", target: "ai" },
+  { at: 0.54, label: "Dunia nyata", target: "pkl-intro" },
+  { at: 0.68, label: "Karya", target: "karya" },
+  { at: 0.84, label: "Tumbuh", target: "tumbuh" },
+  { at: 0.96, label: "Titik kembali", target: "ending" },
 ];
 
 export function ProcessRail() {
@@ -89,7 +89,17 @@ export function ProcessRail() {
           fill="none" stroke="#2b5cff" strokeWidth="1.5" opacity="0.8" />
       </svg>
       {NODES.map((n) => (
-        <span key={n.label} data-node data-at={n.at} title={n.label} className="rail-node" style={{ top: `${n.at * 100}%` }} />
+        <button
+          key={n.label}
+          type="button"
+          data-node
+          data-at={n.at}
+          title={n.label}
+          aria-label={`Lompat ke ${n.label}`}
+          className="rail-node"
+          style={{ top: `${n.at * 100}%` }}
+          onClick={() => document.getElementById(n.target)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+        />
       ))}
       <style>{`.rail-node.lit{background:var(--color-accent);border-color:var(--color-accent);box-shadow:0 0 16px 2px rgba(43,92,255,.6)}`}</style>
     </div>

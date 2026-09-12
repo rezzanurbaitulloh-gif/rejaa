@@ -16,7 +16,7 @@ export function ClosingChapter() {
 
   return (
     <>
-      <CameraWorld id="pelajaran" label="Lessons Learned" durationVh={200}
+      <CameraWorld id="pelajaran" label="Lessons Learned" durationVh={45}
         moves={[
           { pose: { scale: 1 }, focus: ["l0"], dur: 1 },
           { pose: { scale: 1.2 }, focus: ["l1"], dur: 1 },
@@ -34,7 +34,7 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      <CameraWorld id="tumbuh" label="Growth" durationVh={260}
+      <CameraWorld id="tumbuh" label="Growth" durationVh={60}
         moves={[
           { pose: { scale: 1.1, yPercent: 6 }, focus: ["b"], dur: 1 },
           { pose: { scale: 1.1, yPercent: -2 }, focus: ["d"], dur: 1 },
@@ -53,7 +53,7 @@ export function ClosingChapter() {
         ))}
       </CameraWorld>
 
-      <CameraWorld id="kembali" label="Kembali ke Dalam Proses" durationVh={160}
+      <CameraWorld id="kembali" label="Kembali ke Dalam Proses" durationVh={30}
         moves={[{ pose: { scale: 1.15 }, focus: ["k"], dur: 1 }]}>
         <div data-f="k" className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
           <p className="chapter-label">20 / KEMBALI KE ‘DALAM PROSES’</p>
@@ -64,7 +64,7 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      <CameraWorld id="masa-depan" label="Masa Depan" durationVh={180}
+      <CameraWorld id="masa-depan" label="Masa Depan" durationVh={45}
         moves={[
           { pose: { scale: 1 }, focus: ["m"], dur: 1 },
           { pose: { scale: 1.4 }, focus: ["m"], dur: 1 },
@@ -76,7 +76,7 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      <CameraWorld id="ending" label="Ending" durationVh={300}
+      <CameraWorld id="ending" label="Ending" durationVh={60}
         moves={[
           { pose: { scale: 1.5 }, focus: ["mem"], dur: 1 },
           { pose: { scale: 1.1 }, focus: ["rezza"], dur: 1.2 },

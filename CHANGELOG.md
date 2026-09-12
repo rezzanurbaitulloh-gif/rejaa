@@ -32,3 +32,8 @@
 - Fix: Lenis di-uninstall; `SmoothScroll` menjadi anchor-handler + scroll-behavior smooth (hormat reduced-motion); kamera tetap buttery via ScrollTrigger scrub. [data-world] scroll-margin-top 72px.
 - Temuan samping: satu build inkremental korup (chunk 500) — clean rebuild (`rm -rf .next`) memperbaikinya.
 - Verifikasi lokal: wheel/End/Home/scrollTo/PageDown/anchor semua tepat + 0 error.
+
+## 2026-09-12 — Perjalanan dipadatkan + navigasi chapter
+
+- Keluhan nyata: 22 pin × ratusan vh = 5,2 juta px — wheel terasa tidak maju-maju. Durasi pin dipangkas ke ~1400vh total (per-move tetap ≥15vh agar gerakan kamera terbaca).
+- Node process rail menjadi tombol: klik melompat ke chapter (opening/identitas/proses/AI/PKL/karya/tumbuh/ending) + area sentuh diperbesar.
