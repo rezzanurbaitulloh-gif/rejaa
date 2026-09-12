@@ -3,28 +3,37 @@
 import { useRef } from "react";
 import { CameraWorld } from "@/components/camera/CameraWorld";
 import type { Move } from "@/components/camera/cameraRig";
+import { PhotoPanel } from "@/components/media/PhotoPanel";
 
 /**
- * THINKING — spatial path, bukan kartu statis. Kamera berjalan menyusuri
- * PROBLEM → IDEA → RESEARCH → DESIGN → BUILD → TEST → ITERATE;
- * setiap node fokus saat kamera tiba. Path digambar oleh progress kamera.
+ * FRAME 5 — CARA SAYA BERPIKIR: diagram IDE (oval) + 4 node
+ * (MASALAH/KEBUTUHAN/KEMUNGKINAN/SOLUSI). Kamera menyusuri simpul.
+ * FRAME 6 — CARA SAYA BEKERJA: pipeline + 7 kartu foto.
  */
 const NODES = [
-  { id: "n1", t: "Problem", d: "Apa yang rusak / hilang?", x: "18%", y: "6%" },
-  { id: "n2", t: "Idea", d: "Jalur apa yang mungkin?", x: "62%", y: "16%" },
-  { id: "n3", t: "Research", d: "Apa yang sudah diketahui?", x: "24%", y: "30%" },
-  { id: "n4", t: "Design", d: "Bagaimana bentuknya?", x: "60%", y: "44%" },
-  { id: "n5", t: "Build", d: "Wujudkan yang terkecil.", x: "26%", y: "58%" },
-  { id: "n6", t: "Test", d: "Uji ke dunia nyata.", x: "58%", y: "72%" },
-  { id: "n7", t: "Iterate", d: "Ulangi lebih tajam.", x: "30%", y: "86%" },
+  { id: "n1", t: "Masalah", d: "Apa yang rusak / hilang?", x: "8%", y: "52%" },
+  { id: "n2", t: "Kebutuhan", d: "Siapa yang butuh?", x: "30%", y: "62%" },
+  { id: "n3", t: "Kemungkinan", d: "Jalur apa yang mungkin?", x: "54%", y: "62%" },
+  { id: "n4", t: "Solusi", d: "Langkah terkecil yang diuji.", x: "76%", y: "52%" },
 ];
 
 const MOVES: Move[] = [
-  { pose: { scale: 1.07, yPercent: 5.6 }, focus: ["n1", "n2"], dur: 1 },
-  { pose: { scale: 1.14, yPercent: 1.4 }, focus: ["n3", "n4"], dur: 1 },
-  { pose: { scale: 1.14, yPercent: -2.8 }, focus: ["n5", "n6"], dur: 1 },
-  { pose: { scale: 1.0, yPercent: -2.8 }, focus: ["n7", "lede"], dur: 1 },
+  { pose: { scale: 1.1, yPercent: 6 }, focus: ["ide", "n1"], dur: 1 },
+  { pose: { scale: 1.2, yPercent: 0 }, focus: ["n2", "n3"], dur: 1 },
+  { pose: { scale: 1.2, yPercent: -6 }, focus: ["n4", "q"], dur: 1 },
+  { pose: { scale: 1, yPercent: -2 }, focus: ["lede", "q"], dur: 1 },
 ];
+
+const STEPS = ["Ide", "Research", "Think", "Design", "Build", "Test", "Iterate"];
+const CARDS = [
+  { t: "Ide", d: "Menangkap masalah.", k: "blueprint" },
+  { t: "Research", d: "Memahami konteks.", k: "desk" },
+  { t: "Think", d: "Menyusun alur.", k: "blueprint" },
+  { t: "Design", d: "Membentuk rupa.", k: "desk" },
+  { t: "Build", d: "Membangun nyata.", k: "server" },
+  { t: "Test", d: "Menguji langsung.", k: "meeting" },
+  { t: "Iterate", d: "Mempertajam.", k: "office" },
+] as const;
 
 export function ThinkingWorld() {
   const path = useRef<SVGPathElement>(null);
@@ -38,34 +47,65 @@ export function ThinkingWorld() {
   };
 
   return (
-    <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={300} moves={MOVES} onProgress={draw}>
-      <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[2%] max-w-xl md:left-[10%]">
-        <p className="chapter-label">04 / CARA SAYA BERPIKIR</p>
-        <p className="body-lead mt-2">Mulai dari masalah. Ikuti jalurnya.</p>
-      </div>
-      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-        <path ref={path} d="M22 8 C 55 14, 60 22, 30 32 C 45 42, 58 46, 62 50 C 40 58, 30 62, 30 66 C 48 72, 55 76, 56 80 C 45 86, 36 88, 32 92"
-          fill="none" stroke="#2b5cff" strokeWidth="0.28" opacity="0.55" />
-      </svg>
-      {NODES.map((n, i) => (
-        <div key={n.id} data-f={n.id} data-depth={0.7}
-          className="absolute w-40 md:w-56" style={{ left: n.x, top: n.y }}>
-          <div className="flex items-center gap-2">
-            <span className="accent-dot" aria-hidden />
-            <p className="font-mono text-[10px] tracking-[0.2em] text-faint">0{i + 1}</p>
-          </div>
-          <p className="font-display mt-1 text-xl font-extrabold uppercase md:text-2xl">{n.t}</p>
-          <p className="text-xs text-muted md:text-sm">{n.d}</p>
+    <>
+      <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={150} moves={MOVES} onProgress={draw}>
+        <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[4%] max-w-xl md:left-[10%]">
+          <p className="eyebrow">02 / CARA SAYA BERPIKIR</p>
         </div>
-      ))}
 
-      {/* CARA BEKERJA — siklus sebagai orbit kecil, bukan strip kartu */}
-      <div data-f="lede" data-depth={0.65} className="absolute bottom-[1%] left-[8%] right-[8%] md:left-[10%]">
-        <p className="chapter-label">05 / CARA SAYA BEKERJA</p>
-        <p className="font-display mt-2 text-lg font-bold uppercase tracking-tight md:text-2xl" aria-label="Siklus kerja: ide, riset, desain, bangun, uji, iterasi">
-          Ide → Riset → Desain → Bangun → Uji → <span className="text-accent">Iterasi ↻</span>
+        {/* Oval IDE */}
+        <div data-f="ide" data-depth={0.6} className="absolute left-1/2 top-[16%] -translate-x-1/2 text-center">
+          <div className="rounded-[50%] border border-white/25 bg-white/[0.03] px-12 py-5 backdrop-blur-sm md:px-16 md:py-6">
+            <p className="font-display text-2xl font-extrabold uppercase tracking-wide md:text-4xl">IDE</p>
+          </div>
+        </div>
+
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+          <path ref={path} d="M50 24 C 40 34, 30 44, 22 56 M50 24 C 60 34, 70 44, 78 56 M22 62 V70 M42 66 V72 M62 66 V72 M80 62 V70"
+            fill="none" stroke="#2b5cff" strokeWidth="0.35" opacity="0.7" />
+        </svg>
+
+        {NODES.map((n) => (
+          <div key={n.id} data-f={n.id} data-depth={0.7}
+            className="absolute w-32 text-center md:w-44" style={{ left: n.x, top: n.y }}>
+            <span className="mx-auto block w-fit rounded-full border border-white/20 bg-ink/80 px-4 py-1.5 font-display text-xs font-bold uppercase md:text-sm">
+              {n.t}
+            </span>
+            <p className="mt-1 text-[11px] text-muted md:text-xs">{n.d}</p>
+          </div>
+        ))}
+
+        <p data-f="q" data-depth={0.65} className="body-muted absolute bottom-[4%] left-[8%] right-[8%] mx-auto max-w-2xl text-center text-xs md:text-sm">
+          Saya selalu memulai dengan pertanyaan sederhana: apa yang sebenarnya ingin diselesaikan?
         </p>
-      </div>
-    </CameraWorld>
+      </CameraWorld>
+
+      <CameraWorld id="bekerja" label="Cara Saya Bekerja" durationVh={130}
+        moves={[
+          { pose: { scale: 1, xPercent: 0 }, focus: ["pipe", "c0"], dur: 1 },
+          { pose: { scale: 1.1, xPercent: -12 }, focus: ["c1"], dur: 1.2 },
+        ]}>
+        <div data-f="pipe" className="absolute left-[8%] top-[8%] right-[8%] md:left-[10%]">
+          <p className="eyebrow">03 / CARA SAYA BEKERJA</p>
+          <div className="mt-3 flex flex-wrap items-center gap-1.5" aria-label="Alur kerja">
+            {STEPS.map((s, i) => (
+              <span key={s} className="flex items-center gap-1.5">
+                <span className="chip !text-cream !border-accent/60">{s}</span>
+                {i < STEPS.length - 1 && <span className="text-accent" aria-hidden>→</span>}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="absolute top-[34%] flex w-[200%] gap-4 pl-[8%] md:w-[150%] md:pl-[10%]">
+          {CARDS.map((c, i) => (
+            <article key={c.t} data-f={i < 3 ? "c0" : "c1"} className="w-60 shrink-0 md:w-72">
+              <PhotoPanel kind={c.k} label={`${c.t} — ${c.d}`} ratio="4/3" />
+              <p className="chapter-label mt-2">0{i + 1} / {c.t.toUpperCase()}</p>
+              <p className="text-xs text-muted">{c.d}</p>
+            </article>
+          ))}
+        </div>
+      </CameraWorld>
+    </>
   );
 }

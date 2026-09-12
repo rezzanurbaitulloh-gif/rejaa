@@ -58,7 +58,7 @@ export function WorkChapter() {
   return (
     <CameraWorld id="karya" label="Work Constellation" durationVh={100 + list.length * 70} moves={moves}>
       <div data-f="cap" data-depth={0.3} className="absolute left-[8%] top-[5%] max-w-xl md:left-[10%]">
-        <p className="eyebrow">05 / PROJECTS — 01 / {String(Math.max(1, list.length)).padStart(2, "0")}</p>
+        <p className="eyebrow">19 / PORTFOLIO — ORBIT PROJECT</p>
         <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Karya saya.</h2>
       </div>
 

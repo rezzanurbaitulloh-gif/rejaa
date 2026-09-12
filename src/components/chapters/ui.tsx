@@ -1,3 +1,4 @@
+import { AlarmClock, ClipboardCheck, Scale, HardHat, MessagesSquare, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function ChapterHeading({
@@ -66,15 +67,29 @@ export function CinematicFrame({
   );
 }
 
+const RULE_ICONS: { match: RegExp; icon: LucideIcon }[] = [
+  { match: /disiplin/i, icon: AlarmClock },
+  { match: /tanggung/i, icon: ClipboardCheck },
+  { match: /etika/i, icon: Scale },
+  { match: /selamat|keselamatan/i, icon: HardHat },
+  { match: /komunikasi/i, icon: MessagesSquare },
+];
+
 export function RuleList({ items }: { items: { title: string; body: string }[] }) {
   return (
-    <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((r) => (
-        <li key={r.title} className="panel p-5" data-reveal>
-          <p className="font-display text-base font-bold">{r.title}</p>
-          <p className="body-muted mt-2 text-sm">{r.body}</p>
-        </li>
-      ))}
+    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      {items.map((r) => {
+        const Icon = RULE_ICONS.find((x) => x.match.test(r.title))?.icon ?? ClipboardCheck;
+        return (
+          <li key={r.title} className="glass p-5 text-center" data-reveal-none>
+            <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5" aria-hidden>
+              <Icon className="h-5 w-5 text-cream" />
+            </span>
+            <p className="mt-3 text-xs font-semibold tracking-wide">{r.title}</p>
+            <p className="body-muted mt-1 hidden text-[11px] md:block">{r.body}</p>
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -9,7 +9,7 @@ import type { PklProfile, Project, SiteSettings, Technology } from "./types";
 
 export const siteSettingsFallback: SiteSettings = {
   title: "DALAM PROSES",
-  tagline: "Dari ide, menjadi sesuatu yang nyata.",
+  tagline: "Sebuah perjalanan tentang belajar, mencoba, membangun, dan bertumbuh.",
   intro_skip_enabled: true,
   sound_default_on: false,
   pkl_experience_enabled: true,

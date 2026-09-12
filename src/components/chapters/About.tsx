@@ -2,6 +2,7 @@
 
 import { CameraWorld } from "@/components/camera/CameraWorld";
 import { PhotoBackdrop } from "@/components/media/PhotoBackdrop";
+import { PhotoPanel } from "@/components/media/PhotoPanel";
 import { useContent } from "@/components/story/StoryProvider";
 
 /**
@@ -32,17 +33,18 @@ export function AboutWorld() {
         </div>
         {/* MIDGROUND — identitas ala ref1 #02 */}
         <div data-f="name" data-depth={0.55} className="absolute right-[8%] top-[22%] text-right md:right-[12%]">
-          <p className="eyebrow">02 / IDENTITY REVEAL</p>
+          <p className="eyebrow">01 / TENTANG SAYA</p>
           <h2 className="font-display mt-3 text-5xl font-extrabold uppercase leading-[0.95] md:text-8xl">
-            I&rsquo;M<br />REZZA.
+            Saya<br />Rezza.
           </h2>
         </div>
-        <div data-f="claim" data-depth={0.6} className="absolute bottom-[26%] left-[8%] max-w-xl md:left-[12%]">
-          <p className="body-lead">
-            Saya tertarik pada bagaimana sebuah ide dapat berubah menjadi sesuatu
-            yang benar-benar bisa digunakan.
-          </p>
-          <p className="body-muted mt-3 text-sm">{site.tagline} Ini bukan CV digital — ini satu perjalanan.</p>
+        <div data-f="claim" data-depth={0.6} className="absolute bottom-[24%] left-[8%] grid max-w-3xl gap-5 md:left-[12%] md:grid-cols-2 md:items-center">
+          <PhotoPanel kind="silhouette" label="Sosok menatap kota senja" ratio="4/3" caption="Menatap proses yang sedang berjalan." />
+          <div>
+            <p className="eyebrow">01 / TENTANG SAYA</p>
+            <p className="body-lead mt-2">Saya Rezza. Saya tertarik pada bagaimana sebuah ide dapat berubah menjadi sesuatu yang benar-benar bisa digunakan.</p>
+            <p className="body-muted mt-3 text-sm">{site.tagline} Ini bukan CV digital — ini satu perjalanan.</p>
+          </div>
         </div>
         {/* FOREGROUND — fragmen pendukung */}
         <div data-f="frag" data-depth={0.9} className="absolute bottom-[10%] right-[8%] flex flex-wrap justify-end gap-2 md:right-[12%]">

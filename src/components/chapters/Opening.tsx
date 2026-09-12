@@ -49,7 +49,7 @@ export function Opening() {
     <>
       {!introDone && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-void" role="status" aria-label="Memuat cerita">
-          <p className="monogram text-2xl">RZ</p>
+          <p className="font-display text-xl font-extrabold uppercase tracking-[0.35em]">DALAM PROSES</p>
           <p className="eyebrow mt-6">MEMUAT CERITA… {String(shown).padStart(2, "0")}–100</p>
           <div className="mt-6 h-px w-52 bg-white/10" aria-hidden>
             <div className="h-px bg-accent transition-all" style={{ width: `${shown}%` }} />
@@ -97,7 +97,8 @@ export function Opening() {
         <div data-f="hero" data-depth={0.3} className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
           <p className="monogram text-lg text-cream/80">RZ</p>
           <p className="display-xl mt-4">DALAM<br />PROSES</p>
-          <p className="body-lead mt-6 max-w-xl">Dari ide, menjadi sesuatu yang nyata.</p>
+          <p className="body-lead mt-6 max-w-xl">Sebuah perjalanan tentang belajar, mencoba, membangun, dan bertumbuh.</p>
+          <p className="eyebrow mt-8">SCROLL UNTUK MEMULAI ↓</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a href="#tentang" className="rounded-full bg-cream px-6 py-3 text-xs font-semibold tracking-[0.2em] text-black">
               MULAI PERJALANAN ↓
