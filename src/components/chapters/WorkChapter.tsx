@@ -58,8 +58,8 @@ export function WorkChapter() {
   return (
     <CameraWorld id="karya" label="Work Constellation" durationVh={25 + list.length * 15} moves={moves}>
       <div data-f="cap" data-depth={0.3} className="absolute left-[8%] top-[5%] max-w-xl md:left-[10%]">
-        <p className="chapter-label">17 / KARYA SAYA</p>
-        <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Work constellation.</h2>
+        <p className="eyebrow">05 / PROJECTS — 01 / {String(Math.max(1, list.length)).padStart(2, "0")}</p>
+        <h2 className="font-display mt-2 text-3xl font-extrabold uppercase md:text-5xl">Karya saya.</h2>
       </div>
 
       <div ref={drift} data-x="0" className="absolute inset-0 touch-pan-y"
@@ -71,13 +71,29 @@ export function WorkChapter() {
             <button key={p.slug} type="button" data-f={`p-${p.slug}`} data-depth={z}
               onClick={() => router.push(`/work/${p.slug}`)}
               onMouseEnter={() => setLens("project")} onMouseLeave={() => setLens("drag")}
-              className="absolute w-60 p-5 text-left panel md:w-72"
+              className="absolute w-64 text-left md:w-80"
               style={{ left: `${x}%`, top: `${y}%` }}
               aria-label={`Masuk ke project ${p.title}`}>
-              <p className="chapter-label">PROJECT 0{i + 1}</p>
-              <p className="font-display mt-1 text-xl font-extrabold uppercase md:text-2xl">{p.title}</p>
-              <p className="mt-1 line-clamp-2 text-xs text-muted">{p.summary}</p>
-              <p className="chapter-label mt-2">{p.technologies.slice(0, 3).join(" · ")}</p>
+              <span className="eyebrow">PROJECT 0{i + 1}</span>
+              <span className="device-laptop mt-2 block">
+                <span className="screen block p-3">
+                  <span className="flex gap-1.5" aria-hidden>
+                    <i className="h-2 w-2 rounded-full bg-white/25" />
+                    <i className="h-2 w-2 rounded-full bg-white/25" />
+                    <i className="h-2 w-2 rounded-full bg-accent/80" />
+                  </span>
+                  <span className="font-display mt-3 block text-sm font-extrabold uppercase tracking-tight">{p.title}</span>
+                  <span className="mt-2 block h-14 rounded-md" aria-hidden
+                    style={{ background: "linear-gradient(120deg, rgba(43,92,255,0.5), rgba(245,241,234,0.12))" }} />
+                  <span className="mt-2 block space-y-1.5" aria-hidden>
+                    <i className="block h-1 rounded bg-white/25" />
+                    <i className="block h-1 w-2/3 rounded bg-white/15" />
+                  </span>
+                </span>
+              </span>
+              <span className="device-base block" aria-hidden />
+              <span className="mt-2 line-clamp-2 block text-xs text-muted">{p.summary}</span>
+              <span className="eyebrow mt-2 block">{p.technologies.slice(0, 3).join(" · ")}</span>
             </button>
           );
         })}

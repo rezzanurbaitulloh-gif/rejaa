@@ -42,3 +42,10 @@
 
 - Total 1,3M px → 695k px (durasi pin dipotong ~50%, min 25vh); scrub 1 → 0,6 agar kamera mengikuti input lebih rapat.
 - Verifikasi: wheel/End/Home/scrollTo/PageDown/anchor tepat + 0 error + settled-frame sinematik.
+
+## 2026-09-12 — Redesign total ala storyboard ref1+ref2
+
+- Bahasa visual baru: PhotoBackdrop prosedural (space/dusk-city/workspace/mountains) + vignette, monogram RZ, eyebrow renggang, glass cards + letter-mark tech, device-laptop mockups di constellation, contact card + thank-you note.
+- Navigasi: StoryTimeline bawah (counter 01/09, progress fill, dot klik lompat chapter) menggantikan rail kiri; counter memakai peta world→chapter agar akurat di semua sub-dunia.
+- Cursor ala ref1: VIEW / EXPLORE / → / OPEN↗ + click pulse.
+- Fix: backdrop sempat tak terlihat karena wrapper data-depth bertransformasi menjadi containing block 0x0 — backdrop kini direct child stage.

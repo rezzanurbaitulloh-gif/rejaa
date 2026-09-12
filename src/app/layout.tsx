@@ -3,7 +3,7 @@ import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/camera/SmoothScroll";
 import { LensCursor } from "@/components/cursor/LensCursor";
-import { ProcessRail } from "@/components/process-line/ProcessRail";
+import { StoryTimeline } from "@/components/chrome/StoryTimeline";
 import { SiteHeader } from "@/components/chrome/SiteHeader";
 import { SoundToggle } from "@/components/chrome/SoundToggle";
 import { StoryProvider } from "@/components/story/StoryProvider";
@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StoryProvider>
           <SmoothScroll />
           <LensCursor />
-          <ProcessRail />
+          <StoryTimeline />
           <SiteHeader />
           <main id="isi">{children}</main>
           <SoundToggle />

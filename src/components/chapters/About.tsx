@@ -1,6 +1,7 @@
 "use client";
 
 import { CameraWorld } from "@/components/camera/CameraWorld";
+import { PhotoBackdrop } from "@/components/media/PhotoBackdrop";
 import { useContent } from "@/components/story/StoryProvider";
 
 /**
@@ -22,17 +23,18 @@ export function AboutWorld() {
           { pose: { scale: 1.5, yPercent: -6 }, focus: ["frag"], dur: 1.2 },
         ]}
       >
-        {/* BACKGROUND — nama sebagai environment */}
+        {/* BACKGROUND — senja kota sebagai environment */}
+        <PhotoBackdrop kind="dusk-city" opacity={0.85} />
         <div data-depth={0.15} className="absolute inset-0 flex items-center justify-center" aria-hidden>
           <p className="font-display text-[26vw] font-black uppercase leading-none text-white/[0.05] md:text-[20vw]">
             REZZA
           </p>
         </div>
-        {/* MIDGROUND — identitas */}
-        <div data-f="name" data-depth={0.55} className="absolute left-[8%] top-[24%] md:left-[12%]">
-          <p className="chapter-label">02 / TENTANG SAYA</p>
+        {/* MIDGROUND — identitas ala ref1 #02 */}
+        <div data-f="name" data-depth={0.55} className="absolute right-[8%] top-[22%] text-right md:right-[12%]">
+          <p className="eyebrow">02 / IDENTITY REVEAL</p>
           <h2 className="font-display mt-3 text-5xl font-extrabold uppercase leading-[0.95] md:text-8xl">
-            Saya<br />Rezza.
+            I&rsquo;M<br />REZZA.
           </h2>
         </div>
         <div data-f="claim" data-depth={0.6} className="absolute bottom-[26%] left-[8%] max-w-xl md:left-[12%]">

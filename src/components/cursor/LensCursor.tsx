@@ -5,9 +5,9 @@ import { useStory } from "@/lib/store";
 
 const LABEL: Record<string, string> = {
   default: "",
-  view: "VIEW ↗",
-  project: "VIEW PROJECT",
-  drag: "↔ DRAG",
+  view: "VIEW",
+  project: "EXPLORE",
+  drag: "→",
   link: "OPEN ↗",
   external: "OPEN ↗",
 };

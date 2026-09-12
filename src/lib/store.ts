@@ -18,9 +18,9 @@ interface StoryState {
 
 const LENS_LABEL: Record<LensState, string> = {
   default: "",
-  view: "VIEW ↗",
-  project: "VIEW PROJECT",
-  drag: "↔ DRAG",
+  view: "VIEW",
+  project: "EXPLORE",
+  drag: "→",
   link: "OPEN ↗",
   external: "OPEN ↗",
 };

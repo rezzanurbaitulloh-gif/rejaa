@@ -1,6 +1,7 @@
 "use client";
 
 import { CameraWorld } from "@/components/camera/CameraWorld";
+import { PhotoBackdrop } from "@/components/media/PhotoBackdrop";
 import { useContent } from "@/components/story/StoryProvider";
 import { normalizePkl } from "@/data/content";
 
@@ -69,10 +70,11 @@ export function ClosingChapter() {
           { pose: { scale: 1 }, focus: ["m"], dur: 1 },
           { pose: { scale: 1.4 }, focus: ["m"], dur: 1 },
         ]}>
+        <PhotoBackdrop kind="mountains" opacity={0.9} />
         <div data-f="m" className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <p className="chapter-label">21 / MASA DEPAN</p>
+          <p className="eyebrow">08 / FINAL STATEMENT</p>
           <p className="body-lead mt-4">Saya masih ingin belajar, membangun, mencoba.</p>
-          <h2 className="display-xl mt-4">Masih dalam proses.</h2>
+          <h2 className="display-xl mt-4">Better digital<br />experiences.</h2>
         </div>
       </CameraWorld>
 
@@ -104,19 +106,38 @@ export function ClosingChapter() {
         </div>
       </CameraWorld>
 
-      {/* KONTAK — aliran normal, tanpa pin: cerita sudah kembali ke titik */}
-      <section id="kontak" aria-label="Contact" className="relative px-5 pb-24 pt-24 text-center md:px-8">
-        <p className="chapter-label">23 / KONTAK</p>
-        <h2 className="font-display mt-4 text-3xl font-extrabold uppercase md:text-5xl">Mari membangun sesuatu.</h2>
-        <a href={`mailto:${site.contact_email}`} className="mt-6 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white">
-          {site.contact_email}
-        </a>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {site.socials.map((s) => (
-            <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="chip hover:text-cream">{s.label} ↗</a>
-          ))}
+      {/* KONTAK (ref1 #09 + ref2 #25) — kartu Get in Touch + monogram */}
+      <section id="kontak" aria-label="Contact" className="relative overflow-hidden px-5 pb-28 pt-24 md:px-8">
+        <PhotoBackdrop kind="mountains" opacity={0.35} />
+        <div className="relative mx-auto grid max-w-5xl gap-10 md:grid-cols-2 md:text-left text-center items-center">
+          <div>
+            <p className="eyebrow">09 / CONTACT — ENDING</p>
+            <h2 className="font-display mt-4 text-4xl font-extrabold uppercase leading-[0.95] md:text-6xl">
+              Let&rsquo;s<br />Build<br />Something<br />Great
+            </h2>
+            <p className="monogram mt-6 text-sm text-cream/80">RZ</p>
+          </div>
+          <div className="glass p-6 text-left">
+            <p className="eyebrow">Get in Touch</p>
+            <ul className="mt-4 space-y-3 text-sm">
+              <li className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+                <span className="text-muted">Email</span>
+                <a href={`mailto:${site.contact_email}`} className="hover:text-cream">{site.contact_email}</a>
+              </li>
+              {site.socials.map((s) => (
+                <li key={s.label} className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
+                  <span className="text-muted">{s.label}</span>
+                  <a href={s.href} target="_blank" rel="noreferrer" className="hover:text-cream">{s.href.replace("https://", "")} ↗</a>
+                </li>
+              ))}
+            </ul>
+            <a href={`mailto:${site.contact_email}`} className="mt-5 inline-block rounded-full border border-white/25 px-6 py-2.5 text-xs font-semibold tracking-[0.2em] hover:bg-cream hover:text-black">
+              CONTACT ME →
+            </a>
+          </div>
         </div>
-        <p className="chapter-label mt-10">© 2026 · DALAM PROSES · Dari ide, menjadi sesuatu yang nyata.</p>
+        <p className="eyebrow relative mt-14 text-center">TERIMA KASIH SUDAH MENGIKUTI PERJALANAN INI · © 2026</p>
+        <p className="monogram relative mt-3 text-center text-[10px] text-faint">REZZA — MASIH DALAM PROSES</p>
       </section>
     </>
   );

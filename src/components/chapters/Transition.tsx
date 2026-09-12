@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { CameraWorld } from "@/components/camera/CameraWorld";
+import { PhotoBackdrop } from "@/components/media/PhotoBackdrop";
 
 /**
  * TRANSISI DIGITAL → REAL. Pullback: dunia digital menciut ke SATU TITIK
@@ -38,6 +39,7 @@ export function TransitionWorld() {
       ]}
       onProgress={drive}
     >
+      <div data-depth={0.08}><PhotoBackdrop kind="workspace" opacity={0.55} /></div>
       {/* Dunia digital yang akan collapse */}
       <div ref={collapse} className="absolute inset-0 will-change-transform">
         <div data-f="field" data-depth={0.5} className="absolute inset-0 flex items-center justify-center">
