@@ -1,31 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CameraWorld } from "@/components/camera/CameraWorld";
-import type { Move } from "@/components/camera/cameraRig";
-import { PhotoBackdrop } from "@/components/media/PhotoBackdrop";
+import { Scene } from "@/components/cosmos/Scene";
 import { useStory } from "@/lib/store";
 import { useReducedMotion } from "@/lib/device";
 
 /**
- * OPENING (ref1 #01) — kehampaan luar angkasa, satu titik, monogram,
- * SCROLL TO BEGIN. Kamera dolly ke titik → pernyataan ditemukan karena
- * kamera mendekat → pullback → push ke DALAM PROSES → THROUGH.
+ * OPENING (§14) — minimal. Ruang gelap, planet mengintip dari tepi kanan
+ * (di dunia 3D), teks jauh di kiri. Kamera mendekat perlahan.
+ * Judul DALAM PROSES = landmark spasial, membesar karena kamera mendekat.
  */
-const MOVES: Move[] = [
-  { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["dot", "tag"], dur: 1 },
-  { pose: { scale: 1.3, yPercent: 4 }, focus: ["dot", "s1"], dur: 1.4 },
-  { pose: { scale: 1.3, yPercent: -4 }, focus: ["s2"], dur: 1.4 },
-  { pose: { scale: 1.0, yPercent: 0.0 }, focus: ["s1", "s2"], dur: 1.2 },
-  { pose: { scale: 1.45, yPercent: 0.0 }, focus: ["hero"], dur: 1.4 },
-  { pose: { scale: 1.9, yPercent: 0.0 }, focus: [], dur: 1 },
-];
-
 export function Opening() {
   const completeIntro = useStory((s) => s.completeIntro);
   const introDone = useStory((s) => s.introDone);
   const reduced = useReducedMotion();
-  // Selalu 0 di render pertama (paritas SSR); reduced di-derive, bukan state.
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -42,7 +30,6 @@ export function Opening() {
     return () => clearInterval(t);
   }, [introDone, reduced]);
 
-  // reduced-motion: langsung 100 tanpa state (paritas SSR, tanpa animasi).
   const shown = reduced ? 100 : count;
 
   return (
@@ -66,49 +53,23 @@ export function Opening() {
         </div>
       )}
 
-      <CameraWorld id="opening" label="Opening" durationVh={350} moves={MOVES} fadeIn={false}>
-        <PhotoBackdrop kind="space" opacity={0.9} />
-        <p data-depth={0.2} className="eyebrow absolute left-[8%] top-[11%] md:left-[10%]">01 / OPENING</p>
-
-        {/* DOT — satu titik di kehampaan */}
-        <div data-f="dot" data-depth={0.9} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="mx-auto h-3 w-3 rounded-full bg-cream" aria-hidden />
-          <div className="mx-auto -mt-3 h-3 w-3 animate-ping rounded-full bg-accent/60" aria-hidden />
-        </div>
-        <p data-f="tag" data-depth={0.5} className="eyebrow absolute bottom-[12%] left-0 right-0 text-center">
-          SCROLL TO BEGIN ↓
+      <Scene stop="opening" label="Opening" minH="150svh" align="left">
+        <p className="eyebrow">01 / OPENING</p>
+        <p className="font-display mt-6 max-w-xl text-2xl font-extrabold uppercase leading-[1.08] md:text-4xl">
+          Saya tidak selalu tahu bagaimana sesuatu harus dibuat.
         </p>
+        <p className="font-display mt-10 max-w-xl text-2xl font-extrabold uppercase leading-[1.08] md:text-4xl">
+          Tapi saya tahu bagaimana <span className="text-accent">memulainya.</span>
+        </p>
+        <p className="eyebrow mt-14">SCROLL TO BEGIN ↓</p>
+      </Scene>
 
-        {/* Pernyataan 1 — kamera menemukan karena MENDEKAT */}
-        <div data-f="s1" data-depth={0.6} className="absolute left-[8%] right-[8%] top-[9%] md:left-[10%] md:max-w-2xl">
-          <p className="font-display mt-4 text-2xl font-extrabold uppercase leading-[1.05] md:text-5xl">
-            Saya tidak selalu tahu bagaimana sesuatu harus dibuat.
-          </p>
-        </div>
-
-        {/* Pernyataan 2 — kamera PAN ke sini */}
-        <div data-f="s2" data-depth={0.6} className="absolute bottom-[12%] left-[8%] right-[8%] md:left-[10%] md:max-w-2xl">
-          <p className="font-display mt-4 text-2xl font-extrabold uppercase leading-[1.05] md:text-5xl">
-            Tapi saya tahu bagaimana <span className="text-accent">memulainya.</span>
-          </p>
-        </div>
-
-        {/* HERO — monogram + judul, ada lebih jauh di depan */}
-        <div data-f="hero" data-depth={0.3} className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <p className="monogram text-lg text-cream/80">RZ</p>
-          <p className="display-xl mt-4">DALAM<br />PROSES</p>
-          <p className="body-lead mt-6 max-w-xl">Sebuah perjalanan tentang belajar, mencoba, membangun, dan bertumbuh.</p>
-          <p className="eyebrow mt-8">SCROLL UNTUK MEMULAI ↓</p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#tentang" className="rounded-full bg-cream px-6 py-3 text-xs font-semibold tracking-[0.2em] text-black">
-              MULAI PERJALANAN ↓
-            </a>
-            <button type="button" onClick={() => completeIntro(true)} className="chip hover:text-cream">
-              LEWATI INTRO →
-            </button>
-          </div>
-        </div>
-      </CameraWorld>
+      <Scene stop="hero" label="Dalam Proses" minH="140svh" align="center">
+        <p className="eyebrow">DALAM PROSES</p>
+        <h1 className="display-xl mt-6">DALAM<br />PROSES</h1>
+        <p className="body-lead mx-auto mt-8 max-w-xl">Sebuah perjalanan tentang belajar, mencoba, membangun, dan bertumbuh.</p>
+        <p className="eyebrow mt-10">SCROLL UNTUK MEMULAI ↓</p>
+      </Scene>
     </>
   );
 }

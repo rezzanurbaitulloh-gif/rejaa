@@ -493,6 +493,181 @@ html[data-tier="low"] .glass {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
 }
 
+/* ---------- cosmic scenes: waypoint + memory photography ---------- */
+.scene-waypoint {
+  --focus: 0;
+}
+.scene-body {
+  /* §08: tipografi tidak pernah blur/dim/geser — kamera yang bergerak,
+     teks selalu terbaca. Efek fokus hanya untuk fotografi (.memory-frame img).
+     QA #12: tanpa animasi fade pun situs tetap utuh. */
+  opacity: 1;
+}
+.memory-photo {
+  margin: 1.75rem 0 0;
+}
+.memory-wide {
+  width: min(86vw, 900px);
+  max-width: none;
+}
+.memory-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(180deg, transparent, black 10%, black 90%, transparent);
+}
+.memory-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: calc(0.22 + 0.5 * var(--focus, 0));
+  filter: grayscale(1) contrast(1.06) brightness(0.94) blur(calc((1 - var(--focus, 0)) * 6px));
+  transform: scale(calc(0.94 + 0.1 * var(--focus, 0)));
+  will-change: opacity, filter, transform;
+}
+.memory-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(155deg, rgba(43, 92, 255, 0.26), transparent 52%, rgba(3, 5, 10, 0.55));
+}
+.memory-photo figcaption {
+  margin-top: 0.6rem;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+/* ---------- orbital process + tool orbit + satellites ---------- */
+.orbit-path {
+  position: relative;
+  text-align: left;
+}
+.orbit-path::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 16px;
+  bottom: 16px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--color-accent), rgba(245, 241, 234, 0.18));
+  opacity: 0.7;
+}
+.orbit-node {
+  position: relative;
+  display: flex;
+  gap: 1.4rem;
+  padding: 1.05rem 0;
+}
+.orbit-dot {
+  margin-top: 0.45rem;
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-void);
+  border: 1px solid var(--color-accent);
+  box-shadow: 0 0 12px 1px rgba(43, 92, 255, 0.8);
+}
+.tool-orbit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem 2.4rem;
+  list-style: none;
+}
+.tool-star {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  animation: drift calc(7s + (var(--i, 0) * 0.9s)) ease-in-out infinite alternate;
+  animation-delay: calc(var(--i, 0) * -1.4s);
+}
+.tool-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+.tool-use {
+  font-size: 11px;
+  color: var(--color-muted);
+  max-width: 190px;
+}
+@keyframes drift {
+  from { transform: translate3d(0, -7px, 0); }
+  to { transform: translate3d(0, 7px, 0); }
+}
+.satellite {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  animation: drift calc(6s + (var(--i, 0) * 1s)) ease-in-out infinite alternate;
+}
+.pair-tether {
+  flex: 1;
+  height: 1px;
+  margin: 0 1.25rem;
+  background: linear-gradient(90deg, var(--color-cream), var(--color-accent));
+  opacity: 0.55;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-star,
+  .satellite {
+    animation: none;
+  }
+}
+
+/* ---------- project planets: tekstur beneran + shading bola ---------- */
+.planet-link {
+  text-align: center;
+}
+.planet-orb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.planet-orb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85) brightness(0.95);
+  transition: transform 0.8s var(--ease-camera), filter 0.8s var(--ease-camera);
+}
+.planet-link:hover .planet-orb img,
+.planet-link:focus-visible .planet-orb img {
+  transform: scale(1.07) rotate(4deg);
+  filter: saturate(1) brightness(1.05);
+}
+.planet-orb::after {
+  /* terminator: sisi gelap + rim cahaya — bola, bukan lingkaran flat */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(38% 38% at 30% 26%, rgba(255, 244, 230, 0.28), transparent 70%),
+    radial-gradient(120% 120% at 78% 82%, rgba(2, 3, 6, 0.88), transparent 62%),
+    radial-gradient(closest-side, transparent 78%, rgba(3, 4, 8, 0.55) 100%);
+  box-shadow:
+    inset -14px -18px 44px rgba(0, 0, 0, 0.75),
+    inset 6px 8px 22px rgba(160, 190, 255, 0.16),
+    0 0 44px -6px rgba(43, 92, 255, 0.35);
+}
+
 /* ---------- device tier: hemat GPU di perangkat lemah ---------- */
 html[data-tier="low"] .grain::after {
   display: none;

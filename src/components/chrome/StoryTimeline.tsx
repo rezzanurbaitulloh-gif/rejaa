@@ -9,28 +9,26 @@ import { useEffect, useRef, useState } from "react";
  */
 const CHAPTERS = [
   { id: "opening", label: "Opening" },
-  { id: "tentang", label: "Identity" },
-  { id: "berpikir", label: "Thinking" },
-  { id: "technology-field", label: "Skills" },
+  { id: "identity", label: "Identity" },
+  { id: "thinking", label: "Thinking" },
+  { id: "tech", label: "Skills" },
   { id: "ai", label: "AI" },
-  { id: "pkl-intro", label: "PKL" },
-  { id: "karya", label: "Projects" },
-  { id: "tumbuh", label: "Growth" },
+  { id: "pkl", label: "PKL" },
+  { id: "constellation", label: "Projects" },
+  { id: "growth", label: "Growth" },
   { id: "kontak", label: "Contact" },
 ];
 
-/** Semua world → chapter terdekat (dunia PKL/refleksi menumpang chapter induk). */
-const WORLD_CHAPTER: Record<string, number> = {
-  opening: 0,
-  tentang: 1, "bukan-stack": 1,
-  berpikir: 2,
-  "technology-field": 3,
-  ai: 4, transisi: 4,
-  "pkl-intro": 5, "pkl-apa": 5, "pkl-tujuan": 5, "pkl-aturan": 5, "pkl-tempat": 5,
-  "pkl-people": 5, "pkl-hari": 5, "pkl-aktivitas": 5, "pkl-project": 5, "pkl-tantangan": 5,
-  karya: 6,
-  pelajaran: 7, tumbuh: 7, kembali: 7, "masa-depan": 7, ending: 7,
-  kontak: 8,
+/** Setiap stop kamera → chapter terdekat (dunia PKL/refleksi menumpang induk). */
+const STOP_CHAPTER: Record<string, number> = {
+  opening: 0, hero: 0,
+  identity: 1,
+  thinking: 2,
+  tech: 3,
+  ai: 4, transition: 4,
+  pkl: 5, pkl2: 5, pkl3: 5, routine: 5, project: 5,
+  constellation: 6,
+  growth: 7, ending: 7,
 };
 
 export function StoryTimeline() {
@@ -46,24 +44,29 @@ export function StoryTimeline() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Chapter aktif = dunia yang menempati tengah viewport.
+    // Chapter aktif = stop yang menempati tengah viewport.
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          const id = (e.target as HTMLElement).id;
-          const i = WORLD_CHAPTER[id];
+          const id = (e.target as HTMLElement).dataset.stop;
+          const i = id !== undefined ? STOP_CHAPTER[id] : undefined;
           if (i !== undefined) setActive(i);
         }
       },
       { rootMargin: "-45% 0px -45% 0px" },
     );
-    document.querySelectorAll("[data-world], #kontak").forEach((el) => io.observe(el));
+    document.querySelectorAll("[data-stop]").forEach((el) => io.observe(el));
     return () => {
       window.removeEventListener("scroll", onScroll);
       io.disconnect();
     };
   }, []);
+
+  const jump = (id: string) => {
+    const el = document.querySelector(`[data-stop="${id}"]`) ?? document.getElementById(id);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const cur = CHAPTERS[Math.min(active, CHAPTERS.length - 1)];
   return (
@@ -80,16 +83,17 @@ export function StoryTimeline() {
         </div>
         <nav className="tl-dots" aria-label="Lompat chapter">
           {CHAPTERS.map((c, i) => (
-            <a
+            <button
               key={c.id}
-              href={`#${c.id}`}
+              type="button"
+              onClick={() => jump(c.id)}
               className={`tl-dot ${i <= active ? "lit" : ""}`}
               aria-label={`Ke ${c.label}`}
               aria-current={i === active ? "true" : undefined}
             >
               <span className="dot" />
               <span className="lbl">{c.label}</span>
-            </a>
+            </button>
           ))}
         </nav>
       </div>

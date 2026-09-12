@@ -1,68 +1,33 @@
 "use client";
 
-import { CameraWorld } from "@/components/camera/CameraWorld";
-import type { Move } from "@/components/camera/cameraRig";
+import type { CSSProperties } from "react";
+import { Scene } from "@/components/cosmos/Scene";
 import { useContent } from "@/components/story/StoryProvider";
-import { useChoreo, useDeviceTier } from "@/lib/device";
 
 /**
- * TECHNOLOGY FIELD — material spasial dalam depth, bukan skill wall.
- * Kamera DOLLY menembus field; setiap move memfokuskan SATU teknologi
- * (tajam/foreground) sementara sisanya recede. data-tech = memory system.
+ * TECHNOLOGY FIELD (§18) — bukan grid kartu. Satu bintang pusat (PROBLEM,
+ * di dunia 3D) dikelilingi alat sebagai objek melayang yang hanyut perlahan.
+ * Kamera mendekati satu alat: ia menajam, sisanya melembut.
  */
-const MARK: Record<string, string> = {
-  "Next.js": "N", React: "R", TypeScript: "TS", Tailwind: "Tw", GSAP: "G",
-  Lenis: "L", Supabase: "S", PostgreSQL: "PG", Vercel: "▲", "AI Partner": "✦",
-};
-const POS: [number, number, number][] = [
-  [14, 20, 0.4], [40, 15, 0.6], [66, 20, 0.45],
-  [14, 44, 0.65], [40, 42, 0.35], [66, 46, 0.6],
-  [14, 68, 0.45], [40, 67, 0.7], [66, 68, 0.4],
-  [80, 56, 0.55],
-];
-
 export function TechFieldWorld() {
   const { tech } = useContent();
-  const tier = useDeviceTier();
-  const choreo = useChoreo();
-  const max = choreo === "mobile" ? 6 : tier === "low" ? 6 : 10;
-  const items = tech.filter((t) => t.in_field).slice(0, max);
-
-  const moves: Move[] = [
-    { pose: { scale: 1.0 }, focus: ["lede"], dur: 1 },
-    { pose: { scale: 1.15, xPercent: 1.4 }, focus: ["tech-0"], dur: 1 },
-    { pose: { scale: 1.15, xPercent: -1.4 }, focus: ["tech-1"], dur: 1 },
-    { pose: { scale: 1.15, xPercent: 1.4, yPercent: -1.4 }, focus: ["tech-2"], dur: 1 },
-    { pose: { scale: 1.0, xPercent: 0.0, yPercent: 0.0 }, focus: ["claim"], dur: 1.2 },
-  ];
+  const items = tech.filter((t) => t.in_field).slice(0, 8);
 
   return (
-    <CameraWorld id="technology-field" label="Technology Field" durationVh={300} moves={moves} mobileStatic>
-      <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[6%] max-w-xl md:left-[10%]">
-        <p className="eyebrow">04 / SKILLS &amp; TOOLS</p>
-        <h2 className="font-display mt-3 text-3xl font-extrabold uppercase md:text-5xl">Skills<br />&amp; Tools</h2>
-        <p className="body-muted mt-2 max-w-sm text-sm">Tools that help me turn ideas into real projects. Saya memulai dari masalah.</p>
-      </div>
-
-      {items.map((t, i) => {
-        const [x, y, z] = POS[i % POS.length];
-        return (
-          <div key={t.id} data-f={`tech-${i}`} data-tech={t.name} data-depth={z}
-            className="glass absolute w-36 px-4 py-3 text-center md:w-48" style={{ left: `${x}%`, top: `${y}%` }}>
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 font-display text-sm font-bold" aria-hidden>
-              {MARK[t.name] ?? t.name.charAt(0)}
-            </div>
-            <p className="font-display mt-2 text-sm font-bold tracking-tight md:text-base">{t.name}</p>
-            <p className="mt-1 hidden text-[11px] leading-snug text-muted md:block">{t.usage}</p>
-          </div>
-        );
-      })}
-
-      <div data-f="claim" data-depth={0.7} className="absolute bottom-[5%] left-0 right-0 px-6 text-center">
-        <h2 className="font-display text-3xl font-extrabold uppercase md:text-6xl">
-          Lalu saya memilih alat. <span className="text-accent">Bukan sebaliknya.</span>
-        </h2>
-      </div>
-    </CameraWorld>
+    <Scene stop="tech" label="Technology Field" minH="170svh" align="center">
+      <p className="eyebrow">04 / SKILLS &amp; TOOLS</p>
+      <h2 className="font-display mt-6 text-3xl font-extrabold uppercase md:text-5xl">Lalu saya<br />memilih alat.</h2>
+      <p className="body-muted mx-auto mt-6 max-w-md text-sm">
+        Saya tidak selalu memulai dari teknologi. Saya memulai dari masalah — <span className="text-cream">bukan sebaliknya.</span>
+      </p>
+      <ul className="tool-orbit mx-auto mt-12 max-w-3xl" aria-label="Alat yang mengelilingi masalah">
+        {items.map((t, i) => (
+          <li key={t.id} className="tool-star" style={{ "--i": i, "--n": items.length } as CSSProperties}>
+            <span className="tool-name">{t.name}</span>
+            <span className="tool-use">{t.usage}</span>
+          </li>
+        ))}
+      </ul>
+    </Scene>
   );
 }

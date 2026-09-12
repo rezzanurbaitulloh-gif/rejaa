@@ -9,6 +9,9 @@ export function SiteHeader() {
   const pklEnabled = useStory((s) => s.pklEnabled);
   const setPklEnabled = useStory((s) => s.setPklEnabled);
   const [scrolled, setScrolled] = useState(false);
+  const jump = (stop: string) => {
+    document.querySelector(`[data-stop="${stop}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,13 +31,15 @@ export function SiteHeader() {
           <span className="font-extrabold tracking-tight">DALAM PROSES</span>
         </Link>
         <nav aria-label="Navigasi utama" className="hidden items-center gap-5 text-xs text-muted md:flex">
-          <a href="#tentang" className="hover:text-cream">Tentang</a>
-          <a href="#berpikir" className="hover:text-cream">Berpikir</a>
-          <a href="#ai" className="hover:text-cream">AI</a>
+          {([["Tentang", "identity"], ["Berpikir", "thinking"], ["AI", "ai"]] as const).map(([label, stop]) => (
+            <button key={stop} type="button" onClick={() => jump(stop)} className="hover:text-cream">
+              {label}
+            </button>
+          ))}
           {pklEnabled && (
-            <a href="#pkl" className="hover:text-cream">PKL</a>
+            <button type="button" onClick={() => jump("pkl")} className="hover:text-cream">PKL</button>
           )}
-          <a href="#karya" className="hover:text-cream">Karya</a>
+          <button type="button" onClick={() => jump("constellation")} className="hover:text-cream">Karya</button>
           <a href="#kontak" className="hover:text-cream">Kontak</a>
         </nav>
         <div className="flex items-center gap-2" role="group" aria-label="Mode tampilan">
