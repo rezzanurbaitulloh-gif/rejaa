@@ -84,7 +84,7 @@ export function createRig(outer: HTMLElement, stage: HTMLElement, opts: RigOpts)
       start: "top top",
       end: () => `+=${Math.round(window.innerHeight * opts.durationVh)}`,
       pin: true,
-      scrub: 1,
+      scrub: 0.6,
       anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => opts.onProgress?.(self.progress),

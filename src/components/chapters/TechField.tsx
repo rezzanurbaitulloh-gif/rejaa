@@ -32,7 +32,7 @@ export function TechFieldWorld() {
   ];
 
   return (
-    <CameraWorld id="technology-field" label="Technology Field" durationVh={100} moves={moves}>
+    <CameraWorld id="technology-field" label="Technology Field" durationVh={50} moves={moves}>
       <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[6%] max-w-xl md:left-[10%]">
         <p className="chapter-label">06 / TECHNOLOGY FIELD</p>
         <p className="body-lead mt-2">Saya tidak selalu memulai dari teknologi. Saya memulai dari masalah.</p>

@@ -37,3 +37,8 @@
 
 - Keluhan nyata: 22 pin × ratusan vh = 5,2 juta px — wheel terasa tidak maju-maju. Durasi pin dipangkas ke ~1400vh total (per-move tetap ≥15vh agar gerakan kamera terbaca).
 - Node process rail menjadi tombol: klik melompat ke chapter (opening/identitas/proses/AI/PKL/karya/tumbuh/ending) + area sentuh diperbesar.
+
+## 2026-09-12 — Journey dipadatkan lagi + kamera responsif
+
+- Total 1,3M px → 695k px (durasi pin dipotong ~50%, min 25vh); scrub 1 → 0,6 agar kamera mengikuti input lebih rapat.
+- Verifikasi: wheel/End/Home/scrollTo/PageDown/anchor tepat + 0 error + settled-frame sinematik.

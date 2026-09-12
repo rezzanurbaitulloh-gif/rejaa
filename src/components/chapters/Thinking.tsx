@@ -38,7 +38,7 @@ export function ThinkingWorld() {
   };
 
   return (
-    <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={80} moves={MOVES} onProgress={draw}>
+    <CameraWorld id="berpikir" label="Cara Saya Berpikir" durationVh={40} moves={MOVES} onProgress={draw}>
       <div data-f="lede" data-depth={0.4} className="absolute left-[8%] top-[2%] max-w-xl md:left-[10%]">
         <p className="chapter-label">04 / CARA SAYA BERPIKIR</p>
         <p className="body-lead mt-2">Mulai dari masalah. Ikuti jalurnya.</p>

@@ -30,7 +30,7 @@ export function PklChapter() {
   return (
     <div id="pkl">
       {/* INTRO — push through gerbang chapter */}
-      <CameraWorld id="pkl-intro" label="PKL Intro" durationVh={60}
+      <CameraWorld id="pkl-intro" label="PKL Intro" durationVh={30}
         moves={[
           { pose: { scale: 1 }, focus: ["t"], dur: 1 },
           { pose: { scale: 2.2 }, focus: ["t"], dur: 1.2 },
@@ -44,7 +44,7 @@ export function PklChapter() {
       </CameraWorld>
 
       {/* APA ITU PKL — pan */}
-      <CameraWorld id="pkl-apa" label="Apa itu PKL" durationVh={50}
+      <CameraWorld id="pkl-apa" label="Apa itu PKL" durationVh={25}
         moves={[
           { pose: { scale: 1, xPercent: 6 }, focus: ["a"], dur: 1 },
           { pose: { scale: 1.3, xPercent: -6 }, focus: ["b"], dur: 1 },
@@ -60,7 +60,7 @@ export function PklChapter() {
 
       {/* TUJUAN — push, fokus berpasangan */}
       {pkl.goals.length > 0 && (
-        <CameraWorld id="pkl-tujuan" label="Tujuan PKL" durationVh={50}
+        <CameraWorld id="pkl-tujuan" label="Tujuan PKL" durationVh={25}
           moves={[
             { pose: { scale: 1 }, focus: ["g1"], dur: 1 },
             { pose: { scale: 1.3 }, focus: ["g2"], dur: 1 },
@@ -89,7 +89,7 @@ export function PklChapter() {
 
       {/* ATURAN — slow push hold */}
       {pkl.rules.length > 0 && (
-        <CameraWorld id="pkl-aturan" label="Aturan dan Tanggung Jawab" durationVh={40}
+        <CameraWorld id="pkl-aturan" label="Aturan dan Tanggung Jawab" durationVh={25}
           moves={[
             { pose: { scale: 1 }, focus: ["r"], dur: 1 },
             { pose: { scale: 1.15 }, focus: ["r"], dur: 1 },
@@ -102,7 +102,7 @@ export function PklChapter() {
       )}
 
       {/* TEMPAT — push; stub jujur bila kosong */}
-      <CameraWorld id="pkl-tempat" label="Tempat PKL" durationVh={50}
+      <CameraWorld id="pkl-tempat" label="Tempat PKL" durationVh={25}
         moves={[
           { pose: { scale: 1, yPercent: 4 }, focus: ["p"], dur: 1 },
           { pose: { scale: 1.5, yPercent: -4 }, focus: ["p"], dur: 1 },
@@ -131,7 +131,7 @@ export function PklChapter() {
 
       {/* PEOPLE — pan (omit bila kosong) */}
       {pkl.people.length > 0 && (
-        <CameraWorld id="pkl-people" label="Pimpinan dan Pembimbing" durationVh={50}
+        <CameraWorld id="pkl-people" label="Pimpinan dan Pembimbing" durationVh={25}
           moves={[
             { pose: { scale: 1, xPercent: 5 }, focus: ["w1"], dur: 1 },
             { pose: { scale: 1.2, xPercent: -5 }, focus: ["w2"], dur: 1 },
@@ -156,7 +156,7 @@ export function PklChapter() {
 
       {/* RUTINITAS — waktu menggerakkan kamera + komposisi */}
       {pkl.routine.length > 0 && (
-        <CameraWorld id="pkl-hari" label="Hari-hari Saya" durationVh={60}
+        <CameraWorld id="pkl-hari" label="Hari-hari Saya" durationVh={30}
           moves={[
             { pose: { scale: 1.3 }, focus: ["morn"], dur: 1 },
             { pose: { scale: 1.5 }, focus: ["mid"], dur: 1 },
@@ -184,7 +184,7 @@ export function PklChapter() {
 
       {/* AKTIVITAS — pan horizontal sinematik */}
       {pkl.activities.length > 0 && (
-        <CameraWorld id="pkl-aktivitas" label="Aktivitas PKL" durationVh={55}
+        <CameraWorld id="pkl-aktivitas" label="Aktivitas PKL" durationVh={30}
           moves={[
             { pose: { scale: 1, xPercent: 0 }, focus: ["h", "a0"], dur: 1 },
             { pose: { scale: 1.15, xPercent: -22 }, focus: ["a1"], dur: 1.2 },
@@ -206,7 +206,7 @@ export function PklChapter() {
 
       {/* TANTANGAN — push ke solusi */}
       {pkl.challenges.length > 0 && (
-        <CameraWorld id="pkl-tantangan" label="Problem ke Solution" durationVh={45}
+        <CameraWorld id="pkl-tantangan" label="Problem ke Solution" durationVh={25}
           moves={[
             { pose: { scale: 1 }, focus: ["c0"], dur: 1 },
             { pose: { scale: 1.4 }, focus: ["c1"], dur: 1 },
