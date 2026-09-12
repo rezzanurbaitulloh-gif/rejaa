@@ -117,8 +117,7 @@ export function EarthPlanet({
   );
 }
 
-export function CameraRig() {
-  const { camera } = useThree();
+export function CameraRig() {  const { camera } = useThree();
   const look = useMemo(() => new THREE.Vector3(), []);
   const target = useMemo(() => new THREE.Vector3(), []);
   const reduced = prefersReducedMotion();
@@ -147,4 +146,80 @@ export function CameraRig() {
     }
   });
   return null;
+}
+
+/**
+ * Layer 3 (§6) — distant celestial objects. Real astronomical imagery
+ * (night-lights + topology crops), extremely slow drift. Never CSS circles.
+ */
+export function DistantWorlds({
+  night,
+  topo,
+  low,
+}: {
+  night: THREE.Texture | null;
+  topo: THREE.Texture | null;
+  low: boolean;
+}) {
+  const g1 = useRef<THREE.Group>(null);
+  const g2 = useRef<THREE.Group>(null);
+  const reduced = prefersReducedMotion();
+
+  useFrame((state, delta) => {
+    const t = state.clock.elapsedTime;
+    if (g1.current) {
+      g1.current.rotation.y += delta * (reduced ? 0.002 : 0.01);
+      g1.current.position.x = -7.5 + Math.sin(t * 0.03) * 0.4;
+      g1.current.position.y = 2.6 + Math.cos(t * 0.025) * 0.25 - scrollStore.camera * 3;
+    }
+    if (g2.current) {
+      g2.current.rotation.y -= delta * (reduced ? 0.0015 : 0.008);
+      g2.current.position.x = 7.8 + Math.cos(t * 0.022) * 0.4;
+      g2.current.position.y = -3.0 + Math.sin(t * 0.028) * 0.25 - scrollStore.camera * 5;
+    }
+  });
+
+  const seg: [number, number, number] = low ? [0.7, 16, 16] : [0.7, 32, 32];
+  return (
+    <>
+      <group ref={g1} position={[-7.5, 2.6, -6]}>
+        <mesh>
+          <sphereGeometry args={seg} />
+          {night ? (
+            <meshStandardMaterial map={night} roughness={1} />
+          ) : (
+            <meshStandardMaterial color="#11141c" roughness={1} />
+          )}
+        </mesh>
+      </group>
+      <group ref={g2} position={[7.8, -3.0, -8]}>
+        <mesh>
+          <sphereGeometry args={seg} />
+          {topo ? (
+            <meshStandardMaterial map={topo} roughness={1} color="#9aa2b5" />
+          ) : (
+            <meshStandardMaterial color="#141821" roughness={1} />
+          )}
+        </mesh>
+      </group>
+    </>
+  );
+}
+
+/** Subtle autonomous light movement (§8) — key light slowly orbits. */
+export function LightRig() {
+  const key = useRef<THREE.DirectionalLight>(null);
+  const reduced = prefersReducedMotion();
+  useFrame((state) => {
+    if (!key.current || reduced) return;
+    const t = state.clock.elapsedTime;
+    key.current.position.set(6 + Math.sin(t * 0.05) * 1.6, 3 + Math.cos(t * 0.04) * 1.0, 6);
+  });
+  return (
+    <>
+      <ambientLight intensity={0.55} color="#8ea2ff" />
+      <directionalLight ref={key} position={[6, 3, 6]} intensity={2.2} color="#fff4e0" />
+      <directionalLight position={[-6, -1, -4]} intensity={0.5} color="#2b4eff" />
+    </>
+  );
 }

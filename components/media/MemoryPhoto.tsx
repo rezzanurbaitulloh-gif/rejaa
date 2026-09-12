@@ -36,7 +36,7 @@ export default function MemoryPhoto({
         />
       </div>
       {(caption || credit) && (
-        <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-[11px] tracking-[0.18em] text-white/40 uppercase">
+        <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-[11px] tracking-[0.18em] text-white/60 uppercase">
           <span>{caption}</span>
           {credit && <span className="shrink-0">{credit}</span>}
         </figcaption>

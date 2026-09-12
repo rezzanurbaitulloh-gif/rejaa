@@ -63,7 +63,7 @@ body {
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: rgba(244, 241, 234, 0.55);
+  color: rgba(244, 241, 234, 0.68);
 }
 .body-editorial {
   font-size: clamp(15px, 1.4vw, 18px);

@@ -1,11 +1,20 @@
 "use client";
 
-import { GROWTH, ASSET_CREDITS } from "@/data/content";
+import Image from "next/image";
+import { GROWTH, ASSET_CREDITS, type TechItem, type Project } from "@/data/content";
 
 /**
- * PHASE 10 — Growth (sunyi, slow camera) + Ending (continuation, bukan footer).
+ * §18 Growth (sunyi, slow camera) + Ending (continuation, bukan footer).
+ * Previously seen objects return as visual memory: planet fragments,
+ * technology names, project worlds — faint, behind, receding.
  */
-export default function GrowthEnding() {
+export default function GrowthEnding({
+  technologies,
+  projects,
+}: {
+  technologies: TechItem[];
+  projects: Project[];
+}) {
   return (
     <>
       <section data-scene="growth" className="scene-travel" aria-label="Pertumbuhan">
@@ -27,7 +36,7 @@ export default function GrowthEnding() {
               ] as const
             ).map(([k, v]) => (
               <div key={k} className="reveal border-t border-white/15 pt-5" data-cursor="view">
-                <p className="text-[11px] tracking-[0.3em] text-white/40 uppercase">{k}</p>
+                <p className="text-[11px] tracking-[0.3em] text-white/60 uppercase">{k}</p>
                 <p className="narrative-serif mt-3 text-[clamp(18px,2vw,26px)] leading-snug text-white/85">{v}</p>
               </div>
             ))}
@@ -39,6 +48,31 @@ export default function GrowthEnding() {
         <div className="sticky-stage items-center text-center">
           <div className="relative z-20 mx-auto w-[min(820px,94vw)]">
             <p className="eyebrow reveal">Kembali ke cosmic space — objek lama muncul lagi</p>
+            {/* visual memory returns */}
+            <div className="reveal mt-8 flex items-center justify-center gap-5 opacity-60" aria-hidden>
+              {projects.slice(0, 3).map((p, i) => (
+                <span
+                  key={p.slug}
+                  className="relative block overflow-hidden rounded-full border border-white/15 blur-[1px]"
+                  style={{ width: 44 - i * 8, height: 44 - i * 8, opacity: 0.7 - i * 0.15 }}
+                >
+                  <Image
+                    src={["/textures/earth-blue-marble.jpg", "/textures/earth-night.jpg", "/textures/earth-topology.png"][i % 3]}
+                    alt=""
+                    fill
+                    sizes="44px"
+                    loading="lazy"
+                    className="object-cover"
+                  />
+                </span>
+              ))}
+              <span className="mx-2 h-px w-16 bg-white/25" />
+              {technologies.slice(0, 4).map((t) => (
+                <span key={t.name} className="text-[10px] tracking-[0.3em] text-white/60 uppercase">
+                  {t.name}
+                </span>
+              ))}
+            </div>
             <p className="narrative-serif reveal mt-10 text-[clamp(24px,3.4vw,44px)] leading-snug text-white/90">
               Ternyata ini belum selesai.
             </p>
@@ -63,7 +97,7 @@ export default function GrowthEnding() {
                 Putar ulang perjalanan ↑
               </a>
             </nav>
-            <details className="reveal mx-auto mt-12 max-w-xl text-left text-[12px] leading-relaxed text-white/40">
+            <details className="reveal mx-auto mt-12 max-w-xl text-left text-[12px] leading-relaxed text-white/60">
               <summary className="cursor-pointer tracking-[0.2em] uppercase" data-cursor="open">Kredit asset & lisensi</summary>
               <ul className="mt-3 list-disc space-y-1 pl-5">
                 {ASSET_CREDITS.map((c) => (

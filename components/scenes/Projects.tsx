@@ -1,16 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import MemoryPhoto from "@/components/media/MemoryPhoto";
-import { PROJECTS } from "@/data/content";
+import type { Project } from "@/data/content";
 
 /**
- * PHASE 09 — Project Constellation (planets/worlds) + Project World (dive).
- * Scroll = orbit. Click = camera dive (focus state). Bukan carousel/modal.
+ * §17 Project Constellation + Project World.
+ * Projects are worlds: REAL astronomical imagery (never CSS gradient orbs).
+ * Active world: large, sharp, foreground. Others: smaller, blurred, distant.
+ * Scroll = orbit. Click/tap = camera dive (ENTER). Mobile: vertical depth stack.
  */
-export default function Projects() {
-  const [active, setActive] = useState(PROJECTS[0].slug);
-  const current = PROJECTS.find((p) => p.slug === active) ?? PROJECTS[0];
+
+const WORLD_IMG = [
+  "/textures/earth-blue-marble.jpg",
+  "/textures/earth-night.jpg",
+  "/textures/earth-topology.png",
+];
+const WORLD_FILTER = ["none", "hue-rotate(140deg) saturate(0.85)", "hue-rotate(220deg) saturate(0.7)"];
+
+export default function Projects({ projects }: { projects: Project[] }) {
+  const [active, setActive] = useState(projects[0]?.slug ?? "");
+  const current = projects.find((p) => p.slug === active) ?? projects[0];
+  if (!current) return null;
 
   return (
     <section data-scene="projects" className="scene-travel" aria-label="Konstelasi proyek">
@@ -28,9 +40,15 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="relative z-20 mx-auto mt-10 flex w-[min(1120px,94vw)] flex-wrap items-end gap-6" role="list">
-          {PROJECTS.map((p) => {
+        {/* desktop: spatial orbit row · mobile: vertical depth stack */}
+        <div
+          className="relative z-20 mx-auto mt-10 flex w-[min(1120px,94vw)] flex-col gap-8 lg:flex-row lg:flex-wrap lg:items-end"
+          role="list"
+          aria-label="Daftar dunia proyek"
+        >
+          {projects.map((p, i) => {
             const isActive = p.slug === active;
+            const size = isActive ? 128 : 64;
             return (
               <button
                 key={p.slug}
@@ -38,34 +56,49 @@ export default function Projects() {
                 onClick={() => setActive(p.slug)}
                 data-cursor="project"
                 aria-pressed={isActive}
-                className="group text-left transition-all duration-700"
+                className="group flex items-center gap-5 text-left transition-all duration-700 lg:block"
                 style={{
                   opacity: isActive ? 1 : 0.45,
                   filter: isActive ? "blur(0)" : "blur(2px)",
-                  transform: isActive ? "scale(1)" : "scale(0.92)",
+                  marginLeft: `${i * 28}px`,
                 }}
               >
                 <span
                   aria-hidden
-                  className="block rounded-full border transition-all duration-700"
+                  className="relative block shrink-0 overflow-hidden rounded-full border transition-all duration-700"
                   style={{
-                    width: isActive ? 120 : 64,
-                    height: isActive ? 120 : 64,
+                    width: size,
+                    height: size,
                     borderColor: isActive ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.2)",
-                    background: isActive
-                      ? "radial-gradient(circle at 35% 30%, #3b4a8f, #0a0d18 70%)"
-                      : "radial-gradient(circle at 35% 30%, #232838, #080a10 70%)",
                     boxShadow: isActive ? "0 0 60px rgba(43,78,255,0.35)" : "none",
                   }}
-                />
-                <span className="mt-3 block text-[11px] tracking-[0.28em] text-white/60 uppercase">{p.title}</span>
+                >
+                  <Image
+                    src={WORLD_IMG[i % WORLD_IMG.length]}
+                    alt=""
+                    fill
+                    sizes="128px"
+                    loading="lazy"
+                    className="object-cover"
+                    style={{ filter: WORLD_FILTER[i % WORLD_FILTER.length] }}
+                  />
+                </span>
+                <span className="mt-0 block lg:mt-3">
+                  <span className="block text-[11px] tracking-[0.28em] text-white/60 uppercase">{p.title}</span>
+                  <span className="mt-1 block max-w-[220px] text-[13px] leading-snug text-white/45 lg:hidden">
+                    {p.summary}
+                  </span>
+                </span>
               </button>
             );
           })}
         </div>
 
         {/* Project World — Context → … → Reflection */}
-        <article className="relative z-20 mx-auto mt-10 w-[min(1120px,94vw)] border border-white/10 bg-[#07090d]/90 p-6 backdrop-blur-md lg:p-10" aria-live="polite">
+        <article
+          className="relative z-20 mx-auto mt-10 w-[min(1120px,94vw)] border border-white/10 bg-[#07090d]/90 p-6 backdrop-blur-md lg:p-10"
+          aria-live="polite"
+        >
           <p className="text-[11px] tracking-[0.3em] text-[#8ea2ff] uppercase">Project world — {current.title}</p>
           <h3 className="display-mega mt-4 text-[clamp(28px,4.5vw,56px)]">{current.title}</h3>
           <p className="body-editorial mt-4">{current.summary}</p>
@@ -82,9 +115,9 @@ export default function Projects() {
               ] as const
             ).map(([k, v]) => (
               <div key={k} className="border-t border-white/10 pt-3">
-                <dt className="text-[11px] tracking-[0.28em] text-white/40 uppercase">{k}</dt>
+                <dt className="text-[11px] tracking-[0.28em] text-white/60 uppercase">{k}</dt>
                 <dd className="mt-2 text-[15px] leading-relaxed text-white/75">
-                  {v ?? <span className="text-white/35">Menunggu data CMS — bukan narasi buatan.</span>}
+                  {v ?? <span className="text-white/55">Menunggu data CMS — bukan narasi buatan.</span>}
                 </dd>
               </div>
             ))}
@@ -108,7 +141,7 @@ export default function Projects() {
               credit="Lorem Picsum"
             />
           </div>
-          <p className="mt-6 text-[12px] tracking-[0.2em] text-white/35 uppercase" data-cursor="next">
+          <p className="mt-6 text-[12px] tracking-[0.2em] text-white/55 uppercase" data-cursor="next">
             Keluar: kamera menarik mundur ke konstelasi — scroll untuk lanjut
           </p>
         </article>

@@ -1,26 +1,30 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { StarLayer, EarthPlanet, CameraRig } from "./space";
-import { getDeviceTier, prefersReducedMotion, STAR_COUNTS } from "@/lib/device";
+import { StarLayer, EarthPlanet, CameraRig, DistantWorlds, LightRig } from "./space";
+import { getDeviceTier, STAR_COUNTS } from "@/lib/device";
 
-function TextureLoader({ onDone }: { onDone: (t: THREE.Texture | null) => void }) {
+function TextureLoader({ onDone }: { onDone: (t: Record<string, THREE.Texture | null>) => void }) {
   const { gl } = useThree();
   useEffect(() => {
     let alive = true;
-    new THREE.TextureLoader().load(
-      "/textures/earth-blue-marble.jpg",
-      (tex) => {
-        if (!alive) return;
+    const out: Record<string, THREE.Texture | null> = { earth: null, night: null, topo: null };
+    let pending = 3;
+    const finish = (k: string, tex: THREE.Texture | null) => {
+      if (tex) {
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.anisotropy = Math.min(4, gl.capabilities.getMaxAnisotropy());
-        onDone(tex);
-      },
-      undefined,
-      () => alive && onDone(null)
-    );
+      }
+      out[k] = tex;
+      pending -= 1;
+      if (pending === 0 && alive) onDone(out);
+    };
+    const loader = new THREE.TextureLoader();
+    loader.load("/textures/earth-blue-marble.jpg", (t) => finish("earth", t), undefined, () => finish("earth", null));
+    loader.load("/textures/earth-night.jpg", (t) => finish("night", t), undefined, () => finish("night", null));
+    loader.load("/textures/earth-topology.png", (t) => finish("topo", t), undefined, () => finish("topo", null));
     return () => {
       alive = false;
     };
@@ -31,7 +35,7 @@ function TextureLoader({ onDone }: { onDone: (t: THREE.Texture | null) => void }
 
 export default function CosmicCanvas() {
   const [tier, setTier] = useState<"HIGH" | "MEDIUM" | "LOW">("MEDIUM");
-  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+  const [tex, setTex] = useState<Record<string, THREE.Texture | null>>({ earth: null, night: null, topo: null });
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -82,16 +86,16 @@ export default function CosmicCanvas() {
         className="!fixed !inset-0"
       >
         <Suspense fallback={null}>
-          <TextureLoader onDone={setTexture} />
-          <ambientLight intensity={0.55} color="#8ea2ff" />
-          <directionalLight position={[6, 3, 6]} intensity={2.2} color="#fff4e0" />
-          <directionalLight position={[-6, -1, -4]} intensity={0.5} color="#2b4eff" />
+          <TextureLoader onDone={setTex} />
+          <LightRig />
           {/* Layer 1: distant stars — sparse, extremely slow */}
           <StarLayer count={counts.far} size={0.035} opacity={0.75} drift={0.0016} />
           {/* Layer 2: mid stars */}
           <StarLayer count={counts.mid} size={0.055} opacity={0.6} drift={0.004} tint="#cdd6ff" />
+          {/* Layer 3: distant celestial objects (real imagery) */}
+          <DistantWorlds night={tex.night} topo={tex.topo} low={low} />
           {/* Layer 5: primary world */}
-          <EarthPlanet texture={texture} low={low} />
+          <EarthPlanet texture={tex.earth} low={low} />
           {/* Layer 6: sparse near dust */}
           <StarLayer count={counts.near} size={0.09} opacity={0.35} drift={0.012} tint="#e8ecff" />
           <CameraRig />

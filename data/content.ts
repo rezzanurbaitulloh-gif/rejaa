@@ -126,7 +126,7 @@ export const GROWTH = {
 };
 
 export const ASSET_CREDITS = [
-  "Planet: NASA Blue Marble (public domain) via three-globe sample imagery.",
+  "Planet & dunia: NASA Blue Marble / night lights / topology (public domain) via three-globe sample imagery, dioptimasi lokal.",
   "Foto memori: Cholong — ganti dengan foto nyata via CMS (Media.caption + credit).",
   "Foto workspace: Unsplash (lisensi Unsplash) — lihat Media.credit di CMS.",
 ];
