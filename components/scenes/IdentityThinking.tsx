@@ -81,9 +81,9 @@ function ThinkingOrbit() {
   const active = Math.min(6, Math.floor(local * 7));
   const node = THINKING_NODES[active];
   const CX = 500;
-  const CY = 215;
+  const CY = 180;
   const RX = 430;
-  const RY = 148;
+  const RY = 118;
   const angle = (i: number) => -Math.PI / 2 + (i / 7) * Math.PI * 2;
   const px = (i: number) => CX + RX * Math.cos(angle(i));
   const py = (i: number) => CY + RY * Math.sin(angle(i));
@@ -92,9 +92,9 @@ function ThinkingOrbit() {
   const ty = CY + RY * Math.sin(ta);
 
   return (
-    <div ref={wrapRef} className="relative z-20 mx-auto w-[min(1060px,94vw)]">
-      <div className="relative hidden aspect-[1000/430] md:block" data-cursor="view">
-        <svg viewBox="0 0 1000 430" className="absolute inset-0 h-full w-full" aria-hidden>
+    <div ref={wrapRef} className="relative z-20 mx-auto w-[min(960px,94vw)]">
+      <div className="relative hidden aspect-[1000/360] md:block" data-cursor="view">
+        <svg viewBox="0 0 1000 360" className="absolute inset-0 h-full w-full" aria-hidden>
           <ellipse cx={CX} cy={CY} rx={RX} ry={RY} fill="none" stroke="rgba(244,241,234,0.12)" strokeWidth={1} />
           <ellipse
             cx={CX}
@@ -115,7 +115,7 @@ function ThinkingOrbit() {
         <span
           aria-hidden
           className="absolute h-2 w-2 rounded-full bg-white shadow-[0_0_16px_rgba(244,241,234,0.9)]"
-          style={{ left: `${(tx / 1000) * 100}%`, top: `${(ty / 430) * 100}%`, transform: "translate(-50%,-50%)" }}
+          style={{ left: `${(tx / 1000) * 100}%`, top: `${(ty / 360) * 100}%`, transform: "translate(-50%,-50%)" }}
         />
         {THINKING_NODES.map((n, i) => {
           const isActive = i === active;
@@ -126,7 +126,7 @@ function ThinkingOrbit() {
               className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 transition-all duration-500"
               style={{
                 left: `${(px(i) / 1000) * 100}%`,
-                top: `${(py(i) / 430) * 100}%`,
+                top: `${(py(i) / 360) * 100}%`,
                 opacity: reached ? 1 : 0.25,
                 transform: `translate(-50%,-50%) scale(${isActive ? 1.5 : 1})`,
               }}
@@ -162,7 +162,7 @@ function ThinkingOrbit() {
       </ol>
 
       {/* active node readout — focus changes microcopy + material */}
-      <div className="mt-8 hidden min-h-[120px] border-t border-white/10 pt-5 md:block" aria-live="polite">
+      <div className="mt-5 hidden min-h-[96px] border-t border-white/10 pt-4 md:block" aria-live="polite">
         <p className="text-[11px] tracking-[0.3em] text-[#8ea2ff]">
           0{active + 1} / 07 — {node.label}
         </p>

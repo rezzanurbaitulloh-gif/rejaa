@@ -25,8 +25,8 @@ export default function Projects({ projects }: { projects: Project[] }) {
   if (!current) return null;
 
   return (
-    <section data-scene="projects" className="scene-travel" aria-label="Konstelasi proyek">
-      <div className="sticky-stage">
+    <section data-scene="projects" className="flow-section" aria-label="Konstelasi proyek">
+      <div>
         <div className="safe-text">
           <p className="eyebrow reveal">Konstelasi proyek — setiap karya adalah dunia</p>
           <h2 className="display-section reveal mt-6">

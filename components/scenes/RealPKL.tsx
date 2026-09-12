@@ -56,8 +56,8 @@ export default function RealPKL() {
         </div>
       </section>
 
-      <section data-scene="pkl" className="scene-travel" aria-label="PKL">
-        <div className="sticky-stage">
+      <section data-scene="pkl" className="flow-section" aria-label="PKL">
+        <div>
           <div className="safe-text">
             <p className="eyebrow reveal">Real-world chapter — kamera memasuki kenyataan</p>
             <h2 className="display-section reveal mt-6">

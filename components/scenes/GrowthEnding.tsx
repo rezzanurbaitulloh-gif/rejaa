@@ -44,8 +44,8 @@ export default function GrowthEnding({
         </div>
       </section>
 
-      <section data-scene="ending" className="scene-travel" aria-label="Penutup">
-        <div className="sticky-stage items-center text-center">
+      <section data-scene="ending" className="flow-section" aria-label="Penutup">
+        <div className="flex flex-col items-center text-center">
           <div className="relative z-20 mx-auto w-[min(820px,94vw)]">
             <p className="eyebrow reveal">Kembali ke cosmic space — objek lama muncul lagi</p>
             {/* visual memory returns */}

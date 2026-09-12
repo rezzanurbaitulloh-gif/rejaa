@@ -221,8 +221,8 @@ function AIBodies() {
 export default function TechAI({ technologies }: { technologies: TechItem[] }) {
   return (
     <>
-      <section data-scene="technology" className="scene-travel" aria-label="Medan teknologi">
-        <div className="sticky-stage">
+      <section data-scene="technology" className="flow-section" aria-label="Medan teknologi">
+        <div>
           <div className="safe-text">
             <p className="eyebrow reveal">Medan teknologi — bukan skills grid</p>
             <h2 className="display-section reveal mt-6">
