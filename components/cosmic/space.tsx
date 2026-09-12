@@ -107,7 +107,13 @@ export function EarthPlanet({
       <mesh ref={mesh}>
         <sphereGeometry args={[2, low ? 24 : 56, low ? 24 : 56]} />
         {texture ? (
-          <meshStandardMaterial map={texture} roughness={0.95} metalness={0.02} />
+          <meshStandardMaterial
+            map={texture}
+            roughness={0.95}
+            metalness={0.02}
+            emissive="#141b2e"
+            emissiveIntensity={0.5}
+          />
         ) : (
           // fallback (texture still loading): dark basalt sphere, NOT a CSS circle
           <meshStandardMaterial color="#1a2027" roughness={1} />
@@ -222,9 +228,9 @@ export function LightRig() {
   });
   return (
     <>
-      <ambientLight intensity={0.55} color="#8ea2ff" />
+      <ambientLight intensity={0.85} color="#8ea2ff" />
       <directionalLight ref={key} position={[6, 3, 6]} intensity={2.2} color="#fff4e0" />
-      <directionalLight position={[-6, -1, -4]} intensity={0.5} color="#2b4eff" />
+      <directionalLight position={[-6, -1, -4]} intensity={0.85} color="#2b4eff" />
     </>
   );
 }

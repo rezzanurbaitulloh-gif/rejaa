@@ -64,7 +64,7 @@ export default function ProcessLine({ pklEnabled = true }: { pklEnabled?: boolea
         ))}
       </div>
       {/* mobile: vertical narrative line at left edge */}
-      <div aria-hidden className="pointer-events-none fixed inset-y-0 left-[14px] z-10 w-px md:hidden">
+      <div aria-hidden className="pointer-events-none fixed inset-y-0 left-[7px] z-10 w-px md:hidden">
         <div className="absolute inset-0 bg-white/10" />
         <div
           id="process-line-draw-mobile"
@@ -74,11 +74,11 @@ export default function ProcessLine({ pklEnabled = true }: { pklEnabled?: boolea
         {nodes.map((n, i) => (
           <div
             key={n.id}
-            className="process-node absolute -left-[4px] flex items-center gap-2"
+            className="process-node absolute -left-[3px] flex items-center gap-2"
             style={{ top: n.top }}
             data-active={i <= activeIdx}
           >
-            <span className="node-dot" />
+            <span className="node-dot mobile-dot" />
           </div>
         ))}
       </div>

@@ -41,7 +41,7 @@ function TechnologyField({ items }: { items: TechItem[] }) {
         const ringB = k >= 4;
         const off = ringB ? s.b : s.a;
         const ang = (off + (k % 4) * 90) * rad;
-        const r = ringB ? 47 : 34;
+        const r = ringB ? RING_B : RING_A;
         el.style.left = `${50 + r * Math.cos(ang)}%`;
         el.style.top = `${50 + r * Math.sin(ang)}%`;
       });
@@ -81,6 +81,9 @@ function TechnologyField({ items }: { items: TechItem[] }) {
     const a = (i / n) * Math.PI * 2;
     return { left: `${50 + r * Math.cos(a)}%`, top: `${50 + r * Math.sin(a)}%` };
   };
+  // ring radii (% of square container) — fit 390px viewports with margin
+  const RING_A = 33;
+  const RING_B = 43;
 
   return (
     <div className="relative z-20 mx-auto w-[min(680px,94vw)]">
@@ -99,8 +102,8 @@ function TechnologyField({ items }: { items: TechItem[] }) {
         aria-label="Medan teknologi — seret untuk memutar, klik untuk fokus"
       >
         {/* orbit paths */}
-        <div aria-hidden className="absolute inset-[16%] rounded-full border border-white/10" />
-        <div aria-hidden className="absolute inset-[3%] rounded-full border border-white/10" />
+        <div aria-hidden className="absolute inset-[17%] rounded-full border border-white/10" />
+        <div aria-hidden className="absolute inset-[7%] rounded-full border border-white/10" />
         {/* gravitational center */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
           <span aria-hidden className="absolute -inset-10 animate-ping rounded-full border border-white/10 [animation-duration:3.5s]" />
@@ -126,7 +129,7 @@ function TechnologyField({ items }: { items: TechItem[] }) {
               aria-pressed={isF}
               className="absolute -translate-x-1/2 -translate-y-1/2 border px-4 py-2 text-[12px] font-bold tracking-[0.12em] backdrop-blur-[2px] transition-[opacity,background,border-color,scale,filter] duration-500"
               style={{
-                ...place(i, 4, 34),
+                ...place(i, 4, RING_A),
                 borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.15)",
                 background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.72)",
                 opacity: isF ? 1 : 0.55,
@@ -156,7 +159,7 @@ function TechnologyField({ items }: { items: TechItem[] }) {
               aria-pressed={isF}
               className="absolute -translate-x-1/2 -translate-y-1/2 border px-3 py-1.5 text-[11px] tracking-[0.1em] backdrop-blur-[2px] transition-[opacity,background,border-color,scale,filter] duration-500"
               style={{
-                ...place(i, 4, 47),
+                ...place(i, 4, RING_B),
                 borderColor: isF ? "rgba(142,162,255,0.8)" : "rgba(255,255,255,0.12)",
                 background: isF ? "rgba(10,14,24,0.92)" : "rgba(5,6,7,0.6)",
                 opacity: isF ? 1 : 0.4,

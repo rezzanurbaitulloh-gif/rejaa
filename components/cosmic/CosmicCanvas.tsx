@@ -80,7 +80,7 @@ export default function CosmicCanvas() {
         onCreated={({ gl }) => {
           gl.setClearColor("#000000", 0);
           gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.05;
+          gl.toneMappingExposure = 1.15;
         }}
         onError={() => setFailed(true)}
         className="!fixed !inset-0"

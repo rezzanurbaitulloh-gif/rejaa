@@ -88,6 +88,12 @@ body {
   z-index: -1;
   pointer-events: none;
 }
+@media (max-width: 768px) {
+  /* narrow screens: keep the veil inside the viewport (no scrollWidth bleed) */
+  .safe-text::before {
+    inset: -8% -4%;
+  }
+}
 @media (min-width: 1024px) {
   .safe-text { margin-left: clamp(48px, 8vw, 140px); }
   .safe-text-right { margin-left: auto; margin-right: clamp(48px, 8vw, 140px); }
@@ -159,6 +165,13 @@ body {
   width: 9px; height: 9px; border-radius: 999px;
   background: transparent; border: 1px solid rgba(244,241,234,.7);
   transition: background 0.4s, box-shadow 0.4s;
+}
+@media (max-width: 768px) {
+  /* mobile markers sit at the viewport edge — halo separates them from text */
+  .node-dot.mobile-dot {
+    width: 6px; height: 6px;
+    box-shadow: 0 0 0 3px #050607;
+  }
 }
 @keyframes node-pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.8); opacity: 0.45; } }
 .process-node[data-active="true"] .node-ping { animation: node-pulse 2.4s ease-in-out infinite; }
