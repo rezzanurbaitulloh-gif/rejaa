@@ -40,8 +40,10 @@ export default function ProcessLine({ pklEnabled = true }: { pklEnabled?: boolea
 
   return (
     <>
-      {/* desktop: spatial S-spine, drawn segment only */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-10 hidden md:block">
+      {/* desktop ≥1280px: spatial S-spine, drawn segment only.
+          Below 1280 the centered spine would collide with 560px safe text,
+          so narrow viewports use the left-edge vertical line instead. */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-10 hidden min-[1280px]:block">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path
             id="process-line-draw"
@@ -63,8 +65,8 @@ export default function ProcessLine({ pklEnabled = true }: { pklEnabled?: boolea
           </div>
         ))}
       </div>
-      {/* mobile: vertical narrative line at left edge */}
-      <div aria-hidden className="pointer-events-none fixed inset-y-0 left-[7px] z-10 w-px md:hidden">
+      {/* narrow: vertical narrative line at left edge */}
+      <div aria-hidden className="pointer-events-none fixed inset-y-0 left-[7px] z-10 w-px min-[1280px]:hidden">
         <div className="absolute inset-0 bg-white/10" />
         <div
           id="process-line-draw-mobile"

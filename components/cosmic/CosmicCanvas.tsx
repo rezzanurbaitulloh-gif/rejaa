@@ -49,9 +49,13 @@ export default function CosmicCanvas() {
   const low = tier === "LOW";
 
   // LOW tier or WebGL failure → static photographic fallback (same narrative)
+  useEffect(() => {
+    if (failed) document.body.dataset.webgl = "fallback";
+  }, [failed]);
   if (failed) {
     return (
       <div aria-hidden className="fixed inset-0 -z-10 bg-[#050607]">
+        <div className="css-stars" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/textures/earth-blue-marble.jpg"
@@ -64,13 +68,13 @@ export default function CosmicCanvas() {
 
   return (
     <div aria-hidden className="fixed inset-0 z-0">
-      {/* nebula / atmosphere — DOM gradients (cheap, no second GL context) */}
+      {/* nebula / atmosphere — restrained cobalt wash + warm whisper */}
       <div className="absolute inset-0 bg-[#050607]" />
       <div
-        className="absolute inset-0 opacity-70"
+        className="absolute inset-0 opacity-80"
         style={{
           background:
-            "radial-gradient(60% 45% at 78% 30%, rgba(43,78,255,0.10), transparent 70%), radial-gradient(50% 40% at 15% 75%, rgba(120,140,255,0.06), transparent 70%), radial-gradient(80% 60% at 50% 110%, rgba(20,24,40,0.8), transparent 70%)",
+            "radial-gradient(60% 45% at 78% 30%, rgba(43,78,255,0.17), transparent 70%), radial-gradient(50% 40% at 15% 75%, rgba(120,140,255,0.10), transparent 70%), radial-gradient(35% 30% at 20% 15%, rgba(244,241,234,0.05), transparent 70%), radial-gradient(80% 60% at 50% 110%, rgba(20,24,40,0.8), transparent 70%)",
         }}
       />
       <Canvas
@@ -81,6 +85,7 @@ export default function CosmicCanvas() {
           gl.setClearColor("#000000", 0);
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.toneMappingExposure = 1.15;
+          document.body.dataset.webgl = "ok";
         }}
         onError={() => setFailed(true)}
         className="!fixed !inset-0"
@@ -89,15 +94,15 @@ export default function CosmicCanvas() {
           <TextureLoader onDone={setTex} />
           <LightRig />
           {/* Layer 1: distant stars — sparse, extremely slow */}
-          <StarLayer count={counts.far} size={0.035} opacity={0.75} drift={0.0016} />
+          <StarLayer count={counts.far} size={0.045} opacity={0.85} drift={0.0016} />
           {/* Layer 2: mid stars */}
-          <StarLayer count={counts.mid} size={0.055} opacity={0.6} drift={0.004} tint="#cdd6ff" />
+          <StarLayer count={counts.mid} size={0.07} opacity={0.7} drift={0.004} tint="#cdd6ff" />
           {/* Layer 3: distant celestial objects (real imagery) */}
           <DistantWorlds night={tex.night} topo={tex.topo} low={low} />
           {/* Layer 5: primary world */}
           <EarthPlanet texture={tex.earth} low={low} />
           {/* Layer 6: sparse near dust */}
-          <StarLayer count={counts.near} size={0.09} opacity={0.35} drift={0.012} tint="#e8ecff" />
+          <StarLayer count={counts.near} size={0.11} opacity={0.45} drift={0.012} tint="#e8ecff" />
           <CameraRig />
         </Suspense>
       </Canvas>

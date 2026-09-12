@@ -160,8 +160,8 @@ body {
   background: transparent; border: 1px solid rgba(244,241,234,.7);
   transition: background 0.4s, box-shadow 0.4s;
 }
-@media (max-width: 768px) {
-  /* mobile markers sit at the viewport edge — halo separates them from text */
+@media (max-width: 1279px) {
+  /* narrow markers sit at the viewport edge — halo separates them from text */
   .node-dot.mobile-dot {
     width: 6px; height: 6px;
     box-shadow: 0 0 0 3px #050607;
@@ -217,4 +217,11 @@ body {
   .grain::after { animation: none; }
   .process-node[data-active="true"] .node-ping { animation: none; }
   .memory-photo { transition-duration: 0.01s; }
+}
+
+/* fallback starfield (no-WebGL) — static CSS stars, sparse like the 3D layers */
+.css-stars {
+  position: absolute; left: 0; top: 0; width: 1px; height: 1px;
+  border-radius: 999px; background: transparent;
+  box-shadow: 82vw 15vh 0 0 rgba(244,241,234,0.21),36vw 32vh 0 0 rgba(244,241,234,0.32),95vw 14vh 0 0 rgba(244,241,234,0.57),70vw 12vh 0 0 rgba(244,241,234,0.52),5vw 4vh 0 0 rgba(244,241,234,0.25),30vw 65vh 0 0 rgba(244,241,234,0.53),72vw 26vh 0 0 rgba(244,241,234,0.59),90vw 70vh 0 0 rgba(244,241,234,0.43),58vw 76vh 0 0 rgba(244,241,234,0.35),1vw 98vh 0 0 rgba(244,241,234,0.64),90vw 55vh 0 0 rgba(244,241,234,0.39),20vw 28vh 0 0 rgba(244,241,234,0.73),44vw 14vh 0 0 rgba(244,241,234,0.25),13vw 46vh 0 0 rgba(244,241,234,0.67),78vw 34vh 0 0 rgba(244,241,234,0.64),94vw 59vh 0 0 rgba(244,241,234,0.49),49vw 11vh 0 0 rgba(244,241,234,0.5),81vw 80vh 0 0 rgba(244,241,234,0.69),47vw 74vh 0 0 rgba(244,241,234,0.31),9vw 6vh 0 0 rgba(244,241,234,0.56),99vw 38vh 0 0 rgba(244,241,234,0.74),30vw 13vh 0 0 rgba(244,241,234,0.41),59vw 82vh 0 0 rgba(244,241,234,0.66),21vw 48vh 0 0 rgba(244,241,234,0.4),86vw 35vh 0 0 rgba(244,241,234,0.59),88vw 83vh 0 0 rgba(244,241,234,0.24),82vw 22vh 0 0 rgba(244,241,234,0.49),32vw 21vh 0 0 rgba(244,241,234,0.45),35vw 82vh 0 0 rgba(244,241,234,0.58),29vw 88vh 0 0 rgba(244,241,234,0.38),99vw 8vh 0 0 rgba(244,241,234,0.33),5vw 41vh 0 0 rgba(244,241,234,0.42),9vw 28vh 0 0 rgba(244,241,234,0.7),73vw 92vh 0 0 rgba(244,241,234,0.37),84vw 64vh 0 0 rgba(244,241,234,0.42),83vw 59vh 0 0 rgba(244,241,234,0.28),18vw 32vh 0 0 rgba(244,241,234,0.61),69vw 34vh 0 0 rgba(244,241,234,0.61),55vw 75vh 0 0 rgba(244,241,234,0.42),29vw 18vh 0 0 rgba(244,241,234,0.48),12vw 97vh 0 0 rgba(244,241,234,0.23),15vw 20vh 0 0 rgba(244,241,234,0.55),88vw 55vh 0 0 rgba(244,241,234,0.53),50vw 49vh 0 0 rgba(244,241,234,0.53),60vw 68vh 0 0 rgba(244,241,234,0.34),71vw 2vh 0 0 rgba(244,241,234,0.57),15vw 88vh 0 0 rgba(244,241,234,0.69),97vw 35vh 0 0 rgba(244,241,234,0.62),44vw 15vh 0 0 rgba(244,241,234,0.36),21vw 59vh 0 0 rgba(244,241,234,0.2),93vw 93vh 0 0 rgba(244,241,234,0.34),65vw 98vh 0 0 rgba(244,241,234,0.3),14vw 81vh 0 0 rgba(244,241,234,0.36),82vw 65vh 0 0 rgba(244,241,234,0.53),20vw 48vh 0 0 rgba(244,241,234,0.62),70vw 68vh 0 0 rgba(244,241,234,0.71),77vw 42vh 0 0 rgba(244,241,234,0.47),15vw 47vh 0 0 rgba(244,241,234,0.68),40vw 31vh 0 0 rgba(244,241,234,0.23),73vw 11vh 0 0 rgba(244,241,234,0.25),63vw 9vh 0 0 rgba(244,241,234,0.74),69vw 99vh 0 0 rgba(244,241,234,0.27),85vw 61vh 0 0 rgba(244,241,234,0.72),22vw 34vh 0 0 rgba(244,241,234,0.49),78vw 55vh 0 0 rgba(244,241,234,0.73),70vw 97vh 0 0 rgba(244,241,234,0.6),26vw 92vh 0 0 rgba(244,241,234,0.37),86vw 84vh 0 0 rgba(244,241,234,0.41),67vw 58vh 0 0 rgba(244,241,234,0.27),29vw 9vh 0 0 rgba(244,241,234,0.39);
 }
