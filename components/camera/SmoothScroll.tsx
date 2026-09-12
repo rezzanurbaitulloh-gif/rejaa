@@ -40,7 +40,6 @@ export default function SmoothScroll() {
       end: "bottom bottom",
       onUpdate: (self) => {
         scrollStore.progress = self.progress;
-        scrollStore.velocity = self.getVelocity() / 1000;
       },
     });
 

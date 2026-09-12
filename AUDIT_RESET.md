@@ -1,41 +1,60 @@
-# PHASE 01 — Audit & Reset Report
+# PHASE 01 — Audit & Reset Report (cold audit, 2026-09-12)
 
-Tanggal: 2026-09-12 · Lokasi: `/home/reja/dalam-proses` · Status: staged rebuild from zero
+Metode: build saat ini diperlakukan sebagai FAILED VISUAL PROTOTYPE dan
+diaudit dingin per 10 area. Temuan → perbaiki → re-verify (loop tertutup di bawah).
 
 ## 1. KEEP
-- Tidak ada implementasi visual lama (folder `dalam-proses/` kosong) — tidak ada yang perlu dipertahankan dari prototype.
-- Toolchain global: Node 24, npm 11 — layak.
+- Next.js 16 + React 19 + TS + Tailwind v4 + GSAP/ScrollTrigger + Lenis +
+  Three.js/R3F + @supabase/supabase-js — semua terpakai, benar, terkini.
+- SCROLL=CAMERA via `scrollStore` (tanpa re-render), camera profiles eksplisit,
+  process line progresif, planet NASA + idle motion, foto 4-state memory,
+  PKL gating + CMS read/fallback, RLS + policies, mobile choreography sendiri.
+- Bukti visual: 14 screenshot headless (desktop 1440 + mobile 390) — komposisi,
+  line draw 2400→0px, transisi fokus, overX=0, zero console/page error.
 
-## 2. DELETE
-- Template bawaan `create-next-app` (hero, link Vercel, Geist font, contoh CSS) — dihapus total, diganti sistem sinematik.
+## 2. DELETE (dieksekusi)
+- `@react-three/drei` — terinstal tapi tidak pernah di-import (dead dependency).
+- `scrollStore.velocity` + writer + 2 komentar basi — field mati.
+- Scaffold `public/*.svg` (5 file), README scaffold → dokumentasi proyek.
+- Larangan dipatuhi: tanpa chapter baru, tanpa card baru, tanpa fade-up.
 
-## 3. REBUILD
-- `app/layout.tsx` — metadata ID, Space Grotesk + Instrument Serif, `lang="id"`.
-- `app/page.tsx` — komposisi satu dunia kontinu (bukan kumpulan page).
-- `app/globals.css` — design tokens void/ink/cobalt, safe-text, memory-photo states, process-line, lens, grain, reduced-motion.
-- `components/cosmic/` — starfield 3 kedalaman + planet NASA Blue Marble (tekstur nyata, bukan CSS circle) + CameraRig.
-- `components/camera/` — Lenis + GSAP ScrollTrigger, `scrollStore` (bus SCROLL=CAMERA tanpa re-render React).
-- `components/process-line/` — spine SVG progresif, `lineProgress = cameraProgress`.
-- `components/scenes/` — Opening, Identity+Thinking, Tech+AI, Transition+PKL, Projects, Growth+Ending.
-- `components/cursor/`, `components/media/`, `components/Hud.tsx`.
-- `data/content.ts` — story engine lokal (seed jujur, tanpa data palsu).
-- `supabase/schema.sql` — skema CMS Phase 11 (RLS baca-publik).
+## 3. REBUILD (dieksekusi)
+- `CursorLens` → pakai `isCoarsePointer()` terpusat (dead export dihidupkan).
+- `README.md` → dokumentasi arsitektur + kontrak PRD.
+- `supabase/schema.sql` → kanonis konvergen (31/31 statements terverifikasi live).
 
 ## 4. RISKS
-- RAM 3.8GB: satu WebGL context saja; device-tier menurunkan stars/DPR; `next build` SIGBUS di sandbox ini (terbukti environmental — probe kosong ikut crash; `tsc` + `next dev` bersih). Build produksi via Vercel.
-- Loopback TCP diblokir sandbox: verifikasi runtime visual wajib via `npm run dev` di mesin lokal + Playwright screenshot.
-- Foto personal/perusahaan/proyek nyata belum ada → slot CMS + empty-state (dilarang fabricate).
+- Client JS ~1.8MB mentah (≈550KB gzip est): three.js dominan (826KB chunk).
+  Reseptif: single WebGL context, device tiers, lazy dynamic import. Belum perlu code-split lebih jauh.
+- `next build` SIGBUS di sandbox lokal (binary swc corrupt — sudah di-reinstall;
+  build lokal hijau). Produksi via Vercel unaffected.
+- HMR WebSocket/dev-only noise — bukan bug aplikasi.
+- Admin UI belum ada (Supabase dashboard sebagai admin sementara) — reserved, bukanauth publik.
+- Tidak ada auth publik di surface (tidak diperlukan); service_role tidak pernah ke client.
 
 ## 5. TARGET ARCHITECTURE
-Next.js 16 App Router + TS + Tailwind v4 + GSAP/ScrollTrigger + Lenis + Three.js/R3F (satu canvas) + Supabase (CMS, setelah visual stabil) + Vercel.
+Next.js 16 App Router + TS strict + Tailwind v4 + GSAP/ScrollTrigger + Lenis +
+Three.js/R3F (satu canvas, lazy, fallback statis) + Supabase (Postgres + RLS) +
+Vercel (auto-deploy dari `main`, protection off) + GitHub (`rejaa`).
 
 ## 6. CAMERA ARCHITECTURE
-`scrollStore.progress (0..1)` ← master ScrollTrigger → `CameraRig.useFrame` lerp → `sampleCamera()` keyframes (push/pull/pan/orbit/hold/drift) + idle drift sinus. Planet mengikuti key terpisah + rotasi otonom (tetap hidup saat scroll berhenti).
+`scrollStore.progress` ← master ScrollTrigger → `CameraRig.useFrame` lerp →
+`SCENE_PROFILES` (sceneId/move/entry/hold/exit/easing/safeText) → pose + planet.
+Planet selalu kontra-sisi teks; portrait ditarik 0.55×; idle drift sinus;
+reduced-motion mematikan drift/rotasi-citra.
 
 ## 7. ASSET STRATEGY
-- Planet: `public/textures/earth-blue-marble.jpg` (1.4MB, NASA-derived via three-globe sample; kredit di Ending).
-- Memori: lokal `public/memory/*` (placeholder atmosfer; ganti foto nyata via CMS dengan caption+credit).
-- Larangan: hotlink produksi, CSS-circle planet, foto personal palsu.
+Lokal semua (936KB): NASA Blue Marble/night/topology (1024px, q68, equirect
+2:1) + 4 foto memori placeholder berlabel CMS. Tanpa hotlink produksi.
+Kredit di Ending. Tanpa foto personal/perusahaan/proyek palsu.
 
 ## 8. VISUAL RULES
-SCROLL=CAMERA · CURSOR=LENS · negative space = travel space · teks di safe area (planet selalu di sisi berlawanan) · reveal fisik via scrub (clip/blur/scale) bukan fade-up generik · tidak ada card grid/logo wall/neon.
+Satu dunia kontinu; teks di safe area + veil; reveal fisik via scrub
+(clip/blur/scale); orbit/field/kosmos bukan grid/wall; AI = dua bodies;
+mobile = koreografi sendiri (vertical line, depth stack, static stages);
+reduced-motion = editorial diam; kontras micro-label ≥ dinaikkan.
+
+## Acceptance
+Audit selesai, temuan diperbaiki dan terverifikasi ulang (tsc + build + smoke +
+live). Rencana rebuild jelas: tidak ada rebuild besar — fondasi benar,
+lanjut Phase 02.

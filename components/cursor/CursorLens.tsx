@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isCoarsePointer } from "@/lib/device";
 
 /** PHASE 19 — Cursor = Lens. Desktop states, touch uses native. */
 export default function CursorLens() {
@@ -9,7 +10,7 @@ export default function CursorLens() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    if (isCoarsePointer()) return;
     document.body.classList.add("lens-on");
 
     let x = -100;

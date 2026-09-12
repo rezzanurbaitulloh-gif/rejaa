@@ -8,8 +8,6 @@ export const scrollStore = {
   progress: 0,
   /** damped camera progress (lerped in useFrame) */
   camera: 0,
-  /** scroll velocity (for drift damping) */
-  velocity: 0,
   /** active scene id */
   scene: "opening",
   /** per-scene local progress 0..1 */

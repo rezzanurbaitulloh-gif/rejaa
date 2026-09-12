@@ -52,7 +52,7 @@ export function StarLayer({
       ref.current.rotation.y = t * drift;
       ref.current.rotation.x = Math.sin(t * 0.02) * 0.02;
     }
-    // parallax from scroll velocity (subtle)
+    // parallax from scroll progress (subtle)
     ref.current.position.y = THREE.MathUtils.lerp(
       ref.current.position.y,
       -scrollStore.camera * drift * 40,
@@ -134,7 +134,7 @@ export function CameraRig() {  const { camera } = useThree();
   const reduced = prefersReducedMotion();
 
   useFrame((state, delta) => {
-    // damped follow — velocity-aware, never snaps
+    // damped follow — never snaps
     scrollStore.camera = THREE.MathUtils.lerp(
       scrollStore.camera,
       scrollStore.progress,
