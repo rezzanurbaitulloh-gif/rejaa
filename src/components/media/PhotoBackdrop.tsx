@@ -43,8 +43,13 @@ export function PhotoBackdrop({ kind, opacity = 1 }: { kind: BackdropKind; opaci
           }} />
           <div className="absolute left-1/2 top-[46%] h-[26vmin] w-[26vmin] -translate-x-1/2 rounded-full"
             style={{ background: "radial-gradient(closest-side, rgba(255,190,120,0.85), rgba(255,150,90,0.25) 60%, transparent 75%)" }} />
-          <div className="absolute inset-x-0 bottom-0 top-[30%]" style={{
+          <div className="absolute inset-x-0 bottom-0 top-[26%]" style={{
             background: `linear-gradient(180deg, transparent 0%, rgba(5,6,10,0.35) 55%, rgba(7,8,12,0.92) 100%), repeating-linear-gradient(90deg, transparent 0 90px, rgba(6,7,13,0.78) 90px 168px, transparent 168px 260px, rgba(6,7,13,0.85) 260px 318px)`,
+            filter: "blur(3px)",
+          }} />
+          <div className="absolute inset-x-0 bottom-0 top-[38%]" style={{
+            background: `repeating-linear-gradient(90deg, transparent 0 150px, rgba(4,5,10,0.8) 150px 235px, transparent 235px 400px)`,
+            filter: "blur(5px)",
           }} />
           <div className="absolute inset-x-0 bottom-0 top-[30%] opacity-50" style={{
             background: "repeating-linear-gradient(0deg, transparent 0 11px, rgba(255,190,120,0.10) 11px 12px)",
