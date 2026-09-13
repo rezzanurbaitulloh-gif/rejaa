@@ -112,6 +112,25 @@ export default function SmoothScroll() {
           );
         }
       }
+      // exit-memory (§10G): as the camera passes, the landmark recedes —
+      // scale down + blur + fade into memory while the line continues.
+      // Generic: any [data-exit-memory] inside a scene gets this treatment.
+      if (!reduced) {
+        const mem = el.querySelector<HTMLElement>("[data-exit-memory]");
+        if (mem) {
+          gsap.fromTo(
+            mem,
+            { scale: 1, opacity: 1, filter: "blur(0px)" },
+            {
+              scale: 0.86,
+              opacity: 0.28,
+              filter: "blur(6px)",
+              ease: "none",
+              scrollTrigger: { trigger: el, start: "bottom bottom", end: "bottom top", scrub: 0.6 },
+            }
+          );
+        }
+      }
     });
 
     // process line draw: lineProgress = cameraProgress

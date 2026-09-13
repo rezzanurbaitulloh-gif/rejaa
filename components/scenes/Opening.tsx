@@ -58,9 +58,9 @@ export default function Opening() {
         </div>
       </Journey>
 
-      {/* F + G */}
+      {/* F + G — exit: camera passes the title, title recedes as memory */}
       <Journey label="Pembuka — landmark judul">
-        <div className="safe-text">
+        <div className="safe-text" data-exit-memory>
           <p className="eyebrow reveal">Landmark — bukan sekadar font besar</p>
           <h2 className="display-mega reveal mt-6 text-[clamp(56px,10.5vw,148px)]" data-cursor="view">
             Dalam
