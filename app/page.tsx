@@ -45,11 +45,13 @@ export default function Home() {
       <ProcessLine pklEnabled={snap.pklEnabled} />
       <CursorLens />
       <SmoothScroll />
-      <main id="isi" className="relative z-10">
+      <main className="relative z-10">
         <div id="opening">
           <Opening />
         </div>
-        <IdentityThinking />
+        <div id="isi">
+          <IdentityThinking />
+        </div>
         <TechAI technologies={snap.technologies} />
         {snap.pklEnabled && <RealPKL />}
         <Projects projects={snap.projects} />

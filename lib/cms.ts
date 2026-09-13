@@ -23,7 +23,7 @@ export function localSnapshot(): CMSnapshot {
 }
 
 export async function getSnapshot(): Promise<CMSnapshot> {
-  const sb = getSupabase();
+  const sb = await getSupabase();
   if (!sb) return localSnapshot();
   try {
     const [proj, tech, pkl, settings] = await Promise.all([
