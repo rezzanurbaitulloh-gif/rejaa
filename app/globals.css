@@ -100,8 +100,8 @@ body {
    RULE: exactly ONE .sticky-stage per .scene-travel parent, and its content
    must fit 100svh. Long content uses .flow-section (normal scroll = hold
    for reading; camera still travels globally). */
-.scene-travel { min-height: 220vh; position: relative; }
-.scene-travel-short { min-height: 160vh; position: relative; }
+.scene-travel { min-height: 220vh; position: relative; overflow: clip; }
+.scene-travel-short { min-height: 160vh; position: relative; overflow: clip; }
 .sticky-stage {
   position: sticky; top: 0; left: 0; width: 100%; max-width: 100vw;
   min-height: 100svh; box-sizing: border-box;
@@ -109,7 +109,7 @@ body {
   overflow: clip;
 }
 .flow-section {
-  position: relative;
+  position: relative; overflow: clip;
   padding: 24vh 0;
 }
 
