@@ -22,14 +22,18 @@ export function localSnapshot(): CMSnapshot {
   return { pklEnabled: true, projects: LOCAL_PROJECTS, technologies: LOCAL_TECH };
 }
 
+let snapshotPromise: Promise<CMSnapshot> | null = null;
+
 export async function getSnapshot(): Promise<CMSnapshot> {
-  const sb = await getSupabase();
-  if (!sb) return localSnapshot();
-  try {
-    const [proj, tech, pkl, settings] = await Promise.all([
+  if (snapshotPromise) return snapshotPromise;
+  snapshotPromise = (async () => {
+    const sb = await getSupabase();
+    if (!sb) return localSnapshot();
+    try {
+      const [proj, tech, pkl, settings] = await Promise.all([
       sb.from("projects").select("*").eq("visible", true).order("order"),
       sb.from("technologies").select("*").eq("in_field", true).order("order"),
-      sb.from("pkl").select("enabled").limit(1),
+      sb.from("pkl").select("enabled").order("id", { ascending: true }).limit(1),
       sb.from("site_settings").select("id,data").eq("id", "pkl_experience_enabled").limit(1),
     ]);
 
@@ -68,8 +72,10 @@ export async function getSnapshot(): Promise<CMSnapshot> {
       if (typeof v === "boolean") pklEnabled = v;
     }
 
-    return { pklEnabled, projects, technologies };
-  } catch {
-    return localSnapshot();
-  }
+      return { pklEnabled, projects, technologies };
+    } catch {
+      return localSnapshot();
+    }
+  })();
+  return snapshotPromise;
 }
