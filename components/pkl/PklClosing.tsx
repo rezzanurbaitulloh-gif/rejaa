@@ -2,6 +2,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
 import { SkillBar } from "@/components/motion/SkillBar";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { TestiCarousel } from "@/components/pkl/TestiCarousel";
 import { splitPipe } from "@/lib/pkl";
 import type { PKL_DEFAULTS, PklStat, PklSkill, PklTestimonial } from "@/lib/pkl";
 
@@ -129,27 +130,11 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
         </Reveal>
         <div>
           <Reveal delay={0.1}>
-            <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.testi_title}</p>
+            <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.testi_title}</p>
           </Reveal>
-          <Stagger className="mt-4 space-y-4" gap={0.1}>
-            {testimonials.map((t) => (
-              <StaggerItem key={t.id}>
-                <figure className="rounded-2xl bg-[#141414] border border-white/10 p-5">
-                  <blockquote className="text-[12.5px] text-neutral-300 leading-relaxed">“{t.quote}”</blockquote>
-                  <figcaption className="mt-4 flex items-center gap-3">
-                    {t.avatar_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={t.avatar_url} alt={t.name} className="w-10 h-10 rounded-full object-cover border border-white/15" />
-                    ) : null}
-                    <div>
-                      <p className="text-[12.5px] font-medium">{t.name}</p>
-                      <p className="text-[11px] text-[#8A8883]">{t.role}</p>
-                    </div>
-                  </figcaption>
-                </figure>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <div className="mt-4">
+            <TestiCarousel items={testimonials} />
+          </div>
         </div>
       </div>
     </section>

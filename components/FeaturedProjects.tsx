@@ -11,6 +11,7 @@ import {
 } from "motion/react";
 import { springs, motionTokens, swipeThresholds } from "@/lib/motion-tokens";
 import { motionConfig } from "@/lib/motion-config";
+import { CaseModal, type CaseItem } from "@/components/CaseModal";
 import type { Project, DEFAULT_SITE } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
@@ -130,6 +131,16 @@ export default function FeaturedProjects({
   const wheelLock = useRef(false);
   const reduce = useReducedMotion();
   const suppressClick = useRef(false);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const items: CaseItem[] = projects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    category: p.category,
+    subtitle: p.subtitle,
+    image_url: p.image_url,
+    link_url: p.link_url,
+    num: p.num_label,
+  }));
 
   const go = useCallback((dir: 1 | -1) => setIdx((i) => (i + dir + n) % n), [n]);
 
@@ -281,7 +292,8 @@ export default function FeaturedProjects({
                     suppressClick.current = false;
                     return;
                   }
-                  setIdx(i);
+                  if (i === idx) setOpenIdx(i);
+                  else setIdx(i);
                 }}
                 className={`shrink-0 relative rounded-xl overflow-hidden border bg-[#141414] ${
                   active
@@ -333,7 +345,8 @@ export default function FeaturedProjects({
                       </motion.a>
                     )}
                   </AnimatePresence>
-                  <div
+                  <motion.div
+                    layoutId={reduce ? undefined : `home-${p.id}`}
                     className={`mx-2.5 mt-1 rounded-lg overflow-hidden relative ${
                       active ? "h-[310px] md:h-[350px]" : "h-[250px] md:h-[270px]"
                     }`}
@@ -365,7 +378,7 @@ export default function FeaturedProjects({
                         →
                       </motion.span>
                     )}
-                  </div>
+                  </motion.div>
                   <div className="h-2" />
                 </TiltInner>
               </motion.article>
@@ -373,6 +386,14 @@ export default function FeaturedProjects({
           })}
         </motion.div>
       </div>
+
+      <CaseModal
+        items={items}
+        index={openIdx}
+        namespace="home"
+        onClose={() => setOpenIdx(null)}
+        onNav={setOpenIdx}
+      />
 
       {/* indicators (mobile flow only — desktop design has arrows instead) */}
       <div className="mt-6 flex md:hidden items-center justify-center gap-3">

@@ -1,5 +1,9 @@
+"use client";
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { CaseModal, type CaseItem } from "@/components/CaseModal";
 import type { PKL_DEFAULTS, PklProject, PklStep } from "@/lib/pkl";
 import { splitPipe } from "@/lib/pkl";
 
@@ -7,6 +11,17 @@ type S = typeof PKL_DEFAULTS;
 
 /** 05 • Projects */
 export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
+  const reduce = useReducedMotion();
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const items: CaseItem[] = projects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    category: p.tags,
+    subtitle: p.tags,
+    image_url: p.image_url,
+    link_url: p.link_url,
+    num: p.label,
+  }));
   return (
     <section id="proyek" className="bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16 border-t border-white/5">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -27,10 +42,13 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
         </Reveal>
       </div>
       <Stagger className="mt-8 grid md:grid-cols-3 gap-4" gap={0.1}>
-        {projects.map((p) => {
+        {projects.map((p, i) => {
           const inner = (
             <div className="group h-full rounded-2xl overflow-hidden bg-[#141414] border border-white/10">
-              <div className="relative h-48 md:h-56 overflow-hidden">
+              <motion.div
+                layoutId={reduce ? undefined : `pkl-${p.id}`}
+                className="relative h-48 md:h-56 overflow-hidden"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={p.image_url}
@@ -41,11 +59,11 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
                 <span className="absolute top-3 left-3 text-[10px] px-2 py-1 rounded-md bg-black/55 border border-white/15 text-neutral-300">
                   {p.label}
                 </span>
-              </div>
+              </motion.div>
               <div className="p-4 flex items-start justify-between gap-3">
                 <div>
                   <p className="font-serif-d text-lg leading-snug">{p.title}</p>
-                  <p className="mt-1 text-[11px] text-[#8A8883]">{p.tags}</p>
+                  <p className="mt-1 text-[11px] text-neutral-500">{p.tags}</p>
                 </div>
                 <span className="w-8 h-8 shrink-0 rounded-full bg-[#FF6A00] text-white flex items-center justify-center text-sm">→</span>
               </div>
@@ -53,17 +71,20 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
           );
           return (
             <StaggerItem key={p.id} className="h-full">
-              {p.link_url && p.link_url !== "#" ? (
-                <a href={p.link_url} target="_blank" rel="noopener noreferrer" className="block h-full">
-                  {inner}
-                </a>
-              ) : (
-                inner
-              )}
+              <div onClick={() => setOpenIdx(i)} className="block h-full cursor-pointer">
+                {inner}
+              </div>
             </StaggerItem>
           );
         })}
       </Stagger>
+      <CaseModal
+        items={items}
+        index={openIdx}
+        namespace="pkl"
+        onClose={() => setOpenIdx(null)}
+        onNav={setOpenIdx}
+      />
     </section>
   );
 }
