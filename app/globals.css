@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  --cream: #ece7dc;
+  --ink: #0b0b0c;
+  --orange: #ff4d00;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: #fff;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif-d {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.font-script {
+  font-family: "Pinyon Script", cursive;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* film grain-ish vignette for dark sections */
+.dark-vignette {
+  background:
+    radial-gradient(1200px 500px at 50% -10%, rgba(255, 77, 0, 0.08), transparent 60%),
+    #0b0b0c;
+}
