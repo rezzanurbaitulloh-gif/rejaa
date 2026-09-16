@@ -28,7 +28,7 @@ export default function PklHero({ s }: { s: S }) {
       <div className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[90vh]">
         <div className="px-5 md:px-12 pt-24 md:pt-28 pb-8 flex flex-col justify-center">
           <motion.p
-            className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-400"
+            className="hidden md:block text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-400"
             initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
@@ -36,7 +36,7 @@ export default function PklHero({ s }: { s: S }) {
             {s.hero_eyebrow}
           </motion.p>
           <motion.h1
-            className="font-serif-d text-[44px] leading-[1.02] md:text-[72px] mt-3"
+            className="hidden md:block font-serif-d text-[44px] leading-[1.02] md:text-[72px] mt-3"
             initial={show ? "hidden" : false}
             animate="visible"
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
@@ -54,6 +54,22 @@ export default function PklHero({ s }: { s: S }) {
               </motion.span>
             ))}
           </motion.h1>
+          <motion.p
+            className="md:hidden text-[10px] tracking-[0.18em] text-neutral-500"
+            initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.snappy}
+          >
+            {s.hero_eyebrow_mobile}
+          </motion.p>
+          <motion.h2
+            className="md:hidden font-serif-d text-[32px] leading-[1.1] mt-2"
+            initial={show ? { opacity: 0, y: motionTokens.distance.lg } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.gentle}
+          >
+            {s.hero_title_mobile}
+          </motion.h2>
           <motion.p
             className="mt-4 text-[12.5px] md:text-[13.5px] text-neutral-400 max-w-[360px] leading-relaxed"
             initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
@@ -103,7 +119,15 @@ export default function PklHero({ s }: { s: S }) {
               </div>
             ))}
           </motion.div>
-          <p className="mt-5 text-[11px] text-neutral-500 md:hidden">Scroll</p>
+          <div className="mt-5 flex items-center justify-between text-[11px] text-neutral-500 md:hidden">
+            <span className="flex items-center gap-2">
+              <span className="w-3.5 h-5 rounded-full border border-neutral-600 flex justify-center pt-1">
+                <span className="w-0.5 h-1 rounded-full bg-neutral-500" />
+              </span>
+              {s.hero_scroll}
+            </span>
+            <span>{s.close_eyebrow}</span>
+          </div>
         </div>
         <div className="hidden md:block relative overflow-hidden">
           <motion.img

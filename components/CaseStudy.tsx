@@ -55,9 +55,7 @@ export default function CaseStudy({ site, steps }: { site: Site; steps: ProcessS
 
         {/* middle phones */}
         <Reveal delay={0.1} className="relative rounded-2xl overflow-hidden bg-[#141414] border border-white/10 min-h-[380px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={site.case_thumb_url} alt="case" className="absolute inset-0 w-full h-full object-cover opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(600px_300px_at_50%_0%,rgba(255,77,0,0.07),transparent_70%)]" />
           <div className="absolute inset-0 flex items-center justify-center gap-4">
             {[0, 1].map((i) => (
               <div key={i} className={`w-[130px] md:w-[150px] rounded-[24px] bg-black border border-white/15 p-3 shadow-2xl ${i === 1 ? "mt-10" : "-mt-4"}`}>

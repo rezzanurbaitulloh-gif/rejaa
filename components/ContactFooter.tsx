@@ -19,7 +19,7 @@ export default function ContactFooter({ site, socials }: { site: Site; socials: 
           <p className="text-[10px] tracking-[0.2em] text-neutral-500">
             <span className="text-[#ff4d00] mr-2">05</span> {site.contact_eyebrow}
           </p>
-          <h3 className="font-serif-d text-[30px] md:text-[40px] leading-[1.05] mt-2 whitespace-pre-line">
+          <h3 className="hidden md:block font-serif-d text-[30px] md:text-[40px] leading-[1.05] mt-2 whitespace-pre-line">
             {site.contact_title}
           </h3>
           <p className="md:hidden mt-3 font-serif-d text-2xl leading-snug">{site.contact_heading_mobile}</p>

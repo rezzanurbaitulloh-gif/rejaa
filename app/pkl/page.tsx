@@ -18,7 +18,29 @@ export default async function PklPage() {
   const [{ site, nav, socials }, pkl] = await Promise.all([getSite(), getPkl()]);
   return (
     <main id="top" className="min-h-screen bg-[#0b0b0c]">
-      <Navbar logo={site.logo_text} links={nav} socials={socials} base="/" active="/pkl" />
+      <Navbar
+        logo={site.logo_text}
+        links={nav}
+        socials={socials}
+        base="/"
+        active="/pkl"
+        menuLinks={[
+          { id: "m1", label: "Tentang PKL", href: "#tentang" },
+          { id: "m2", label: "Proses & Pengalaman", href: "#detail-proyek" },
+          { id: "m3", label: "Proyek", href: "#proyek" },
+          { id: "m4", label: "Hasil & Capaian", href: "#hasil" },
+          { id: "m5", label: "Testimoni", href: "#testimoni" },
+          { id: "m6", label: "Penutup", href: "#penutup" },
+          { id: "m7", label: "Contact", href: "/#contact" },
+        ]}
+        menuCard={{
+          title: "Laporan PKL",
+          desc: pkl.s.intro_desc,
+          cta: "Lihat Laporan",
+          href: "#intro",
+          image: pkl.s.hero_image,
+        }}
+      />
       <PklHero s={pkl.s} />
       <PklIntro s={pkl.s} />
       <PklAbout s={pkl.s} goals={pkl.goals} />
@@ -27,7 +49,7 @@ export default async function PklPage() {
       <PklProjects s={pkl.s} projects={pkl.projects} />
       <PklDetail s={pkl.s} steps={pkl.steps} />
       <PklResults s={pkl.s} stats={pkl.stats} skills={pkl.skills} />
-      <PklLearning s={pkl.s} testimonials={pkl.testimonials} />
+      <PklLearning s={pkl.s} portraits={pkl.s.intro_image} testimonials={pkl.testimonials} />
       <PklClosing s={pkl.s} socials={socials} />
     </main>
   );

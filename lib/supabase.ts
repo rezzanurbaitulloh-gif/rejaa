@@ -54,11 +54,12 @@ export const DEFAULT_SITE = {
   logo_text: "AKUNSTOK",
   hero_eyebrow: "DIGITAL DESIGNER & CREATIVE",
   hero_title: "PROBLEM SOLVER.",
+  hero_title_mobile: "Digital Designer & Creative Problem Solver.",
   hero_desc:
     "I'm a digital designer who turns ideas into meaningful and functional experiences. Focused on UI/UX, branding, and visual design.",
   hero_cta_text: "Explore My Work",
   hero_image_url:
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1000&q=80&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1000&q=80&auto=format&fit=crop",
   hero_side_text: "Design|Build|Create",
   hero_page: "01 / 05",
   hero_script: "Better Experiences",

@@ -2,6 +2,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
 import { SkillBar } from "@/components/motion/SkillBar";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { splitPipe } from "@/lib/pkl";
 import type { PKL_DEFAULTS, PklStat, PklSkill, PklTestimonial } from "@/lib/pkl";
 
 type S = typeof PKL_DEFAULTS;
@@ -51,6 +52,22 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
               })}
             </div>
           )}
+          {/* mobile-only learnings checklist (mobile design screen 11) */}
+          <div className="md:hidden mt-4 rounded-2xl bg-white border border-neutral-900/10 p-5">
+            <p className="text-[13px] font-medium">Apa yang saya pelajari?</p>
+            <ul className="mt-3 space-y-2.5">
+              {splitPipe(s.learn_points).map((pt) => (
+                <li key={pt} className="flex items-start gap-2.5 text-[12px] text-neutral-700">
+                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-[#ff4d00] text-white text-[9px] flex items-center justify-center">✓</span>
+                  {pt}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex items-end justify-between">
+              <p className="font-script text-2xl text-neutral-800">{s.learn_thanks}</p>
+              <span className="w-8 h-8 rounded-full border border-neutral-900/20 flex items-center justify-center text-sm">→</span>
+            </div>
+          </div>
         </Reveal>
         <Reveal delay={0.1} className="rounded-2xl bg-[#141414] text-white p-6">
           <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.res_skills_title}</p>
@@ -66,12 +83,32 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
 }
 
 /** 07 • Pembelajaran + testimoni — dark w/ bg */
-export function PklLearning({ s, testimonials }: { s: S; testimonials: PklTestimonial[] }) {
+export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: string; testimonials: PklTestimonial[] }) {
   return (
-    <section className="relative bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+    <section id="testimoni" className="relative bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={s.learn_bg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-20" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0c] via-transparent to-[#0b0b0c]" />
+      {/* mobile-only Tentang Saya card (mobile design screen 12) */}
+      <Reveal className="md:hidden relative rounded-2xl bg-[#141414] border border-white/10 p-5 mb-8">
+        <p className="font-serif-d text-[19px] leading-snug">“{s.ts_quote}”</p>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={portraits} alt={s.ts_name} className="mt-4 w-full h-56 object-cover object-top rounded-xl grayscale" />
+        <div className="mt-4 space-y-2.5">
+          {[
+            ["Nama", s.ts_name],
+            ["Peran", s.ts_role],
+            ["Jurusan", s.ts_major],
+            ["Kampus", s.ts_campus],
+          ].map(([k, v]) => (
+            <div key={k} className="flex items-center gap-2.5 text-[12px]">
+              <span className="w-6 h-6 rounded-full bg-[#ff4d00]/15 text-[#ff4d00] flex items-center justify-center text-[10px]">◍</span>
+              <span className="text-neutral-500 w-14">{k}</span>
+              <span className="text-neutral-200">{v}</span>
+            </div>
+          ))}
+        </div>
+      </Reveal>
       <div className="relative grid md:grid-cols-2 gap-8 items-center">
         <Reveal>
           <h2 className="font-serif-d text-3xl md:text-5xl">{s.learn_title}</h2>

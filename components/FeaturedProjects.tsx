@@ -304,8 +304,8 @@ export default function FeaturedProjects({
         </motion.div>
       </div>
 
-      {/* indicators */}
-      <div className="mt-6 flex items-center justify-center gap-3">
+      {/* indicators (mobile flow only — desktop design has arrows instead) */}
+      <div className="mt-6 flex md:hidden items-center justify-center gap-3">
         <span className="text-[11px] text-neutral-500 tabular-nums">
           0{idx + 1} / 0{n}
         </span>

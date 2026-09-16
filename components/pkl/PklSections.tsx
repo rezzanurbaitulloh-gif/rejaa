@@ -69,10 +69,23 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
             </Magnetic>
           </div>
         </Reveal>
-        <Reveal delay={0.1} className="relative rounded-2xl overflow-hidden min-h-[300px] md:min-h-[360px] border border-white/10">
+        <Reveal delay={0.1} className="relative rounded-2xl overflow-hidden min-h-[340px] md:min-h-[440px] border border-white/10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={s.about_image} alt="gedung perusahaan" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+          {/* floating stat badges */}
+          {s.about_badge_value ? (
+            <div className="absolute top-3 right-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 px-3 py-2 text-right">
+              <p className="text-[15px] font-semibold text-white">{s.about_badge_value}</p>
+              <p className="text-[9px] text-neutral-300">{s.about_badge_label}</p>
+            </div>
+          ) : null}
+          {s.about_badge2_value ? (
+            <div className="absolute top-24 right-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 px-3 py-2 text-right">
+              <p className="text-[15px] font-semibold text-white">{s.about_badge2_value}</p>
+              <p className="text-[9px] text-neutral-300">{s.about_badge2_label}</p>
+            </div>
+          ) : null}
           <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between gap-3">
             <div className="rounded-lg bg-black/55 backdrop-blur px-3 py-2 border border-white/15">
               <p className="text-[11px] font-medium">◍ {s.about_company}</p>
@@ -109,6 +122,13 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
 export function PklActivities({ s, activities }: { s: S; activities: PklActivity[] }) {
   return (
     <section className="relative bg-[#ece7dc] text-neutral-900 px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+      {s.act_bg ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={s.act_bg} alt="" aria-hidden className="absolute inset-y-0 right-0 w-full md:w-2/3 object-cover opacity-[0.14] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#ece7dc] via-[#ece7dc]/70 to-transparent pointer-events-none" />
+        </>
+      ) : null}
       <div className="grid md:grid-cols-[0.9fr_1.1fr] gap-8 items-center relative">
         <Reveal>
           <Eyebrow no={s.act_no} label={s.act_eyebrow} dark />

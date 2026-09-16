@@ -22,6 +22,7 @@ export default function Hero({ site }: { site: Site }) {
 
   const sides = (site.hero_side_text || "Design|Build|Create").split("|");
   const words = (site.hero_title || "").split(" ");
+  const wordsMobile = (site.hero_title_mobile || site.hero_title || "").split(" ");
   const show = mounted && !reduce;
 
   const parent = {
@@ -51,7 +52,7 @@ export default function Hero({ site }: { site: Site }) {
           style={reduce ? undefined : { y: textY }}
         >
           <motion.p
-            className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-500"
+            className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-500 max-w-[190px] leading-[1.9]"
             initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
@@ -59,12 +60,28 @@ export default function Hero({ site }: { site: Site }) {
             <span className="text-[#ff4d00] mr-2">01</span> {site.hero_eyebrow}
           </motion.p>
           <motion.h1
-            className="font-serif-d text-[52px] leading-[0.95] md:text-[92px] mt-3"
+            className="hidden md:block font-serif-d text-[52px] leading-[0.95] md:text-[92px] mt-3"
             variants={parent}
             initial={show ? "hidden" : false}
             animate="visible"
           >
             {words.map((w, i) => (
+              <motion.span
+                key={i}
+                className="inline-block mr-[0.22em] last:mr-0"
+                variants={word}
+              >
+                {w}
+              </motion.span>
+            ))}
+          </motion.h1>
+          <motion.h1
+            className="md:hidden font-serif-d text-[32px] leading-[1.08] mt-3"
+            variants={parent}
+            initial={show ? "hidden" : false}
+            animate="visible"
+          >
+            {wordsMobile.map((w, i) => (
               <motion.span
                 key={i}
                 className="inline-block mr-[0.22em] last:mr-0"
@@ -124,7 +141,7 @@ export default function Hero({ site }: { site: Site }) {
               <motion.img
                 src={site.hero_image_url}
                 alt="portrait"
-                className="w-full h-[420px] object-cover object-top"
+                className="w-full h-[420px] object-cover object-top grayscale"
                 initial={show ? { scale: 1.15, opacity: 0.6 } : false}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ ...springs.gentle, duration: motionTokens.duration.slow }}
@@ -140,7 +157,7 @@ export default function Hero({ site }: { site: Site }) {
           <motion.img
             src={site.hero_image_url}
             alt="portrait"
-            className="absolute inset-0 w-full h-[115%] object-cover object-top"
+            className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"
             style={reduce ? undefined : { y: imgY }}
             initial={show ? { scale: 1.12 } : false}
             animate={{ scale: 1 }}
