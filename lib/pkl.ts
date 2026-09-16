@@ -1,0 +1,117 @@
+import { supabase } from "./supabase";
+
+export type PklGoal = { id: string; icon: string; title: string; description: string; sort_order: number };
+export type PklActivity = { id: string; label: string; title: string; description: string; sort_order: number };
+export type PklRule = { id: string; label: string; title: string; description: string; sort_order: number };
+export type PklProject = { id: string; label: string; title: string; tags: string; image_url: string; link_url: string; sort_order: number };
+export type PklStep = { id: string; step_no: string; title: string; description: string; thumb_url: string; sort_order: number };
+export type PklStat = { id: string; value: string; label: string; sort_order: number };
+export type PklSkill = { id: string; name: string; percent: number; sort_order: number };
+export type PklTestimonial = { id: string; quote: string; name: string; role: string; avatar_url: string; sort_order: number };
+
+export const PKL_DEFAULTS = {
+  hero_eyebrow: "PKL • 6 BULAN • 2024 - 2025",
+  hero_title: "LAPORAN PRAKTIK KERJA LAPANGAN",
+  hero_desc: "Pengalaman, pembelajaran, dan hasil kerja nyata dari 6 bulan menjalani PKL di perusahaan.",
+  hero_cta: "Mulai Jelajah",
+  hero_image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1000&q=80&auto=format&fit=crop",
+  hero_script: "Learn Build Grow",
+  hero_scroll: "Scroll",
+  info1_value: "6 Bulan",
+  info1_label: "Durasi PKL",
+  info2_value: "UI/UX Design",
+  info2_label: "Fokus Bidang",
+  info3_value: "PT. Nusantara Digital",
+  info3_label: "Tempat PKL",
+  intro_no: "01",
+  intro_eyebrow: "Perkenalan Diri",
+  intro_title: "Halo, Saya Akunstok",
+  intro_desc: "Saya adalah mahasiswa yang sedang menjalani Praktik Kerja Lapangan (PKL) di PT. Nusantara Digital sebagai UI/UX Designer.",
+  intro_cta: "Lihat Profil Lengkap",
+  intro_image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80&auto=format&fit=crop",
+  intro_signature: "Akunstok",
+  intro_chips: "DKV|Mahasiswa|Kreatif & Adaptif",
+  about_no: "02",
+  about_eyebrow: "Apa itu PKL?",
+  about_title: "Praktik Kerja Lapangan (PKL)",
+  about_desc: "PKL adalah kegiatan pembelajaran di dunia kerja yang memberikan pengalaman langsung kepada mahasiswa.",
+  about_cta: "Tujuan PKL",
+  about_image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=80&auto=format&fit=crop",
+  about_company: "PT. Nusantara Digital",
+  about_caption: "Dari ruang kelas menuju dunia kerja",
+  goals_eyebrow: "Tujuan & Manfaat",
+  goals_title: "Tujuan & Manfaat PKL",
+  act_no: "03",
+  act_eyebrow: "Kegiatan Selama PKL",
+  act_title: "Apa yang Saya Lakukan?",
+  act_desc: "Selama 6 bulan, saya terlibat dalam berbagai kegiatan — mulai dari riset dan desain UI/UX, diskusi tim, hingga implementasi.",
+  act_cta: "Lihat Detail Kegiatan",
+  act_bg: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80&auto=format&fit=crop",
+  rules_no: "04",
+  rules_eyebrow: "Aturan & Ketentuan",
+  rules_title: "Aturan Selama PKL",
+  rules_desc: "Untuk menjaga profesionalitas, saya mengikuti aturan dan tata tertib yang berlaku selama menjalani PKL di perusahaan.",
+  rules_cta: "Lihat Selengkapnya",
+  rules_bg: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop",
+  proj_no: "05",
+  proj_eyebrow: "Project yang Dikerjakan",
+  proj_title: "Project Saya",
+  proj_desc: "Berikut adalah beberapa project yang saya kerjakan selama masa PKL.",
+  proj_cta: "Lihat Semua Project",
+  detail_eyebrow: "Detail Project",
+  detail_title: "Redesign Website Company Profile",
+  detail_desc: "Saya bertanggung jawab dalam merancang ulang tampilan website company profile agar lebih modern dan user-friendly.",
+  detail_tags: "UI/UX Design|Web Design|Prototyping",
+  detail_image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1000&q=80&auto=format&fit=crop",
+  detail_cta: "Lihat Detail Projek",
+  process_title: "Proses Desain",
+  res_no: "06",
+  res_eyebrow: "Hasil & Dampak",
+  res_title: "Hasil yang Saya Dapatkan",
+  res_desc: "Dari pengalaman PKL ini, saya mendapatkan banyak pembelajaran berharga, baik secara teknis maupun non-teknis.",
+  res_skills_title: "Peningkatan Skill",
+  learn_title: "Apa yang Saya Pelajari?",
+  learn_quote: "PKL adalah jembatan antara teori dan praktik, antara kampus dan dunia kerja.",
+  learn_signature: "Akunstok",
+  learn_cta: "Lihat Keseluruhan Laporan",
+  learn_bg: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80&auto=format&fit=crop",
+  testi_title: "Testimoni",
+  close_eyebrow: "PKL 2024 • 2025",
+  close_title: "Terima Kasih",
+  close_desc: "Terima kasih sudah meluangkan waktu untuk melihat perjalanan PKL saya.",
+  close_cta_title: "Ingin berdiskusi lebih lanjut?",
+  close_cta_desc: "Saya terbuka untuk pertanyaan, saran, atau kerja sama di masa depan.",
+  close_cta: "Hubungi Saya",
+  close_follow: "Follow Me",
+  thanks_title: "Terima Kasih",
+  thanks_sub: "Atas waktu dan perhatiannya.",
+};
+
+export async function getPkl() {
+  const [s, goals, acts, rules, projs, steps, stats, skills, testis] = await Promise.all([
+    supabase.from("pkl_settings").select("*").eq("id", 1).single(),
+    supabase.from("pkl_goals").select("*").order("sort_order"),
+    supabase.from("pkl_activities").select("*").order("sort_order"),
+    supabase.from("pkl_rules").select("*").order("sort_order"),
+    supabase.from("pkl_projects").select("*").order("sort_order"),
+    supabase.from("pkl_process").select("*").order("sort_order"),
+    supabase.from("pkl_stats").select("*").order("sort_order"),
+    supabase.from("pkl_skills").select("*").order("sort_order"),
+    supabase.from("pkl_testimonials").select("*").order("sort_order"),
+  ]);
+  return {
+    s: { ...PKL_DEFAULTS, ...(s.data ?? {}) } as typeof PKL_DEFAULTS,
+    goals: (goals.data ?? []) as PklGoal[],
+    activities: (acts.data ?? []) as PklActivity[],
+    rules: (rules.data ?? []) as PklRule[],
+    projects: (projs.data ?? []) as PklProject[],
+    steps: (steps.data ?? []) as PklStep[],
+    stats: (stats.data ?? []) as PklStat[],
+    skills: (skills.data ?? []) as PklSkill[],
+    testimonials: (testis.data ?? []) as PklTestimonial[],
+  };
+}
+
+export function splitPipe(v: string): string[] {
+  return (v || "").split("|").map((x) => x.trim()).filter(Boolean);
+}

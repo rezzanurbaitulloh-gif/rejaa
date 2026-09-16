@@ -8,14 +8,22 @@ export default function Navbar({
   logo,
   links,
   socials,
+  base = "",
+  active,
 }: {
   logo: string;
   links: NavLink[];
   socials: Social[];
+  /** prefix for anchor links when rendered outside homepage, e.g. "/" on /pkl */
+  base?: string;
+  /** href of the active nav item; defaults to first item */
+  active?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const reduce = useReducedMotion();
+  const hrefFor = (h: string) => (h.startsWith("/") || h.startsWith("http") ? h : `${base}${h}`);
+  const isActive = (l: NavLink, i: number) => (active ? l.href === active : i === 0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,7 +50,7 @@ export default function Navbar({
       >
         <div className="flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
           <a
-            href="#home"
+            href={`${base}#home`}
             className="text-[13px] md:text-sm font-semibold tracking-[0.18em] text-neutral-900"
           >
             {logo}
@@ -51,9 +59,9 @@ export default function Navbar({
             {links.map((l, i) => (
               <motion.a
                 key={l.id}
-                href={l.href}
+                href={hrefFor(l.href)}
                 className={
-                  i === 0
+                  isActive(l, i)
                     ? "text-neutral-900 border-b border-[#ff4d00] pb-0.5"
                     : "hover:text-black"
                 }
@@ -112,7 +120,7 @@ export default function Navbar({
               {links.map((l, i) => (
                 <motion.a
                   key={l.id}
-                  href={l.href}
+                  href={hrefFor(l.href)}
                   onClick={() => setOpen(false)}
                   className="font-serif-d text-3xl py-1 text-neutral-200"
                   initial={reduce ? { opacity: 0 } : { opacity: 0, x: -24 }}

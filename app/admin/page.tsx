@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase, DEFAULT_SITE } from "@/lib/supabase";
+import { PKL_DEFAULTS } from "@/lib/pkl";
 
 type Row = Record<string, unknown>;
 
@@ -13,7 +14,24 @@ const TABLES: { key: string; label: string; fields: { name: string; type: string
   { key: "tools", label: "Tools", fields: [{ name: "name", type: "text" }, { name: "short", type: "text" }, { name: "sort_order", type: "number" }] },
   { key: "socials", label: "Sosmed", fields: [{ name: "platform", type: "text" }, { name: "url", type: "text" }, { name: "sort_order", type: "number" }] },
   { key: "experiences", label: "Pengalaman", fields: [{ name: "period", type: "text" }, { name: "role", type: "text" }, { name: "company", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_goals", label: "PKL Tujuan", fields: [{ name: "icon", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_activities", label: "PKL Kegiatan", fields: [{ name: "label", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_rules", label: "PKL Aturan", fields: [{ name: "label", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_projects", label: "PKL Project", fields: [{ name: "label", type: "text" }, { name: "title", type: "text" }, { name: "tags", type: "text" }, { name: "image_url", type: "image" }, { name: "link_url", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_process", label: "PKL Proses", fields: [{ name: "step_no", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "thumb_url", type: "image" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_stats", label: "PKL Statistik", fields: [{ name: "value", type: "text" }, { name: "label", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_skills", label: "PKL Skill", fields: [{ name: "name", type: "text" }, { name: "percent", type: "number" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_testimonials", label: "PKL Testimoni", fields: [{ name: "quote", type: "text" }, { name: "name", type: "text" }, { name: "role", type: "text" }, { name: "avatar_url", type: "image" }, { name: "sort_order", type: "number" }] },
 ];
+
+const SETTING_TABS = [
+  { key: "site", label: "Site & Gambar" },
+  { key: "pkl_site", label: "PKL Site & Gambar" },
+];
+
+function isImgKey(k: string) {
+  return k.includes("image") || k.includes("url") || k.includes("portrait") || k.includes("thumb") || k.includes("wireframe") || k.includes("_bg") || k.includes("avatar");
+}
 
 async function uploadImage(file: File): Promise<string> {
   const name = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
@@ -23,11 +41,96 @@ async function uploadImage(file: File): Promise<string> {
   return data.publicUrl;
 }
 
+function SettingsForm({
+  defaults,
+  values,
+  onChange,
+  onSave,
+  uploading,
+  setUploading,
+  setMsg,
+}: {
+  defaults: Record<string, string>;
+  values: Record<string, string>;
+  onChange: (v: Record<string, string>) => void;
+  onSave: () => void;
+  uploading: boolean;
+  setUploading: (b: boolean) => void;
+  setMsg: (m: string) => void;
+}) {
+  return (
+    <div className="mt-5 rounded-2xl bg-[#141414] border border-white/10 p-5">
+      <div className="grid md:grid-cols-2 gap-4">
+        {Object.keys(defaults).map((k) => {
+          const isImg = isImgKey(k);
+          return (
+            <label key={k} className="block">
+              <span className="text-[11px] text-neutral-400">{k}</span>
+              {isImg ? (
+                <div className="mt-1 flex gap-2">
+                  <input
+                    value={values[k] ?? ""}
+                    onChange={(e) => onChange({ ...values, [k]: e.target.value })}
+                    className="flex-1 rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                  />
+                  <label className="shrink-0 text-xs bg-white/10 rounded-lg px-3 py-2 cursor-pointer">
+                    {uploading ? "..." : "Upload"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (!f) return;
+                        try {
+                          setUploading(true);
+                          const url = await uploadImage(f);
+                          onChange({ ...values, [k]: url });
+                          setMsg("Upload OK ✓");
+                        } catch (err: unknown) {
+                          setMsg("Upload gagal: " + (err as Error).message);
+                        } finally {
+                          setUploading(false);
+                        }
+                      }}
+                    />
+                  </label>
+                </div>
+              ) : k.includes("desc") || k.includes("title") || k.includes("quote") ? (
+                <textarea
+                  value={values[k] ?? ""}
+                  onChange={(e) => onChange({ ...values, [k]: e.target.value })}
+                  rows={2}
+                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                />
+              ) : (
+                <input
+                  value={values[k] ?? ""}
+                  onChange={(e) => onChange({ ...values, [k]: e.target.value })}
+                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                />
+              )}
+              {isImg && values[k] ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={values[k]} alt={k} className="mt-2 h-20 w-full object-cover rounded-lg border border-white/10" />
+              ) : null}
+            </label>
+          );
+        })}
+      </div>
+      <button onClick={onSave} className="mt-5 rounded-lg bg-[#ff4d00] px-5 py-2.5 text-sm font-medium">
+        Simpan Semua
+      </button>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
   const [pw, setPw] = useState("");
   const [tab, setTab] = useState("site");
   const [site, setSite] = useState<Record<string, string>>({ ...DEFAULT_SITE });
+  const [pklSite, setPklSite] = useState<Record<string, string>>({ ...PKL_DEFAULTS });
   const [rows, setRows] = useState<Row[]>([]);
   const [form, setForm] = useState<Row>({});
   const [editing, setEditing] = useState<string | null>(null);
@@ -49,6 +152,10 @@ export default function AdminPage() {
     const { data } = await supabase.from("site_settings").select("*").eq("id", 1).single();
     if (data) setSite({ ...DEFAULT_SITE, ...data });
   };
+  const loadPklSite = async () => {
+    const { data } = await supabase.from("pkl_settings").select("*").eq("id", 1).single();
+    if (data) setPklSite({ ...PKL_DEFAULTS, ...data });
+  };
   const loadTable = async (key: string) => {
     const { data } = await supabase.from(key).select("*").order("sort_order", { ascending: true });
     setRows((data ?? []) as Row[]);
@@ -59,6 +166,7 @@ export default function AdminPage() {
   useEffect(() => {
     if (!authed) return;
     if (tab === "site") loadSite();
+    else if (tab === "pkl_site") loadPklSite();
     else loadTable(tab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authed, tab]);
@@ -66,6 +174,12 @@ export default function AdminPage() {
   const saveSite = async () => {
     setMsg("Menyimpan...");
     const { error } = await supabase.from("site_settings").upsert({ id: 1, ...site, updated_at: new Date().toISOString() });
+    setMsg(error ? "Gagal: " + error.message : "Tersimpan ✓");
+  };
+
+  const savePklSite = async () => {
+    setMsg("Menyimpan...");
+    const { error } = await supabase.from("pkl_settings").upsert({ id: 1, ...pklSite, updated_at: new Date().toISOString() });
     setMsg(error ? "Gagal: " + error.message : "Tersimpan ✓");
   };
 
@@ -131,7 +245,7 @@ export default function AdminPage() {
           <a href="/" className="text-xs text-neutral-400 border border-white/15 rounded-full px-3 py-1.5">Lihat Site →</a>
         </div>
         <div className="mt-4 flex gap-2 overflow-x-auto no-scrollbar">
-          {[{ key: "site", label: "Site & Gambar" }, ...TABLES].map((t) => (
+          {[...SETTING_TABS, ...TABLES].map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
@@ -144,69 +258,27 @@ export default function AdminPage() {
         {msg && <p className="mt-3 text-xs text-emerald-400">{msg}</p>}
 
         {tab === "site" && (
-          <div className="mt-5 rounded-2xl bg-[#141414] border border-white/10 p-5">
-            <div className="grid md:grid-cols-2 gap-4">
-              {Object.keys(DEFAULT_SITE).map((k) => {
-                const isImg = k.includes("image") || k.includes("url") || k.includes("portrait") || k.includes("thumb") || k.includes("wireframe");
-                return (
-                  <label key={k} className="block">
-                    <span className="text-[11px] text-neutral-400">{k}</span>
-                    {isImg ? (
-                      <div className="mt-1 flex gap-2">
-                        <input
-                          value={site[k] ?? ""}
-                          onChange={(e) => setSite({ ...site, [k]: e.target.value })}
-                          className="flex-1 rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
-                        />
-                        <label className="shrink-0 text-xs bg-white/10 rounded-lg px-3 py-2 cursor-pointer">
-                          {uploading ? "..." : "Upload"}
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={async (e) => {
-                              const f = e.target.files?.[0];
-                              if (!f) return;
-                              try {
-                                setUploading(true);
-                                const url = await uploadImage(f);
-                                setSite((s) => ({ ...s, [k]: url }));
-                                setMsg("Upload OK ✓");
-                              } catch (err: unknown) {
-                                setMsg("Upload gagal: " + (err as Error).message);
-                              } finally {
-                                setUploading(false);
-                              }
-                            }}
-                          />
-                        </label>
-                      </div>
-                    ) : k.includes("desc") || k.includes("title") ? (
-                      <textarea
-                        value={site[k] ?? ""}
-                        onChange={(e) => setSite({ ...site, [k]: e.target.value })}
-                        rows={2}
-                        className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
-                      />
-                    ) : (
-                      <input
-                        value={site[k] ?? ""}
-                        onChange={(e) => setSite({ ...site, [k]: e.target.value })}
-                        className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
-                      />
-                    )}
-                    {isImg && site[k] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={site[k]} alt={k} className="mt-2 h-20 w-full object-cover rounded-lg border border-white/10" />
-                    ) : null}
-                  </label>
-                );
-              })}
-            </div>
-            <button onClick={saveSite} className="mt-5 rounded-lg bg-[#ff4d00] px-5 py-2.5 text-sm font-medium">
-              Simpan Semua
-            </button>
-          </div>
+          <SettingsForm
+            defaults={DEFAULT_SITE}
+            values={site}
+            onChange={setSite}
+            onSave={saveSite}
+            uploading={uploading}
+            setUploading={setUploading}
+            setMsg={setMsg}
+          />
+        )}
+
+        {tab === "pkl_site" && (
+          <SettingsForm
+            defaults={PKL_DEFAULTS}
+            values={pklSite}
+            onChange={setPklSite}
+            onSave={savePklSite}
+            uploading={uploading}
+            setUploading={setUploading}
+            setMsg={setMsg}
+          />
         )}
 
         {table && (
