@@ -14,6 +14,7 @@ export type Project = {
   category: string;
   subtitle: string;
   image_url: string;
+  link_url: string;
   sort_order: number;
   is_active: boolean;
 };
@@ -126,11 +127,11 @@ const DEFAULT_NAV: NavLink[] = [
   { id: "4", label: "Contact", href: "#contact", sort_order: 3 },
 ];
 const DEFAULT_PROJECTS: Project[] = [
-  { id: "1", num_label: "05 / 05", title: "The Greater", category: "Visual Campaign", subtitle: "Art Direction • Visual Design", image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop", sort_order: 0, is_active: true },
-  { id: "2", num_label: "02 / 05", title: "Nexora", category: "Brand Identity", subtitle: "Branding • Visual Design", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop", sort_order: 1, is_active: true },
-  { id: "3", num_label: "01 / 05", title: "Mobile Banking App", category: "Fintech", subtitle: "UI/UX Design • Product Design", image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80&auto=format&fit=crop", sort_order: 2, is_active: true },
-  { id: "4", num_label: "03 / 05", title: "PortoLab", category: "Web Design", subtitle: "UI/UX • Web Design", image_url: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&auto=format&fit=crop", sort_order: 3, is_active: true },
-  { id: "5", num_label: "04 / 05", title: "Lume", category: "Packaging Design", subtitle: "Branding • Packaging", image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80&auto=format&fit=crop", sort_order: 4, is_active: true },
+  { id: "1", num_label: "05 / 05", title: "The Greater", category: "Visual Campaign", subtitle: "Art Direction • Visual Design", image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 0, is_active: true },
+  { id: "2", num_label: "02 / 05", title: "Nexora", category: "Brand Identity", subtitle: "Branding • Visual Design", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 1, is_active: true },
+  { id: "3", num_label: "01 / 05", title: "Mobile Banking App", category: "Fintech", subtitle: "UI/UX Design • Product Design", image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 2, is_active: true },
+  { id: "4", num_label: "03 / 05", title: "PortoLab", category: "Web Design", subtitle: "UI/UX • Web Design", image_url: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 3, is_active: true },
+  { id: "5", num_label: "04 / 05", title: "Lume", category: "Packaging Design", subtitle: "Branding • Packaging", image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 4, is_active: true },
 ];
 const DEFAULT_STEPS: ProcessStep[] = [
   { id: "1", step_no: "01", title: "Problem & Research", description: "Understanding user needs", sort_order: 0 },

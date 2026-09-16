@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   motion,
+  AnimatePresence,
   useReducedMotion,
   type PanInfo,
 } from "motion/react";
@@ -37,6 +38,8 @@ export default function FeaturedProjects({
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  /** suppresses the synthetic click that follows a real drag */
+  const suppressClick = useRef(false);
 
   const go = useCallback(
     (dir: 1 | -1) => setIdx((i) => (i + dir + n) % n),
@@ -69,6 +72,7 @@ export default function FeaturedProjects({
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     setDragging(false);
+    if (Math.abs(info.offset.x) > 10) suppressClick.current = true;
     const { offset, velocity } = info;
     if (
       offset.x < -swipeThresholds.offset ||
@@ -170,8 +174,14 @@ export default function FeaturedProjects({
             return (
               <motion.article
                 key={p.id}
-                onClick={() => setIdx(i)}
-                className={`shrink-0 rounded-xl overflow-hidden border bg-[#141414] ${
+                onClick={() => {
+                  if (suppressClick.current) {
+                    suppressClick.current = false;
+                    return;
+                  }
+                  setIdx(i);
+                }}
+                className={`shrink-0 relative rounded-xl overflow-hidden border bg-[#141414] ${
                   active
                     ? "border-[#ff4d00]/80 shadow-[0_0_50px_rgba(255,77,0,0.3)]"
                     : "border-white/10"
@@ -194,6 +204,34 @@ export default function FeaturedProjects({
                   </span>
                   <span>↗</span>
                 </div>
+                <AnimatePresence>
+                  {active && p.link_url && p.link_url !== "#" && (
+                    <motion.a
+                      href={p.link_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (suppressClick.current) {
+                          e.preventDefault();
+                          suppressClick.current = false;
+                        }
+                      }}
+                      className="absolute top-9 left-1/2 z-10 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-[10.5px] font-medium text-neutral-900 shadow-[0_8px_24px_rgba(0,0,0,0.45)]"
+                      initial={{ opacity: 0, scale: 0.5, y: -10, x: "-50%" }}
+                      animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
+                      exit={{ opacity: 0, scale: 0.5, y: -10, x: "-50%" }}
+                      transition={reduce ? { duration: motionTokens.duration.instant } : springs.bouncy}
+                      whileHover={reduce ? undefined : { scale: 1.08 }}
+                      whileTap={reduce ? undefined : { scale: 0.94 }}
+                    >
+                      Visit
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#ff4d00] text-[9px] text-white">
+                        ↗
+                      </span>
+                    </motion.a>
+                  )}
+                </AnimatePresence>
                 <div
                   className={`mx-2.5 mt-1 rounded-lg overflow-hidden relative ${
                     active ? "h-[310px] md:h-[350px]" : "h-[250px] md:h-[270px]"

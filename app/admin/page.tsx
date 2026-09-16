@@ -6,7 +6,7 @@ type Row = Record<string, unknown>;
 
 const TABLES: { key: string; label: string; fields: { name: string; type: string }[] }[] = [
   { key: "nav_links", label: "Navigasi", fields: [{ name: "label", type: "text" }, { name: "href", type: "text" }, { name: "sort_order", type: "number" }] },
-  { key: "projects", label: "Projects", fields: [{ name: "num_label", type: "text" }, { name: "title", type: "text" }, { name: "category", type: "text" }, { name: "subtitle", type: "text" }, { name: "image_url", type: "image" }, { name: "sort_order", type: "number" }, { name: "is_active", type: "boolean" }] },
+  { key: "projects", label: "Projects", fields: [{ name: "num_label", type: "text" }, { name: "title", type: "text" }, { name: "category", type: "text" }, { name: "subtitle", type: "text" }, { name: "image_url", type: "image" }, { name: "link_url", type: "text" }, { name: "sort_order", type: "number" }, { name: "is_active", type: "boolean" }] },
   { key: "process_steps", label: "Proses", fields: [{ name: "step_no", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
   { key: "skills", label: "Skills", fields: [{ name: "name", type: "text" }, { name: "is_highlight", type: "boolean" }, { name: "sort_order", type: "number" }] },
   { key: "skill_bars", label: "Skill Bars", fields: [{ name: "name", type: "text" }, { name: "percent", type: "number" }, { name: "sort_order", type: "number" }] },
@@ -287,6 +287,12 @@ export default function AdminPage() {
                     {(r as { image_url?: string }).image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={String((r as { image_url?: string }).image_url)} alt="" className="mt-2 h-16 w-full object-cover rounded-lg" />
+                    ) : null}
+                    {typeof (r as { link_url?: unknown }).link_url === "string" &&
+                    (r as { link_url?: string }).link_url !== "#" ? (
+                      <p className="text-neutral-500 truncate mt-1">
+                        🔗 {(r as { link_url?: string }).link_url}
+                      </p>
                     ) : null}
                     <div className="mt-2 flex gap-2">
                       <button
