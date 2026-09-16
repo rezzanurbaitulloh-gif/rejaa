@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LenisProvider } from "@/components/LenisProvider";
+import { Cursor } from "@/components/motion/Cursor";
+import { Loader } from "@/components/Loader";
+import { PageTransitionProvider } from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "AKUNSTOK — Digital Designer & Creative Problem Solver",
@@ -18,7 +22,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <LenisProvider>
+          <PageTransitionProvider>
+            <Cursor />
+            <Loader />
+            {children}
+          </PageTransitionProvider>
+        </LenisProvider>
+      </body>
     </html>
   );
 }

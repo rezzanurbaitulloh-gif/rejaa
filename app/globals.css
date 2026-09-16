@@ -7,7 +7,14 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* smooth anchor scrolling is owned by Lenis, not CSS */
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor [role="button"] {
+  cursor: none;
 }
 
 body {

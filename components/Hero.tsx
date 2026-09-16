@@ -159,6 +159,7 @@ export default function Hero({ site }: { site: Site }) {
           <div className="md:hidden mt-6 -mx-5">
             <div className="overflow-hidden">
               <motion.img
+                data-preload
                 src={site.hero_image_url}
                 alt="portrait"
                 className="w-full h-[420px] object-cover object-top grayscale"
@@ -175,6 +176,7 @@ export default function Hero({ site }: { site: Site }) {
         {/* right desktop */}
         <div className="hidden md:block relative overflow-hidden">
           <motion.img
+            data-preload
             src={site.hero_image_url}
             alt="portrait"
             className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"

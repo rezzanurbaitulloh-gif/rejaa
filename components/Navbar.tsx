@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
+import { usePageTransition } from "@/components/PageTransition";
 import type { NavLink, Social } from "@/lib/supabase";
 
 export default function Navbar({
@@ -31,7 +33,24 @@ export default function Navbar({
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const reduce = useReducedMotion();
-  const hrefFor = (h: string) => (h.startsWith("/") || h.startsWith("http") ? h : `${base}${h}`);
+  const pathname = usePathname();
+  const { go } = usePageTransition();
+  /* pure page-local anchors stay in-page (Lenis smooth);
+     shared nav anchors resolve against base; cross-route links wipe-transition */
+  const hrefFor = (h: string, local = false) => {
+    if (h.startsWith("http")) return h;
+    if (h.startsWith("/")) return h;
+    if (h.startsWith("#")) return local ? h : `${base}${h}`;
+    return `${base}${h}`;
+  };
+  const navClick = (e: React.MouseEvent, raw: string, local = false) => {
+    const h = hrefFor(raw, local);
+    if (!h.startsWith("/")) return;
+    if (h.split("#")[0] === pathname && !h.includes("#")) return;
+    e.preventDefault();
+    setOpen(false);
+    go(h);
+  };
   const isActive = (l: NavLink, i: number) => (active ? l.href === active : i === 0);
   const visible = links.filter((l) => !hideHrefs?.includes(l.href));
   const overlayLinks = menuLinks ?? visible;
@@ -62,6 +81,7 @@ export default function Navbar({
         <div className={`flex items-center justify-between px-5 md:px-12 transition-all duration-300 ${scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"}`}>
           <a
             href={`${base}#home`}
+            onClick={(e) => navClick(e, `${base}#home`)}
             className="text-[13px] md:text-sm font-semibold tracking-[0.18em] text-neutral-900"
           >
             {logo}
@@ -71,6 +91,7 @@ export default function Navbar({
               <motion.a
                 key={l.id}
                 href={hrefFor(l.href)}
+                onClick={(e) => navClick(e, l.href)}
                 className={
                   isActive(l, i)
                     ? "text-neutral-900 border-b border-[#FF6A00] pb-0.5"
@@ -131,8 +152,18 @@ export default function Navbar({
               {overlayLinks.map((l, i) => (
                 <motion.a
                   key={l.id}
-                  href={hrefFor(l.href)}
-                  onClick={() => setOpen(false)}
+                  href={hrefFor(l.href, !!menuLinks)}
+                  onClick={(e) => {
+                    if (!menuLinks) navClick(e, l.href);
+                    else {
+                      const h = hrefFor(l.href, true);
+                      if (h.startsWith("/")) {
+                        e.preventDefault();
+                        setOpen(false);
+                        go(h);
+                      } else setOpen(false);
+                    }
+                  }}
                   className="font-serif-d text-3xl py-1 text-neutral-200"
                   initial={reduce ? { opacity: 0 } : { opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}

@@ -255,6 +255,7 @@ export default function FeaturedProjects({
       {/* 3D coverflow carousel */}
       <div
         ref={containerRef}
+        data-cursor="← DRAG →"
         className="relative mt-8 -mx-5 md:mx-0 px-5 md:px-0"
         style={{ perspective: 1200 }}
         onPointerEnter={() => setPaused(true)}
@@ -287,6 +288,7 @@ export default function FeaturedProjects({
             return (
               <motion.article
                 key={p.id}
+                data-cursor="VIEW ↗"
                 onClick={() => {
                   if (suppressClick.current) {
                     suppressClick.current = false;

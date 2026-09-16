@@ -118,7 +118,7 @@ export default function PklHero({ s }: { s: S }) {
             transition={{ ...springs.gentle, delay: 0.35 }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={s.hero_image} alt="pkl portrait" className="w-full h-[380px] object-cover object-top grayscale" />
+            <img data-preload src={s.hero_image} alt="pkl portrait" className="w-full h-[380px] object-cover object-top grayscale" />
           </motion.div>
           {/* info cards */}
           <motion.div
@@ -147,6 +147,7 @@ export default function PklHero({ s }: { s: S }) {
         </div>
         <div className="hidden md:block relative overflow-hidden">
           <motion.img
+            data-preload
             src={s.hero_image}
             alt="pkl portrait"
             className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"
