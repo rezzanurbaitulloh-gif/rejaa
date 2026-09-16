@@ -1,5 +1,7 @@
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { FloatingCard } from "@/components/pkl/FloatingCard";
+import { RulesAccordion } from "@/components/pkl/RulesAccordion";
 import type { PKL_DEFAULTS, PklGoal, PklActivity, PklRule } from "@/lib/pkl";
 import { splitPipe } from "@/lib/pkl";
 
@@ -121,7 +123,7 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
 /** 03 • Kegiatan — light w/ photo cards */
 export function PklActivities({ s, activities }: { s: S; activities: PklActivity[] }) {
   return (
-    <section className="relative bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+    <section id="kegiatan" className="relative bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16 overflow-hidden">
       {s.act_bg ? (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -144,13 +146,15 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
           </div>
         </Reveal>
         <Stagger className="grid grid-cols-2 gap-3" gap={0.08}>
-          {activities.slice(0, 4).map((a) => (
-            <StaggerItem key={a.id}>
-              <div className="h-full rounded-2xl bg-[#141414] text-white p-4 md:p-5 border border-black">
-                <p className="text-[10px] text-[#8A8883]">{a.label}</p>
-                <p className="mt-1.5 text-[13px] md:text-[14px] font-medium">{a.title}</p>
-                <p className="mt-1 text-[11px] text-neutral-400 leading-relaxed">{a.description}</p>
-              </div>
+          {activities.slice(0, 4).map((a, i) => (
+            <StaggerItem key={a.id} className="h-full">
+              <FloatingCard depth={i % 2 === 0 ? 0.8 : 1.4} className="h-full">
+                <div className="h-full rounded-2xl bg-[#141414] text-white p-4 md:p-5 border border-black">
+                  <p className="text-[10px] text-neutral-500">{a.label}</p>
+                  <p className="mt-1.5 text-[13px] md:text-[14px] font-medium">{a.title}</p>
+                  <p className="mt-1 text-[11px] text-neutral-400 leading-relaxed">{a.description}</p>
+                </div>
+              </FloatingCard>
             </StaggerItem>
           ))}
         </Stagger>
@@ -195,19 +199,9 @@ export function PklRules({ s, rules }: { s: S; rules: PklRule[] }) {
             </Magnetic>
           </div>
         </Reveal>
-        <Stagger className="space-y-0" gap={0.07}>
-          {rules.map((r) => (
-            <StaggerItem key={r.id}>
-              <div className="flex gap-4 py-3.5 border-b border-white/10">
-                <span className="text-[12px] text-[#FF6A00] font-medium w-6">{r.label}</span>
-                <div>
-                  <p className="text-[13.5px] font-medium">{r.title}</p>
-                  <p className="text-[12px] text-neutral-400">{r.description}</p>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <Reveal delay={0.1} className="md:mt-0">
+          <RulesAccordion rules={rules} />
+        </Reveal>
       </div>
     </section>
   );

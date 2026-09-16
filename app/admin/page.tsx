@@ -22,6 +22,8 @@ const TABLES: { key: string; label: string; fields: { name: string; type: string
   { key: "pkl_stats", label: "PKL Statistik", fields: [{ name: "value", type: "text" }, { name: "label", type: "text" }, { name: "sort_order", type: "number" }] },
   { key: "pkl_skills", label: "PKL Skill", fields: [{ name: "name", type: "text" }, { name: "percent", type: "number" }, { name: "sort_order", type: "number" }] },
   { key: "pkl_testimonials", label: "PKL Testimoni", fields: [{ name: "quote", type: "text" }, { name: "name", type: "text" }, { name: "role", type: "text" }, { name: "avatar_url", type: "image" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_timeline", label: "PKL Timeline", fields: [{ name: "month_label", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "image_url", type: "image" }, { name: "sort_order", type: "number" }] },
+  { key: "pkl_gallery", label: "PKL Galeri", fields: [{ name: "caption", type: "text" }, { name: "image_url", type: "image" }, { name: "sort_order", type: "number" }] },
 ];
 
 const SETTING_TABS = [
@@ -351,7 +353,7 @@ export default function AdminPage() {
                 {rows.map((r) => (
                   <div key={String(r.id)} className="rounded-xl bg-black/40 border border-white/10 p-3 text-xs">
                     <p className="font-medium text-neutral-100 truncate">
-                      {String(r.title ?? r.name ?? r.label ?? r.platform ?? r.role ?? r.id).slice(0, 60)}
+                      {String(r.title ?? r.name ?? r.label ?? r.platform ?? r.role ?? (r as { caption?: string }).caption ?? (r as { quote?: string }).quote ?? (r as { month_label?: string }).month_label ?? r.id).slice(0, 60)}
                     </p>
                     <p className="text-neutral-500 truncate mt-0.5">
                       {String(r.subtitle ?? r.category ?? r.url ?? r.href ?? r.company ?? "").slice(0, 80)}

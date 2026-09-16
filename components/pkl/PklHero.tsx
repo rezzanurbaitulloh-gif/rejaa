@@ -14,6 +14,13 @@ export default function PklHero({ s }: { s: S }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  /* opening words ignite one by one with scroll (spec bab 13) */
+  const wY = useTransform(scrollYProgress, [0, 0.35], [26, 0]);
+  const wOp0 = useTransform(scrollYProgress, [0, 0.12], [0.12, 1]);
+  const wOp1 = useTransform(scrollYProgress, [0.1, 0.24], [0.12, 1]);
+  const wOp2 = useTransform(scrollYProgress, [0.2, 0.36], [0.12, 1]);
+  const wOps = [wOp0, wOp1, wOp2];
+  const openWords = (s.hero_title_mobile || "").split(".").map((w) => w.trim()).filter(Boolean);
   const show = mounted && !reduce;
 
   const words = s.hero_title.split(" ");
@@ -63,12 +70,21 @@ export default function PklHero({ s }: { s: S }) {
             {s.hero_eyebrow_mobile}
           </motion.p>
           <motion.h2
-            className="md:hidden font-serif-d text-[32px] leading-[1.1] mt-2"
-            initial={show ? { opacity: 0, y: motionTokens.distance.lg } : false}
-            animate={{ opacity: 1, y: 0 }}
+            className="md:hidden font-serif-d text-[34px] leading-[1.12] mt-2"
+            initial={show ? { opacity: 0 } : false}
+            animate={{ opacity: 1 }}
             transition={springs.gentle}
           >
-            {s.hero_title_mobile}
+            {openWords.map((w, i) => (
+              <span key={i} className="block">
+                <motion.span
+                  className="inline-block"
+                  style={reduce ? undefined : { opacity: wOps[i % wOps.length], y: wY }}
+                >
+                  {w}.
+                </motion.span>
+              </span>
+            ))}
           </motion.h2>
           <motion.p
             className="mt-4 text-[12.5px] md:text-[13.5px] text-neutral-400 max-w-[360px] leading-relaxed"

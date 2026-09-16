@@ -4,6 +4,9 @@ import PklHero from "@/components/pkl/PklHero";
 import { PklIntro, PklAbout, PklActivities, PklRules } from "@/components/pkl/PklSections";
 import { PklProjects, PklDetail } from "@/components/pkl/PklWork";
 import { PklResults, PklLearning, PklClosing } from "@/components/pkl/PklClosing";
+import { PklChapters } from "@/components/pkl/PklChapters";
+import { PklJourney } from "@/components/pkl/PklJourney";
+import { PklGallery } from "@/components/pkl/PklGallery";
 import { getSite } from "@/lib/supabase";
 import { getPkl } from "@/lib/pkl";
 
@@ -42,8 +45,23 @@ export default async function PklPage() {
         }}
       />
       <PklHero s={pkl.s} />
+      <PklChapters
+        items={[
+          { id: "top", label: "Pembuka" },
+          { id: "tentang", label: "Tentang" },
+          { id: "tujuan", label: "Tujuan" },
+          { id: "kegiatan", label: "Kegiatan" },
+          { id: "aturan", label: "Aturan" },
+          { id: "proyek", label: "Proyek" },
+          { id: "hasil", label: "Hasil" },
+          { id: "testimoni", label: "Testimoni" },
+          { id: "penutup", label: "Penutup" },
+        ]}
+      />
       <PklIntro s={pkl.s} />
       <PklAbout s={pkl.s} goals={pkl.goals} />
+      <PklJourney s={pkl.s} items={pkl.journey} />
+      <PklGallery s={pkl.s} items={pkl.gallery} />
       <PklActivities s={pkl.s} activities={pkl.activities} />
       <PklRules s={pkl.s} rules={pkl.rules} />
       <PklProjects s={pkl.s} projects={pkl.projects} />

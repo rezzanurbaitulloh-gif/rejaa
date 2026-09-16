@@ -8,6 +8,8 @@ export type PklStep = { id: string; step_no: string; title: string; description:
 export type PklStat = { id: string; value: string; label: string; sort_order: number };
 export type PklSkill = { id: string; name: string; percent: number; sort_order: number };
 export type PklTestimonial = { id: string; quote: string; name: string; role: string; avatar_url: string; sort_order: number };
+export type PklTimeline = { id: string; month_label: string; title: string; description: string; image_url: string; sort_order: number };
+export type PklGallery = { id: string; caption: string; image_url: string; sort_order: number };
 
 export const PKL_DEFAULTS = {
   hero_eyebrow: "PKL • 6 BULAN • 2024 - 2025",
@@ -98,10 +100,16 @@ export const PKL_DEFAULTS = {
   close_follow: "Follow Me",
   thanks_title: "Terima Kasih",
   thanks_sub: "Atas waktu dan perhatiannya.",
+  journey_eyebrow: "Perjalanan",
+  journey_title: "6 Bulan Penuh Cerita",
+  journey_desc: "Setiap bulan punya cerita, tantangan, dan pelajaran baru.",
+  gallery_eyebrow: "Dokumentasi",
+  gallery_title: "Momen PKL",
+  gallery_desc: "Klik foto untuk melihat lebih besar.",
 };
 
 export async function getPkl() {
-  const [s, goals, acts, rules, projs, steps, stats, skills, testis] = await Promise.all([
+  const [s, goals, acts, rules, projs, steps, stats, skills, testis, journey, gallery] = await Promise.all([
     supabase.from("pkl_settings").select("*").eq("id", 1).single(),
     supabase.from("pkl_goals").select("*").order("sort_order"),
     supabase.from("pkl_activities").select("*").order("sort_order"),
@@ -111,6 +119,8 @@ export async function getPkl() {
     supabase.from("pkl_stats").select("*").order("sort_order"),
     supabase.from("pkl_skills").select("*").order("sort_order"),
     supabase.from("pkl_testimonials").select("*").order("sort_order"),
+    supabase.from("pkl_timeline").select("*").order("sort_order"),
+    supabase.from("pkl_gallery").select("*").order("sort_order"),
   ]);
   return {
     s: { ...PKL_DEFAULTS, ...(s.data ?? {}) } as typeof PKL_DEFAULTS,
@@ -122,6 +132,8 @@ export async function getPkl() {
     stats: (stats.data ?? []) as PklStat[],
     skills: (skills.data ?? []) as PklSkill[],
     testimonials: (testis.data ?? []) as PklTestimonial[],
+    journey: (journey.data ?? []) as PklTimeline[],
+    gallery: (gallery.data ?? []) as PklGallery[],
   };
 }
 
