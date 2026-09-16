@@ -1,74 +1,179 @@
+"use client";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { springs, motionTokens } from "@/lib/motion-tokens";
+import { useMounted } from "@/hooks/use-safe-motion";
+import { Magnetic } from "@/components/motion/Magnetic";
+import { Marquee } from "@/components/motion/Marquee";
 import type { DEFAULT_SITE } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
 
 export default function Hero({ site }: { site: Site }) {
+  const mounted = useMounted();
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const imgY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+
   const sides = (site.hero_side_text || "Design|Build|Create").split("|");
+  const words = (site.hero_title || "").split(" ");
+  const show = mounted && !reduce;
+
+  const parent = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } },
+  };
+  const word = {
+    hidden: { opacity: 0, y: motionTokens.distance.xl, rotate: 2 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotate: 0,
+      transition: springs.gentle,
+    },
+  };
+
   return (
-    <section id="home" className="relative bg-[#ece7dc] text-neutral-900 overflow-hidden">
+    <section
+      id="home"
+      ref={ref}
+      className="relative bg-[#ece7dc] text-neutral-900 overflow-hidden"
+    >
       <div className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[88vh]">
         {/* left */}
-        <div className="px-5 md:px-12 pt-20 md:pt-28 pb-8 flex flex-col justify-center">
-          <p className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-500">
+        <motion.div
+          className="px-5 md:px-12 pt-20 md:pt-28 pb-8 flex flex-col justify-center"
+          style={reduce ? undefined : { y: textY }}
+        >
+          <motion.p
+            className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-500"
+            initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={springs.snappy}
+          >
             <span className="text-[#ff4d00] mr-2">01</span> {site.hero_eyebrow}
-          </p>
-          <h1 className="font-serif-d text-[52px] leading-[0.95] md:text-[92px] mt-3 whitespace-pre-line">
-            {site.hero_title}
-          </h1>
-          <p className="mt-4 text-[12.5px] md:text-[13.5px] leading-relaxed text-neutral-600 max-w-[340px]">
+          </motion.p>
+          <motion.h1
+            className="font-serif-d text-[52px] leading-[0.95] md:text-[92px] mt-3"
+            variants={parent}
+            initial={show ? "hidden" : false}
+            animate="visible"
+          >
+            {words.map((w, i) => (
+              <motion.span
+                key={i}
+                className="inline-block mr-[0.22em] last:mr-0"
+                variants={word}
+              >
+                {w}
+              </motion.span>
+            ))}
+          </motion.h1>
+          <motion.p
+            className="mt-4 text-[12.5px] md:text-[13.5px] leading-relaxed text-neutral-600 max-w-[340px]"
+            initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...springs.gentle, delay: 0.35 }}
+          >
             {site.hero_desc}
-          </p>
-          <div className="mt-5">
-            <a
-              href="#works"
-              className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
-            >
-              {site.hero_cta_text}
-              <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">
-                →
-              </span>
-            </a>
-          </div>
+          </motion.p>
+          <motion.div
+            className="mt-5"
+            initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...springs.gentle, delay: 0.45 }}
+          >
+            <Magnetic>
+              <a
+                href="#works"
+                className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
+              >
+                {site.hero_cta_text}
+                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">
+                  →
+                </span>
+              </a>
+            </Magnetic>
+          </motion.div>
           <div className="mt-8 hidden md:flex items-center gap-2 text-[11px] text-neutral-500">
-            <span className="w-4 h-6 rounded-full border border-neutral-400 flex justify-center pt-1">
+            <motion.span
+              className="w-4 h-6 rounded-full border border-neutral-400 flex justify-center pt-1"
+              animate={reduce ? undefined : { y: [0, 4, 0] }}
+              transition={
+                reduce
+                  ? undefined
+                  : {
+                      repeat: Infinity,
+                      duration: 1.8,
+                      ease: [...motionTokens.easing.linear],
+                    }
+              }
+            >
               <span className="w-1 h-1.5 rounded-full bg-neutral-500" />
-            </span>
+            </motion.span>
             {site.hero_scroll}
           </div>
           {/* mobile hero image */}
           <div className="md:hidden mt-6 -mx-5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={site.hero_image_url} alt="portrait" className="w-full h-[420px] object-cover object-top" />
-            <div className="bg-[#0b0b0c] text-neutral-300 text-[10px] tracking-[0.2em] text-center py-2.5">
-              {site.marquee_text}
+            <div className="overflow-hidden">
+              <motion.img
+                src={site.hero_image_url}
+                alt="portrait"
+                className="w-full h-[420px] object-cover object-top"
+                initial={show ? { scale: 1.15, opacity: 0.6 } : false}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ ...springs.gentle, duration: motionTokens.duration.slow }}
+              />
             </div>
+            <Marquee className="bg-[#0b0b0c] text-neutral-300 text-[10px] tracking-[0.2em] text-center py-2.5">
+              <span className="px-4">{site.marquee_text}</span>
+            </Marquee>
           </div>
-        </div>
+        </motion.div>
         {/* right desktop */}
-        <div className="hidden md:block relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="hidden md:block relative overflow-hidden">
+          <motion.img
             src={site.hero_image_url}
             alt="portrait"
-            className="absolute inset-0 w-full h-full object-cover object-top"
+            className="absolute inset-0 w-full h-[115%] object-cover object-top"
+            style={reduce ? undefined : { y: imgY }}
+            initial={show ? { scale: 1.12 } : false}
+            animate={{ scale: 1 }}
+            transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#ece7dc] via-transparent to-transparent w-40" />
-          <div className="absolute right-10 top-24 text-right text-[11px] leading-5 text-neutral-700">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#ece7dc] via-transparent to-transparent w-40 pointer-events-none" />
+          <motion.div
+            className="absolute right-10 top-24 text-right text-[11px] leading-5 text-neutral-700"
+            initial={show ? { opacity: 0, x: motionTokens.distance.md } : false}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ ...springs.gentle, delay: 0.5 }}
+          >
             {sides.map((s) => (
               <div key={s}>{s}</div>
             ))}
             <div className="ml-auto mt-3 w-px h-16 bg-neutral-400" />
             <div className="mt-3 text-neutral-800">
-              <span className="font-semibold">01</span> <span className="text-neutral-400">/ 05</span>
+              <span className="font-semibold">01</span>{" "}
+              <span className="text-neutral-400">/ 05</span>
             </div>
-          </div>
-          <div className="absolute right-10 bottom-16 font-script text-3xl text-white/90 -rotate-6">
+          </motion.div>
+          <motion.div
+            className="absolute right-10 bottom-16 font-script text-3xl text-white/90 -rotate-6"
+            initial={show ? { opacity: 0 } : false}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: motionTokens.duration.slow }}
+          >
             {site.hero_script}
-          </div>
+          </motion.div>
         </div>
       </div>
       {/* mobile side script overlay */}
-      <div className="md:hidden absolute top-[420px] right-4 font-script text-2xl text-white/90 -rotate-6">
+      <div className="md:hidden absolute top-[420px] right-4 font-script text-2xl text-white/90 -rotate-6 pointer-events-none">
         {site.hero_script}
       </div>
     </section>

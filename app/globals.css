@@ -39,3 +39,19 @@ body {
     radial-gradient(1200px 500px at 50% -10%, rgba(255, 77, 0, 0.08), transparent 60%),
     #0b0b0c;
 }
+
+/* motion-engineer: accessibility + gesture affordances */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+  }
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}

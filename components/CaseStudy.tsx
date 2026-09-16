@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import type { DEFAULT_SITE, ProcessStep } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
@@ -8,7 +9,7 @@ export default function CaseStudy({ site, steps }: { site: Site; steps: ProcessS
     <section className="bg-[#0b0b0c] border-t border-white/5 px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-[1fr_1.2fr_0.9fr] gap-8">
         {/* left */}
-        <div>
+        <Reveal>
           <p className="text-[10px] tracking-[0.2em] text-neutral-500">
             <span className="text-[#ff4d00] mr-2">03</span> {site.case_eyebrow}
           </p>
@@ -50,10 +51,10 @@ export default function CaseStudy({ site, steps }: { site: Site; steps: ProcessS
               ))}
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* middle phones */}
-        <div className="relative rounded-2xl overflow-hidden bg-[#141414] border border-white/10 min-h-[380px]">
+        <Reveal delay={0.1} className="relative rounded-2xl overflow-hidden bg-[#141414] border border-white/10 min-h-[380px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={site.case_thumb_url} alt="case" className="absolute inset-0 w-full h-full object-cover opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
@@ -72,10 +73,10 @@ export default function CaseStudy({ site, steps }: { site: Site; steps: ProcessS
           <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 text-[11px] bg-black/60 border border-white/15 rounded-full px-3 py-1.5">
             ▶ {site.case_video_label}
           </span>
-        </div>
+        </Reveal>
 
         {/* right process */}
-        <div className="hidden md:block">
+        <Reveal delay={0.15} className="hidden md:block">
           <p className="text-[10px] tracking-[0.25em] text-neutral-500">{site.process_title}</p>
           <div className="mt-4 space-y-0">
             {steps.map((s, i) => (
@@ -96,7 +97,7 @@ export default function CaseStudy({ site, steps }: { site: Site; steps: ProcessS
           </div>
           <p className="mt-3 text-[12px] text-neutral-200">{site.wireframe_caption}</p>
           <p className="text-[11px] text-neutral-500">{site.wireframe_sub}</p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
