@@ -24,7 +24,7 @@ export default function PklHero({ s }: { s: S }) {
   ];
 
   return (
-    <section ref={ref} className="relative bg-[#0b0b0c] text-white overflow-hidden">
+    <section ref={ref} className="relative bg-[#0A0A0A] text-white overflow-hidden">
       <div className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[90vh]">
         <div className="px-5 md:px-12 pt-24 md:pt-28 pb-8 flex flex-col justify-center">
           <motion.p
@@ -55,7 +55,7 @@ export default function PklHero({ s }: { s: S }) {
             ))}
           </motion.h1>
           <motion.p
-            className="md:hidden text-[10px] tracking-[0.18em] text-neutral-500"
+            className="md:hidden text-[10px] tracking-[0.18em] text-[#8A8883]"
             initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
@@ -87,7 +87,7 @@ export default function PklHero({ s }: { s: S }) {
             <Magnetic>
               <a
                 href="#intro"
-                className="inline-flex items-center gap-3 bg-[#ff4d00] text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
+                className="inline-flex items-center gap-3 bg-[#FF6A00] text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
               >
                 {s.hero_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
@@ -113,13 +113,13 @@ export default function PklHero({ s }: { s: S }) {
           >
             {infos.map(([v, l, icon]) => (
               <div key={l} className="rounded-xl bg-[#141414] border border-white/10 p-3 md:p-4">
-                <p className="text-[#ff4d00] text-sm">{icon}</p>
+                <p className="text-[#FF6A00] text-sm">{icon}</p>
                 <p className="mt-1.5 text-[12px] md:text-[13px] font-medium leading-tight">{v}</p>
-                <p className="text-[10px] text-neutral-500 mt-0.5">{l}</p>
+                <p className="text-[10px] text-[#8A8883] mt-0.5">{l}</p>
               </div>
             ))}
           </motion.div>
-          <div className="mt-5 flex items-center justify-between text-[11px] text-neutral-500 md:hidden">
+          <div className="mt-5 flex items-center justify-between text-[11px] text-[#8A8883] md:hidden">
             <span className="flex items-center gap-2">
               <span className="w-3.5 h-5 rounded-full border border-neutral-600 flex justify-center pt-1">
                 <span className="w-0.5 h-1 rounded-full bg-neutral-500" />
@@ -139,7 +139,7 @@ export default function PklHero({ s }: { s: S }) {
             animate={{ scale: 1 }}
             transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0c] via-transparent to-transparent w-48 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-transparent w-48 pointer-events-none" />
           <motion.div
             className="absolute right-10 bottom-24 text-right font-script text-3xl text-white/85 leading-snug"
             initial={show ? { opacity: 0 } : false}

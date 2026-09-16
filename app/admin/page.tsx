@@ -71,7 +71,7 @@ function SettingsForm({
                   <input
                     value={values[k] ?? ""}
                     onChange={(e) => onChange({ ...values, [k]: e.target.value })}
-                    className="flex-1 rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                    className="flex-1 rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#FF6A00]"
                   />
                   <label className="shrink-0 text-xs bg-white/10 rounded-lg px-3 py-2 cursor-pointer">
                     {uploading ? "..." : "Upload"}
@@ -101,13 +101,13 @@ function SettingsForm({
                   value={values[k] ?? ""}
                   onChange={(e) => onChange({ ...values, [k]: e.target.value })}
                   rows={2}
-                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#FF6A00]"
                 />
               ) : (
                 <input
                   value={values[k] ?? ""}
                   onChange={(e) => onChange({ ...values, [k]: e.target.value })}
-                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                  className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#FF6A00]"
                 />
               )}
               {isImg && values[k] ? (
@@ -118,7 +118,7 @@ function SettingsForm({
           );
         })}
       </div>
-      <button onClick={onSave} className="mt-5 rounded-lg bg-[#ff4d00] px-5 py-2.5 text-sm font-medium">
+      <button onClick={onSave} className="mt-5 rounded-lg bg-[#FF6A00] px-5 py-2.5 text-sm font-medium">
         Simpan Semua
       </button>
     </div>
@@ -214,7 +214,7 @@ export default function AdminPage() {
 
   if (!authed)
     return (
-      <main className="min-h-screen bg-[#0b0b0c] text-white flex items-center justify-center p-6">
+      <main className="min-h-screen bg-[#0A0A0A] text-white flex items-center justify-center p-6">
         <div className="w-full max-w-sm rounded-2xl bg-[#141414] border border-white/10 p-6">
           <h1 className="font-serif text-2xl">Admin Login</h1>
           <p className="text-xs text-neutral-400 mt-1">Kelola semua teks, gambar & sosmed portfolio.</p>
@@ -224,9 +224,9 @@ export default function AdminPage() {
             onChange={(e) => setPw(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && login()}
             placeholder="Password admin"
-            className="mt-4 w-full rounded-lg bg-black border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-[#ff4d00]"
+            className="mt-4 w-full rounded-lg bg-black border border-white/15 px-3 py-2.5 text-sm outline-none focus:border-[#FF6A00]"
           />
-          <button onClick={login} className="mt-3 w-full rounded-lg bg-[#ff4d00] py-2.5 text-sm font-medium">
+          <button onClick={login} className="mt-3 w-full rounded-lg bg-[#FF6A00] py-2.5 text-sm font-medium">
             Masuk
           </button>
           {msg && <p className="mt-3 text-xs text-red-400">{msg}</p>}
@@ -241,7 +241,7 @@ export default function AdminPage() {
     <main className="min-h-screen bg-[#0f0f10] text-white p-4 md:p-8">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Admin Portfolio <span className="text-[#ff4d00]">●</span></h1>
+          <h1 className="text-xl font-semibold">Admin Portfolio <span className="text-[#FF6A00]">●</span></h1>
           <a href="/" className="text-xs text-neutral-400 border border-white/15 rounded-full px-3 py-1.5">Lihat Site →</a>
         </div>
         <div className="mt-4 flex gap-2 overflow-x-auto no-scrollbar">
@@ -249,7 +249,7 @@ export default function AdminPage() {
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`shrink-0 text-xs px-3.5 py-2 rounded-full border ${tab === t.key ? "bg-[#ff4d00] border-[#ff4d00]" : "border-white/15 text-neutral-300"}`}
+              className={`shrink-0 text-xs px-3.5 py-2 rounded-full border ${tab === t.key ? "bg-[#FF6A00] border-[#FF6A00]" : "border-white/15 text-neutral-300"}`}
             >
               {t.label}
             </button>
@@ -294,7 +294,7 @@ export default function AdminPage() {
                         type="checkbox"
                         checked={Boolean(form[f.name])}
                         onChange={(e) => setForm({ ...form, [f.name]: e.target.checked })}
-                        className="ml-2 accent-[#ff4d00]"
+                        className="ml-2 accent-[#FF6A00]"
                       />
                     ) : f.type === "image" ? (
                       <div className="mt-1 flex gap-2">
@@ -328,14 +328,14 @@ export default function AdminPage() {
                         type={f.type === "number" ? "number" : "text"}
                         value={String(form[f.name] ?? "")}
                         onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
-                        className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#ff4d00]"
+                        className="mt-1 w-full rounded-lg bg-black border border-white/15 px-3 py-2 text-xs outline-none focus:border-[#FF6A00]"
                       />
                     )}
                   </label>
                 ))}
               </div>
               <div className="mt-4 flex gap-2">
-                <button onClick={saveRow} className="rounded-lg bg-[#ff4d00] px-4 py-2 text-xs font-medium">
+                <button onClick={saveRow} className="rounded-lg bg-[#FF6A00] px-4 py-2 text-xs font-medium">
                   {editing ? "Update" : "Tambah"}
                 </button>
                 {editing && (

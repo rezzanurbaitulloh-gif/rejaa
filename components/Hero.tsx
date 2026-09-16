@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform, useMotionValue, useSpring } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
 import { useMounted } from "@/hooks/use-safe-motion";
 import { Magnetic } from "@/components/motion/Magnetic";
@@ -19,6 +19,16 @@ export default function Hero({ site }: { site: Site }) {
   });
   const imgY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  /* cinematic exit: hero shrinks/fades into Featured (spec bab 2) */
+  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const sceneFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
+  /* mouse depth: photo / text / script drift at different rates (spec bab 1) */
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const mImgX = useSpring(useTransform(mx, [0, 1], [16, -16]), springs.gentle);
+  const mImgY = useSpring(useTransform(my, [0, 1], [10, -10]), springs.gentle);
+  const mTextX = useSpring(useTransform(mx, [0, 1], [-8, 8]), springs.gentle);
+  const mScriptX = useSpring(useTransform(mx, [0, 1], [26, -26]), springs.gentle);
 
   const sides = (site.hero_side_text || "Design|Build|Create").split("|");
   const words = (site.hero_title || "").split(" ");
@@ -43,21 +53,31 @@ export default function Hero({ site }: { site: Site }) {
     <section
       id="home"
       ref={ref}
-      className="relative bg-[#ece7dc] text-neutral-900 overflow-hidden"
+      className="relative bg-[#F2EFE8] text-neutral-900 overflow-hidden"
+      onPointerMove={(e) => {
+        if (reduce || e.pointerType !== "mouse") return;
+        const r = ref.current?.getBoundingClientRect();
+        if (!r) return;
+        mx.set((e.clientX - r.left) / r.width);
+        my.set((e.clientY - r.top) / r.height);
+      }}
     >
-      <div className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[88vh]">
+      <motion.div
+        className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[88vh]"
+        style={reduce ? undefined : { scale: sceneScale, opacity: sceneFade }}
+      >
         {/* left */}
         <motion.div
           className="px-5 md:px-12 pt-20 md:pt-28 pb-8 flex flex-col justify-center"
-          style={reduce ? undefined : { y: textY }}
+          style={reduce ? undefined : { y: textY, x: mTextX }}
         >
           <motion.p
-            className="text-[10px] md:text-[11px] tracking-[0.2em] text-neutral-500 max-w-[190px] leading-[1.9]"
+            className="text-[10px] md:text-[11px] tracking-[0.2em] text-[#8A8883] max-w-[190px] leading-[1.9]"
             initial={show ? { opacity: 0, y: motionTokens.distance.md } : false}
             animate={{ opacity: 1, y: 0 }}
             transition={springs.snappy}
           >
-            <span className="text-[#ff4d00] mr-2">01</span> {site.hero_eyebrow}
+            <span className="text-[#FF6A00] mr-2">01</span> {site.hero_eyebrow}
           </motion.p>
           <motion.h1
             className="hidden md:block font-serif-d text-[52px] leading-[0.95] md:text-[92px] mt-3"
@@ -111,13 +131,13 @@ export default function Hero({ site }: { site: Site }) {
                 className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
               >
                 {site.hero_cta_text}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm">
                   →
                 </span>
               </a>
             </Magnetic>
           </motion.div>
-          <div className="mt-8 hidden md:flex items-center gap-2 text-[11px] text-neutral-500">
+          <div className="mt-8 hidden md:flex items-center gap-2 text-[11px] text-[#8A8883]">
             <motion.span
               className="w-4 h-6 rounded-full border border-neutral-400 flex justify-center pt-1"
               animate={reduce ? undefined : { y: [0, 4, 0] }}
@@ -147,7 +167,7 @@ export default function Hero({ site }: { site: Site }) {
                 transition={{ ...springs.gentle, duration: motionTokens.duration.slow }}
               />
             </div>
-            <Marquee className="bg-[#0b0b0c] text-neutral-300 text-[10px] tracking-[0.2em] text-center py-2.5">
+            <Marquee className="bg-[#0A0A0A] text-neutral-300 text-[10px] tracking-[0.2em] text-center py-2.5">
               <span className="px-4">{site.marquee_text}</span>
             </Marquee>
           </div>
@@ -158,12 +178,12 @@ export default function Hero({ site }: { site: Site }) {
             src={site.hero_image_url}
             alt="portrait"
             className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"
-            style={reduce ? undefined : { y: imgY }}
+            style={reduce ? undefined : { y: imgY, x: mImgX }}
             initial={show ? { scale: 1.12 } : false}
             animate={{ scale: 1 }}
             transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#ece7dc] via-transparent to-transparent w-40 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F2EFE8] via-transparent to-transparent w-40 pointer-events-none" />
           <motion.div
             className="absolute right-10 top-24 text-right text-[11px] leading-5 text-neutral-700"
             initial={show ? { opacity: 0, x: motionTokens.distance.md } : false}
@@ -181,6 +201,7 @@ export default function Hero({ site }: { site: Site }) {
           </motion.div>
           <motion.div
             className="absolute right-10 bottom-16 font-script text-3xl text-white/90 -rotate-6"
+            style={reduce ? undefined : { x: mScriptX }}
             initial={show ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: motionTokens.duration.slow }}
@@ -188,7 +209,7 @@ export default function Hero({ site }: { site: Site }) {
             {site.hero_script}
           </motion.div>
         </div>
-      </div>
+      </motion.div>
       {/* mobile side script overlay */}
       <div className="md:hidden absolute top-[420px] right-4 font-script text-2xl text-white/90 -rotate-6 pointer-events-none">
         {site.hero_script}

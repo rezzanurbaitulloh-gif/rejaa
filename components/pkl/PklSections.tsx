@@ -7,8 +7,8 @@ type S = typeof PKL_DEFAULTS;
 
 function Eyebrow({ no, label, dark = false }: { no: string; label: string; dark?: boolean }) {
   return (
-    <p className={`text-[10px] tracking-[0.2em] ${dark ? "text-neutral-500" : "text-neutral-400"}`}>
-      <span className="text-[#ff4d00] mr-2">{no}</span> {label}
+    <p className={`text-[10px] tracking-[0.2em] ${dark ? "text-[#8A8883]" : "text-neutral-400"}`}>
+      <span className="text-[#FF6A00] mr-2">{no}</span> {label}
     </p>
   );
 }
@@ -17,7 +17,7 @@ function Eyebrow({ no, label, dark = false }: { no: string; label: string; dark?
 export function PklIntro({ s }: { s: S }) {
   const chips = splitPipe(s.intro_chips);
   return (
-    <section id="intro" className="bg-[#ece7dc] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
+    <section id="intro" className="bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <Reveal>
           <Eyebrow no={s.intro_no} label={s.intro_eyebrow} dark />
@@ -27,7 +27,7 @@ export function PklIntro({ s }: { s: S }) {
             <Magnetic>
               <a href="#tentang" className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
                 {s.intro_cta}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">→</span>
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm">→</span>
               </a>
             </Magnetic>
           </div>
@@ -54,7 +54,7 @@ export function PklIntro({ s }: { s: S }) {
 /** 02 • Tentang PKL — dark */
 export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
   return (
-    <section id="tentang" className="bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16">
+    <section id="tentang" className="bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <Reveal>
           <Eyebrow no={s.about_no} label={s.about_eyebrow} />
@@ -64,7 +64,7 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
             <Magnetic>
               <a href="#tujuan" className="inline-flex items-center gap-3 border border-white/25 text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-200">
                 {s.about_cta}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
@@ -91,7 +91,7 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
               <p className="text-[11px] font-medium">◍ {s.about_company}</p>
               <p className="text-[10px] text-neutral-400 mt-0.5">{s.about_caption}</p>
             </div>
-            <span className="w-8 h-8 shrink-0 rounded-full bg-[#ff4d00] text-white flex items-center justify-center text-sm">→</span>
+            <span className="w-8 h-8 shrink-0 rounded-full bg-[#FF6A00] text-white flex items-center justify-center text-sm">→</span>
           </div>
         </Reveal>
       </div>
@@ -99,16 +99,16 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
       {/* Tujuan & Manfaat */}
       <div id="tujuan" className="mt-12">
         <Reveal>
-          <p className="text-[10px] tracking-[0.25em] text-neutral-500 text-center">{s.goals_eyebrow}</p>
+          <p className="text-[10px] tracking-[0.25em] text-[#8A8883] text-center">{s.goals_eyebrow}</p>
           <h3 className="font-serif-d text-2xl md:text-4xl text-center mt-2">{s.goals_title}</h3>
         </Reveal>
         <Stagger className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3" gap={0.08}>
           {goals.map((g) => (
             <StaggerItem key={g.id}>
               <div className="h-full rounded-2xl bg-[#141414] border border-white/10 p-4 md:p-5">
-                <span className="w-9 h-9 rounded-full bg-[#ff4d00]/15 text-[#ff4d00] flex items-center justify-center text-sm">{g.icon || "◍"}</span>
+                <span className="w-9 h-9 rounded-full bg-[#FF6A00]/15 text-[#FF6A00] flex items-center justify-center text-sm">{g.icon || "◍"}</span>
                 <p className="mt-3 text-[13px] font-medium">{g.title}</p>
-                <p className="mt-1 text-[11px] text-neutral-500 leading-relaxed">{g.description}</p>
+                <p className="mt-1 text-[11px] text-[#8A8883] leading-relaxed">{g.description}</p>
               </div>
             </StaggerItem>
           ))}
@@ -121,12 +121,12 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
 /** 03 • Kegiatan — light w/ photo cards */
 export function PklActivities({ s, activities }: { s: S; activities: PklActivity[] }) {
   return (
-    <section className="relative bg-[#ece7dc] text-neutral-900 px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+    <section className="relative bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16 overflow-hidden">
       {s.act_bg ? (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={s.act_bg} alt="" aria-hidden className="absolute inset-y-0 right-0 w-full md:w-2/3 object-cover opacity-[0.14] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#ece7dc] via-[#ece7dc]/70 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F2EFE8] via-[#F2EFE8]/70 to-transparent pointer-events-none" />
         </>
       ) : null}
       <div className="grid md:grid-cols-[0.9fr_1.1fr] gap-8 items-center relative">
@@ -138,7 +138,7 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
             <Magnetic>
               <a href="#aturan" className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
                 {s.act_cta}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">→</span>
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm">→</span>
               </a>
             </Magnetic>
           </div>
@@ -147,7 +147,7 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
           {activities.slice(0, 4).map((a) => (
             <StaggerItem key={a.id}>
               <div className="h-full rounded-2xl bg-[#141414] text-white p-4 md:p-5 border border-black">
-                <p className="text-[10px] text-neutral-500">{a.label}</p>
+                <p className="text-[10px] text-[#8A8883]">{a.label}</p>
                 <p className="mt-1.5 text-[13px] md:text-[14px] font-medium">{a.title}</p>
                 <p className="mt-1 text-[11px] text-neutral-400 leading-relaxed">{a.description}</p>
               </div>
@@ -160,7 +160,7 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
           {activities.slice(4).map((a) => (
             <StaggerItem key={a.id}>
               <div className="flex gap-4 py-3.5 border-t border-neutral-900/10">
-                <span className="text-[12px] text-[#ff4d00] font-medium">{a.label}</span>
+                <span className="text-[12px] text-[#FF6A00] font-medium">{a.label}</span>
                 <div>
                   <p className="text-[13.5px] font-medium">{a.title}</p>
                   <p className="text-[12px] text-neutral-600">{a.description}</p>
@@ -177,10 +177,10 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
 /** 04 • Aturan — dark w/ bg photo */
 export function PklRules({ s, rules }: { s: S; rules: PklRule[] }) {
   return (
-    <section id="aturan" className="relative bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+    <section id="aturan" className="relative bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={s.rules_bg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-25" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0c] via-[#0b0b0c]/85 to-[#0b0b0c]/40" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 to-[#0A0A0A]/40" />
       <div className="relative grid md:grid-cols-2 gap-8">
         <Reveal>
           <Eyebrow no={s.rules_no} label={s.rules_eyebrow} />
@@ -190,7 +190,7 @@ export function PklRules({ s, rules }: { s: S; rules: PklRule[] }) {
             <Magnetic>
               <a href="#proyek" className="inline-flex items-center gap-3 border border-white/25 text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-200">
                 {s.rules_cta}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
@@ -199,7 +199,7 @@ export function PklRules({ s, rules }: { s: S; rules: PklRule[] }) {
           {rules.map((r) => (
             <StaggerItem key={r.id}>
               <div className="flex gap-4 py-3.5 border-b border-white/10">
-                <span className="text-[12px] text-[#ff4d00] font-medium w-6">{r.label}</span>
+                <span className="text-[12px] text-[#FF6A00] font-medium w-6">{r.label}</span>
                 <div>
                   <p className="text-[13.5px] font-medium">{r.title}</p>
                   <p className="text-[12px] text-neutral-400">{r.description}</p>

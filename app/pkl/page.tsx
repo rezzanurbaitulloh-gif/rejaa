@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default async function PklPage() {
   const [{ site, nav, socials }, pkl] = await Promise.all([getSite(), getPkl()]);
   return (
-    <main id="top" className="min-h-screen bg-[#0b0b0c]">
+    <main id="top" className="min-h-screen bg-[#0A0A0A]">
       <Navbar
         logo={site.logo_text}
         links={nav}

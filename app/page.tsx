@@ -14,7 +14,7 @@ export default async function Home() {
   const { site, nav, projects, steps, skills, bars, tools, socials, experiences } =
     await getSite();
   return (
-    <main className="min-h-screen bg-[#0b0b0c]">
+    <main className="min-h-screen bg-[#0A0A0A]">
       <Navbar logo={site.logo_text} links={nav} socials={socials} hideHrefs={["/pkl"]} />
       <Hero site={site} />
       <FeaturedProjects site={site} projects={projects} />

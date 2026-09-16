@@ -33,11 +33,11 @@ export default function About({
   ] as const;
 
   return (
-    <section id="about" className="bg-[#0b0b0c] border-t border-white/5 px-5 md:px-12 py-12 md:py-16">
+    <section id="about" className="bg-[#0A0A0A] border-t border-white/5 px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-[1fr_1.1fr_0.8fr] gap-8">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">
-            <span className="text-[#ff4d00] mr-2">04</span> {site.about_eyebrow}
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
+            <span className="text-[#FF6A00] mr-2">04</span> {site.about_eyebrow}
           </p>
           <h3 className="font-serif-d text-[30px] md:text-[38px] leading-[1.05] mt-2">{site.about_title}</h3>
           <p className="mt-3 text-[12px] text-neutral-400 leading-relaxed">{site.about_desc}</p>
@@ -49,7 +49,7 @@ export default function About({
                   <p className="font-serif-d text-2xl">
                     <Counter value={num} suffix={suffix} />
                   </p>
-                  <p className="text-[10px] text-neutral-500 mt-0.5 max-w-[80px]">{l}</p>
+                  <p className="text-[10px] text-[#8A8883] mt-0.5 max-w-[80px]">{l}</p>
                 </div>
               );
             })}
@@ -57,14 +57,14 @@ export default function About({
           <div className="mt-4 flex items-center gap-3">
             <span className="font-script text-3xl text-neutral-200">{site.signature_text}</span>
             <motion.span
-              className="w-7 h-7 rounded-full bg-[#ff4d00] text-white text-sm flex items-center justify-center"
+              className="w-7 h-7 rounded-full bg-[#FF6A00] text-white text-sm flex items-center justify-center"
               animate={reduce ? undefined : { y: [0, 4, 0] }}
               transition={reduce ? undefined : { repeat: Infinity, duration: 1.6, ease: [...motionTokens.easing.linear] }}
             >
               ↓
             </motion.span>
           </div>
-          <a href="#contact" className="md:hidden mt-5 inline-flex items-center gap-2 border border-[#ff4d00] text-[12px] rounded-full px-4 py-2">
+          <a href="#contact" className="md:hidden mt-5 inline-flex items-center gap-2 border border-[#FF6A00] text-[12px] rounded-full px-4 py-2">
             Download CV
           </a>
         </Reveal>
@@ -96,14 +96,14 @@ export default function About({
 
         {/* skills + tools */}
         <Reveal delay={0.15}>
-          <p className="text-[10px] tracking-[0.25em] text-neutral-500">{site.skills_title}</p>
+          <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{site.skills_title}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             {skills.map((s, i) => (
               <motion.span
                 key={s.id}
                 className={`text-[11.5px] px-3.5 py-1.5 rounded-full border ${
                   s.is_highlight
-                    ? "bg-[#ff4d00] border-[#ff4d00] text-white"
+                    ? "bg-[#FF6A00] border-[#FF6A00] text-white"
                     : "border-white/15 text-neutral-300"
                 }`}
                 initial={false}
@@ -115,7 +115,7 @@ export default function About({
               </motion.span>
             ))}
           </div>
-          <p className="mt-6 text-[10px] tracking-[0.25em] text-neutral-500">{site.tools_title}</p>
+          <p className="mt-6 text-[10px] tracking-[0.25em] text-[#8A8883]">{site.tools_title}</p>
           <div className="mt-3 flex gap-2.5">
             {tools.map((t) => (
               <motion.span

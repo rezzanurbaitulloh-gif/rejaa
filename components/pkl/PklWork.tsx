@@ -8,11 +8,11 @@ type S = typeof PKL_DEFAULTS;
 /** 05 • Projects */
 export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
   return (
-    <section id="proyek" className="bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16 border-t border-white/5">
+    <section id="proyek" className="bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16 border-t border-white/5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">
-            <span className="text-[#ff4d00] mr-2">{s.proj_no}</span> {s.proj_eyebrow}
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
+            <span className="text-[#FF6A00] mr-2">{s.proj_no}</span> {s.proj_eyebrow}
           </p>
           <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.proj_title}</h2>
           <p className="mt-3 text-[12.5px] text-neutral-400 leading-relaxed max-w-[440px]">{s.proj_desc}</p>
@@ -21,7 +21,7 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
           <Magnetic>
             <a href="#detail-proyek" className="inline-flex items-center gap-3 border border-white/25 text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-200">
               {s.proj_cta}
-              <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm text-white">→</span>
+              <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">→</span>
             </a>
           </Magnetic>
         </Reveal>
@@ -45,9 +45,9 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
               <div className="p-4 flex items-start justify-between gap-3">
                 <div>
                   <p className="font-serif-d text-lg leading-snug">{p.title}</p>
-                  <p className="mt-1 text-[11px] text-neutral-500">{p.tags}</p>
+                  <p className="mt-1 text-[11px] text-[#8A8883]">{p.tags}</p>
                 </div>
-                <span className="w-8 h-8 shrink-0 rounded-full bg-[#ff4d00] text-white flex items-center justify-center text-sm">→</span>
+                <span className="w-8 h-8 shrink-0 rounded-full bg-[#FF6A00] text-white flex items-center justify-center text-sm">→</span>
               </div>
             </div>
           );
@@ -72,10 +72,10 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
 export function PklDetail({ s, steps }: { s: S; steps: PklStep[] }) {
   const tags = splitPipe(s.detail_tags);
   return (
-    <section id="detail-proyek" className="bg-[#ece7dc] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
+    <section id="detail-proyek" className="bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">{s.detail_eyebrow}</p>
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">{s.detail_eyebrow}</p>
           <h2 className="font-serif-d text-3xl md:text-[42px] leading-tight mt-2">{s.detail_title}</h2>
           <p className="mt-3 text-[12.5px] text-neutral-600 leading-relaxed max-w-[420px]">{s.detail_desc}</p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -88,17 +88,17 @@ export function PklDetail({ s, steps }: { s: S; steps: PklStep[] }) {
               <Magnetic>
                 <a href="#hasil" className="inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
                   {s.detail_cta}
-                  <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm">→</span>
+                  <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm">→</span>
                 </a>
               </Magnetic>
             </div>
           ) : null}
-          <p className="mt-8 text-[10px] tracking-[0.25em] text-neutral-500">{s.process_title}</p>
+          <p className="mt-8 text-[10px] tracking-[0.25em] text-[#8A8883]">{s.process_title}</p>
           <Stagger className="mt-3 space-y-0" gap={0.06}>
             {steps.map((st) => (
               <StaggerItem key={st.id}>
                 <div className="flex gap-4 py-3 border-t border-neutral-900/10">
-                  <span className="text-[12px] text-[#ff4d00] font-medium w-6">{st.step_no}</span>
+                  <span className="text-[12px] text-[#FF6A00] font-medium w-6">{st.step_no}</span>
                   <div className="flex-1">
                     <p className="text-[13.5px] font-medium">{st.title}</p>
                     <p className="text-[12px] text-neutral-600">{st.description}</p>

@@ -16,11 +16,11 @@ function parseStat(v: string): { num: number; prefix: string; suffix: string } {
 /** 06 • Hasil — light + dark skill card */
 export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skills: PklSkill[] }) {
   return (
-    <section id="hasil" className="bg-[#ece7dc] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
+    <section id="hasil" className="bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">
-            <span className="text-[#ff4d00] mr-2">{s.res_no}</span> {s.res_eyebrow}
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
+            <span className="text-[#FF6A00] mr-2">{s.res_no}</span> {s.res_eyebrow}
           </p>
           <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.res_title}</h2>
           <p className="mt-3 text-[12.5px] text-neutral-600 leading-relaxed max-w-[400px]">{s.res_desc}</p>
@@ -32,7 +32,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
                   <p className="font-serif-d text-2xl md:text-3xl">
                     <Counter value={num} prefix={prefix} suffix={suffix} />
                   </p>
-                  <p className="mt-1 text-[10.5px] text-neutral-500">{st.label}</p>
+                  <p className="mt-1 text-[10.5px] text-[#8A8883]">{st.label}</p>
                 </div>
               );
             })}
@@ -46,7 +46,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
                     <p className="font-serif-d text-2xl">
                       <Counter value={num} prefix={prefix} suffix={suffix} />
                     </p>
-                    <p className="mt-1 text-[10.5px] text-neutral-500">{st.label}</p>
+                    <p className="mt-1 text-[10.5px] text-[#8A8883]">{st.label}</p>
                   </div>
                 );
               })}
@@ -58,7 +58,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
             <ul className="mt-3 space-y-2.5">
               {splitPipe(s.learn_points).map((pt) => (
                 <li key={pt} className="flex items-start gap-2.5 text-[12px] text-neutral-700">
-                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-[#ff4d00] text-white text-[9px] flex items-center justify-center">✓</span>
+                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-[#FF6A00] text-white text-[9px] flex items-center justify-center">✓</span>
                   {pt}
                 </li>
               ))}
@@ -70,7 +70,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
           </div>
         </Reveal>
         <Reveal delay={0.1} className="rounded-2xl bg-[#141414] text-white p-6">
-          <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.res_skills_title}</p>
+          <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.res_skills_title}</p>
           <div className="mt-4 space-y-4">
             {skills.map((sk) => (
               <SkillBar key={sk.id} name={sk.name} percent={sk.percent} />
@@ -85,10 +85,10 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
 /** 07 • Pembelajaran + testimoni — dark w/ bg */
 export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: string; testimonials: PklTestimonial[] }) {
   return (
-    <section id="testimoni" className="relative bg-[#0b0b0c] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
+    <section id="testimoni" className="relative bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={s.learn_bg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-20" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0b0b0c] via-transparent to-[#0b0b0c]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
       {/* mobile-only Tentang Saya card (mobile design screen 12) */}
       <Reveal className="md:hidden relative rounded-2xl bg-[#141414] border border-white/10 p-5 mb-8">
         <p className="font-serif-d text-[19px] leading-snug">“{s.ts_quote}”</p>
@@ -102,8 +102,8 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
             ["Kampus", s.ts_campus],
           ].map(([k, v]) => (
             <div key={k} className="flex items-center gap-2.5 text-[12px]">
-              <span className="w-6 h-6 rounded-full bg-[#ff4d00]/15 text-[#ff4d00] flex items-center justify-center text-[10px]">◍</span>
-              <span className="text-neutral-500 w-14">{k}</span>
+              <span className="w-6 h-6 rounded-full bg-[#FF6A00]/15 text-[#FF6A00] flex items-center justify-center text-[10px]">◍</span>
+              <span className="text-[#8A8883] w-14">{k}</span>
               <span className="text-neutral-200">{v}</span>
             </div>
           ))}
@@ -120,16 +120,16 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
           </div>
           <div className="mt-5">
             <Magnetic>
-              <a href="#penutup" className="inline-flex items-center gap-3 border border-[#ff4d00] text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-100">
+              <a href="#penutup" className="inline-flex items-center gap-3 border border-[#FF6A00] text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-100">
                 {s.learn_cta}
-                <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
         </Reveal>
         <div>
           <Reveal delay={0.1}>
-            <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.testi_title}</p>
+            <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.testi_title}</p>
           </Reveal>
           <Stagger className="mt-4 space-y-4" gap={0.1}>
             {testimonials.map((t) => (
@@ -143,7 +143,7 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
                     ) : null}
                     <div>
                       <p className="text-[12.5px] font-medium">{t.name}</p>
-                      <p className="text-[11px] text-neutral-500">{t.role}</p>
+                      <p className="text-[11px] text-[#8A8883]">{t.role}</p>
                     </div>
                   </figcaption>
                 </figure>
@@ -159,19 +159,19 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
 /** Penutup — dark footer */
 export function PklClosing({ s, socials }: { s: S; socials: { id: string; platform: string; url: string }[] }) {
   return (
-    <footer id="penutup" className="bg-[#0b0b0c] text-white px-5 md:px-12 pt-12 pb-6 border-t border-white/5">
+    <footer id="penutup" className="bg-[#0A0A0A] text-white px-5 md:px-12 pt-12 pb-6 border-t border-white/5">
       <div className="grid md:grid-cols-[1.1fr_1fr_0.7fr] gap-8">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">{s.close_eyebrow}</p>
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">{s.close_eyebrow}</p>
           <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.close_title}</h2>
           <p className="mt-3 text-[12.5px] text-neutral-400 leading-relaxed max-w-[380px]">{s.close_desc}</p>
         </Reveal>
         <Reveal delay={0.1}>
           <p className="text-[14px] font-medium">{s.close_cta_title}</p>
-          <p className="mt-1.5 text-[12px] text-neutral-500">{s.close_cta_desc}</p>
+          <p className="mt-1.5 text-[12px] text-[#8A8883]">{s.close_cta_desc}</p>
           <div className="mt-4">
             <Magnetic>
-              <a href="mailto:hello@akunstok.studio" className="inline-flex items-center gap-3 bg-[#ff4d00] text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
+              <a href="mailto:hello@akunstok.studio" className="inline-flex items-center gap-3 bg-[#FF6A00] text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
                 {s.close_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
               </a>
@@ -179,7 +179,7 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
           </div>
         </Reveal>
         <Reveal delay={0.15}>
-          <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.close_follow}</p>
+          <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.close_follow}</p>
           <div className="mt-3 space-y-2.5">
             {socials.map((soc) => (
               <a key={soc.id} href={soc.url} className="flex items-center gap-2.5 text-[13px] text-neutral-300 hover:text-white">
@@ -190,7 +190,7 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
           </div>
           <div className="mt-6 rounded-xl bg-gradient-to-br from-neutral-800 to-black border border-white/10 p-4 text-center">
             <p className="font-serif-d text-lg">{s.thanks_title}</p>
-            <p className="text-[10.5px] text-neutral-500 mt-0.5">{s.thanks_sub}</p>
+            <p className="text-[10.5px] text-[#8A8883] mt-0.5">{s.thanks_sub}</p>
           </div>
         </Reveal>
       </div>

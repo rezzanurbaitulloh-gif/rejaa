@@ -13,11 +13,11 @@ const ICONS: Record<string, string> = {
 
 export default function ContactFooter({ site, socials }: { site: Site; socials: Social[] }) {
   return (
-    <footer id="contact" className="bg-[#ece7dc] text-neutral-900 px-5 md:px-12 pt-12 pb-5">
+    <footer id="contact" className="bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 pt-12 pb-5">
       <div className="grid md:grid-cols-[1.2fr_1fr_0.8fr] gap-8">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-neutral-500">
-            <span className="text-[#ff4d00] mr-2">05</span> {site.contact_eyebrow}
+          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
+            <span className="text-[#FF6A00] mr-2">05</span> {site.contact_eyebrow}
           </p>
           <h3 className="hidden md:block font-serif-d text-[30px] md:text-[40px] leading-[1.05] mt-2 whitespace-pre-line">
             {site.contact_title}
@@ -29,11 +29,11 @@ export default function ContactFooter({ site, socials }: { site: Site; socials: 
           <Magnetic>
             <a href="mailto:hello@akunstok.studio" className="mt-4 inline-flex items-center gap-3 bg-neutral-900 text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
               {site.contact_cta}
-              <span className="w-7 h-7 rounded-full bg-[#ff4d00] flex items-center justify-center">→</span>
+              <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center">→</span>
             </a>
           </Magnetic>
           <div className="md:hidden mt-5 space-y-2.5">
-            <p className="text-[10px] tracking-[0.25em] text-neutral-500">LET&apos;S TALK</p>
+            <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">LET&apos;S TALK</p>
             {socials.map((s) => (
               <a key={s.id} href={s.url} className="flex items-center gap-2.5 text-[13px] text-neutral-800">
                 <span className="w-6 h-6 rounded-md border border-neutral-300 flex items-center justify-center text-[11px]">{ICONS[s.platform] ?? "•"}</span>
@@ -49,11 +49,11 @@ export default function ContactFooter({ site, socials }: { site: Site; socials: 
               {s.platform}
             </a>
           ))}
-          <p className="mt-6 text-[11px] text-neutral-500 max-w-[160px]">{site.contact_tagline}</p>
+          <p className="mt-6 text-[11px] text-[#8A8883] max-w-[160px]">{site.contact_tagline}</p>
         </Reveal>
       </div>
-      <p className="md:hidden mt-6 text-[10.5px] text-neutral-500">Open for new projects, collaborations, and opportunities.</p>
-      <div className="mt-8 pt-4 border-t border-neutral-900/10 flex items-center justify-between text-[10.5px] text-neutral-500">
+      <p className="md:hidden mt-6 text-[10.5px] text-[#8A8883]">Open for new projects, collaborations, and opportunities.</p>
+      <div className="mt-8 pt-4 border-t border-neutral-900/10 flex items-center justify-between text-[10.5px] text-[#8A8883]">
         <p>{site.footer_copy}</p>
         <div className="hidden md:flex gap-5">
           <span>Privacy</span>

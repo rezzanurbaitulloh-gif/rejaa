@@ -54,12 +54,12 @@ export default function Navbar({
     <>
       <motion.header
         className={`absolute top-0 left-0 right-0 z-40 transition-colors ${
-          scrolled ? "bg-[#ece7dc]/85 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]" : ""
+          scrolled ? "bg-[#F2EFE8]/85 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]" : ""
         }`}
         initial={false}
         animate={{ y: 0, opacity: 1 }}
       >
-        <div className="flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
+        <div className={`flex items-center justify-between px-5 md:px-12 transition-all duration-300 ${scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"}`}>
           <a
             href={`${base}#home`}
             className="text-[13px] md:text-sm font-semibold tracking-[0.18em] text-neutral-900"
@@ -73,7 +73,7 @@ export default function Navbar({
                 href={hrefFor(l.href)}
                 className={
                   isActive(l, i)
-                    ? "text-neutral-900 border-b border-[#ff4d00] pb-0.5"
+                    ? "text-neutral-900 border-b border-[#FF6A00] pb-0.5"
                     : "hover:text-black"
                 }
                 whileHover={reduce ? undefined : { y: -2 }}
@@ -109,7 +109,7 @@ export default function Navbar({
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-50 bg-[#0b0b0c] text-white flex flex-col px-6 py-4"
+            className="fixed inset-0 z-50 bg-[#0A0A0A] text-white flex flex-col px-6 py-4"
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: "-4%" }}
             animate={{ opacity: 1, y: "0%" }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: "-4%" }}
@@ -138,7 +138,7 @@ export default function Navbar({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ ...springs.gentle, delay: 0.08 + i * 0.06 }}
                 >
-                  <span className="text-[11px] align-super mr-3 text-[#ff4d00]">
+                  <span className="text-[11px] align-super mr-3 text-[#FF6A00]">
                     0{i + 1}
                   </span>
                   {l.label}
@@ -157,7 +157,7 @@ export default function Navbar({
                 <span>in</span>
                 <span>✉</span>
               </div>
-              <p className="mt-6 text-center text-[10px] tracking-[0.25em] text-neutral-500">
+              <p className="mt-6 text-center text-[10px] tracking-[0.25em] text-[#8A8883]">
                 {logo}
               </p>
               {menuCard ? (
@@ -174,7 +174,7 @@ export default function Navbar({
                       onClick={() => setOpen(false)}
                       className="mt-3 inline-flex items-center gap-2 border border-white/25 rounded-full px-3.5 py-1.5 text-[11px]"
                     >
-                      {menuCard.cta} <span className="text-[#ff4d00]">→</span>
+                      {menuCard.cta} <span className="text-[#FF6A00]">→</span>
                     </a>
                   </div>
                 </div>
