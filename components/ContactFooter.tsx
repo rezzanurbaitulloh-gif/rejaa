@@ -1,15 +1,9 @@
 import { Reveal } from "@/components/motion/Reveal";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { InstagramIcon, BehanceIcon, LinkedinIcon, EmailIcon } from "@/components/motion/SocialIcons";
 import type { DEFAULT_SITE, Social } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
-
-const ICONS: Record<string, string> = {
-  Instagram: "◍",
-  Behance: "Be",
-  Linkedin: "in",
-  Email: "✉",
-};
 
 export default function ContactFooter({ site, socials }: { site: Site; socials: Social[] }) {
   return (
@@ -34,21 +28,33 @@ export default function ContactFooter({ site, socials }: { site: Site; socials: 
           </Magnetic>
           <div className="md:hidden mt-5 space-y-2.5">
             <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">LET&apos;S TALK</p>
-            {socials.map((s) => (
-              <a key={s.id} href={s.url} className="flex items-center gap-2.5 text-[13px] text-neutral-800">
-                <span className="w-6 h-6 rounded-md border border-neutral-300 flex items-center justify-center text-[11px]">{ICONS[s.platform] ?? "•"}</span>
-                {s.platform}
-              </a>
-            ))}
+            {socials.map((s) => {
+              const Icon = s.platform.toLowerCase() === 'instagram' ? InstagramIcon :
+                s.platform.toLowerCase() === 'behance' ? BehanceIcon :
+                s.platform.toLowerCase() === 'linkedin' ? LinkedinIcon :
+                s.platform.toLowerCase() === 'email' ? EmailIcon : null;
+              return (
+                <a key={s.id} href={s.url} className="flex items-center gap-2.5 text-[13px] text-neutral-800">
+                  {Icon && <Icon className="w-5 h-5" animated />}
+                  {s.platform}
+                </a>
+              );
+            })}
           </div>
         </Reveal>
         <Reveal delay={0.15} className="hidden md:flex flex-col gap-2 text-[13px]">
-          {socials.map((s) => (
-            <a key={s.id} href={s.url} className="flex items-center gap-2.5 text-neutral-700 hover:text-black">
-              <span className="w-6 h-6 rounded-md border border-neutral-300 flex items-center justify-center text-[11px]">{ICONS[s.platform] ?? "•"}</span>
-              {s.platform}
-            </a>
-          ))}
+          {socials.map((s) => {
+            const Icon = s.platform.toLowerCase() === 'instagram' ? InstagramIcon :
+              s.platform.toLowerCase() === 'behance' ? BehanceIcon :
+              s.platform.toLowerCase() === 'linkedin' ? LinkedinIcon :
+              s.platform.toLowerCase() === 'email' ? EmailIcon : null;
+            return (
+              <a key={s.id} href={s.url} className="flex items-center gap-2.5 text-neutral-700 hover:text-black">
+                {Icon && <Icon className="w-5 h-5" animated />}
+                {s.platform}
+              </a>
+            );
+          })}
           <p className="mt-6 text-[11px] text-[#8A8883] max-w-[160px]">{site.contact_tagline}</p>
         </Reveal>
       </div>

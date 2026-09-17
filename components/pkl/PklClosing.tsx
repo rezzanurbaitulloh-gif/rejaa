@@ -3,6 +3,7 @@ import { Counter } from "@/components/motion/Counter";
 import { SkillBar } from "@/components/motion/SkillBar";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { TestiCarousel } from "@/components/pkl/TestiCarousel";
+import { InstagramIcon, BehanceIcon, LinkedinIcon, EmailIcon } from "@/components/motion/SocialIcons";
 import { splitPipe } from "@/lib/pkl";
 import type { PKL_DEFAULTS, PklStat, PklSkill, PklTestimonial } from "@/lib/pkl";
 
@@ -167,12 +168,18 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
         <Reveal delay={0.15}>
           <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.close_follow}</p>
           <div className="mt-3 space-y-2.5">
-            {socials.map((soc) => (
-              <a key={soc.id} href={soc.url} className="flex items-center gap-2.5 text-[13px] text-neutral-300 hover:text-white">
-                <span className="w-6 h-6 rounded-md border border-white/15 flex items-center justify-center text-[11px]">•</span>
-                {soc.platform}
-              </a>
-            ))}
+            {socials.map((soc) => {
+              const Icon = soc.platform.toLowerCase() === 'instagram' ? InstagramIcon :
+                soc.platform.toLowerCase() === 'behance' ? BehanceIcon :
+                soc.platform.toLowerCase() === 'linkedin' ? LinkedinIcon :
+                soc.platform.toLowerCase() === 'email' ? EmailIcon : null;
+              return (
+                <a key={soc.id} href={soc.url} className="flex items-center gap-2.5 text-[13px] text-neutral-300 hover:text-white">
+                  {Icon && <Icon className="w-5 h-5" animated />}
+                  {soc.platform}
+                </a>
+              );
+            })}
           </div>
           <div className="mt-6 rounded-xl bg-gradient-to-br from-neutral-800 to-black border border-white/10 p-4 text-center">
             <p className="font-serif-d text-lg">{s.thanks_title}</p>

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
 import { usePageTransition } from "@/components/PageTransition";
+import { Logo } from "@/components/motion/Logo";
 import type { NavLink, Social } from "@/lib/supabase";
 
 export default function Navbar({
@@ -82,7 +83,7 @@ export default function Navbar({
             onClick={(e) => navClick(e, `${base}#home`)}
             className="text-[13px] md:text-sm font-semibold tracking-[0.18em] text-neutral-900"
           >
-            {logo}
+            <Logo className="w-6 h-6 md:w-8 md:h-8" animated />
           </a>
           <nav className="hidden md:flex items-center gap-8 text-[13px] text-neutral-800">
             {visible.map((l, i) => (
@@ -135,9 +136,7 @@ export default function Navbar({
             transition={springs.gentle}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[12px] tracking-[0.18em] font-semibold">
-                AKUNSTOK
-              </span>
+              <Logo className="w-6 h-6" animated />
               <button
                 aria-label="close"
                 onClick={() => setOpen(false)}
@@ -187,7 +186,7 @@ export default function Navbar({
                 <span>✉</span>
               </div>
               <p className="mt-6 text-center text-[10px] tracking-[0.25em] text-[#8A8883]">
-                {logo}
+                <Logo className="w-5 h-5 inline" animated />
               </p>
               {menuCard ? (
                 <div className="mt-3 mx-auto max-w-[280px] rounded-xl bg-[#141414] border border-white/10 overflow-hidden text-left">
@@ -209,7 +208,8 @@ export default function Navbar({
                 </div>
               ) : (
                 <div className="mt-3 mx-auto max-w-[280px] rounded-xl bg-gradient-to-br from-neutral-800 to-black border border-white/10 p-5 text-center">
-                <p className="text-[11px] tracking-[0.2em] font-semibold">{logo}</p>
+                <Logo className="w-8 h-8 mx-auto mb-2" animated />
+                <p className="text-[11px] tracking-[0.2em] font-semibold">AKUNSTOK</p>
                 <p className="text-[10px] text-neutral-400 mt-1">
                   Digital Designer & Creative
                 </p>
