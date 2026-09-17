@@ -11,7 +11,7 @@ import {
 } from "motion/react";
 import { springs, motionTokens, swipeThresholds } from "@/lib/motion-tokens";
 import { motionConfig } from "@/lib/motion-config";
-import { CaseModal } from "@/components/CaseModal";
+import { CaseStudyFullscreen } from "@/components/CaseStudyFullscreen";
 
 export type CarouselItem = {
   id: string;
@@ -458,20 +458,9 @@ export default function ProjectCarousel({
         </div>
       </div>
 
-      <CaseModal
-        items={items.map((p) => ({
-          id: p.id,
-          title: p.title,
-          category: p.category,
-          subtitle: p.subtitle,
-          image_url: p.image_url,
-          link_url: p.link_url,
-          num: p.num,
-        }))}
-        index={modal}
-        namespace={namespace}
+<CaseStudyFullscreen
+        item={modal !== null ? items[mod(modal, n)] : null}
         onClose={() => setModal(null)}
-        onNav={(j) => setModal(mod(j, n))}
       />
     </>
   );

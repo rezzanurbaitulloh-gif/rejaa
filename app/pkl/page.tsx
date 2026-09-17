@@ -6,6 +6,7 @@ import { PklProjects, PklDetail } from "@/components/pkl/PklWork";
 import { PklResults, PklLearning, PklClosing } from "@/components/pkl/PklClosing";
 import { PklChapters } from "@/components/pkl/PklChapters";
 import { PklRail } from "@/components/pkl/PklRail";
+import { PklDeconstruction } from "@/components/pkl/PklDeconstruction";
 import { PklJourney } from "@/components/pkl/PklJourney";
 import { PklGallery } from "@/components/pkl/PklGallery";
 import { PklWireframe } from "@/components/pkl/PklWireframe";
@@ -82,6 +83,7 @@ export default async function PklPage() {
       <PklProjects s={pkl.s} projects={pkl.projects} />
       <PklDetail s={pkl.s} steps={pkl.steps} />
       <PklWireframe s={pkl.s} />
+      <PklDeconstruction s={pkl.s} items={pkl.projects} />
       <PklResults s={pkl.s} stats={pkl.stats} skills={pkl.skills} />
       <PklLearning s={pkl.s} portraits={pkl.s.intro_image} testimonials={pkl.testimonials} />
       <PklClosing s={pkl.s} socials={socials} />

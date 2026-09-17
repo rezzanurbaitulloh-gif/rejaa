@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
-import { Reveal } from "@/components/motion/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
-import type { DEFAULT_SITE, Skill, Tool } from "@/lib/supabase";
+import { SkillBar as SkillBarComp } from "@/components/motion/SkillBar";
+import type { DEFAULT_SITE, Skill, Tool, SkillBar } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
+type SkillBarType = SkillBar;
 
 function parseStat(v: string): { num: number; suffix: string } {
   const m = /^(\d+)(.*)$/.exec(v.trim());
@@ -98,26 +100,55 @@ export default function About({
         {/* skills + tools */}
         <Reveal delay={0.15}>
           <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{site.skills_title}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {skills.map((s, i) => (
-              <motion.span
-                key={s.id}
-                className={`text-[11.5px] px-3.5 py-1.5 rounded-full border ${
-                  s.is_highlight
-                    ? "bg-[#FF6A00] border-[#FF6A00] text-white"
-                    : "border-white/15 text-neutral-300"
-                }`}
-                initial={false}
-                whileHover={reduce ? undefined : { scale: motionTokens.scale.pop, transition: springs.snappy }}
-                whileTap={reduce ? undefined : { scale: motionTokens.scale.press }}
-                transition={{ ...springs.snappy, delay: i * 0.02 }}
-              >
-                {s.is_highlight ? "◉ " : ""}{s.name}
-              </motion.span>
-            ))}
+
+          {/* Skill Constellation (P1) — interactive orbit */}
+          <div className="mt-5 relative min-h-[320px]">
+            <motion.div
+              className="absolute inset-0"
+              animate={reduce ? undefined : { rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              style={{ pointerEvents: "none" }}
+            >
+              <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full">
+                <defs>
+                  <path id="orbit-main" d="M 160,160 m -120,0 a 120,120 0 1,1 240,0 a 120,120 0 1,1 -240,0" fill="none" />
+                  <path id="orbit-inner" d="M 160,160 m -70,0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0" fill="none" />
+                </defs>
+                {/* Center node */}
+                <motion.circle
+                  cx="160" cy="160" r="32"
+                  fill="rgba(255,106,0,0.15)" stroke="#FF6A00" strokeWidth="2"
+                  initial={reduce ? false : { scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, ...springs.bouncy }}
+                />
+                <text x="160" y="168" textAnchor="middle" className="fill-white" style={{ fontSize: 11, letterSpacing: 1.5 }}>AKUNSTOK</text>
+                {skills.filter(s => !s.is_highlight).map((s, i) => {
+                  const angle = (i / skills.filter(s => !s.is_highlight).length) * Math.PI * 2;
+                  const radius = 120;
+                  const cx = 160 + Math.cos(angle) * radius;
+                  const cy = 160 + Math.sin(angle) * radius;
+                  return (
+                    <motion.g
+                      key={s.id}
+                      initial={reduce ? false : { opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + i * 0.08, ...springs.bouncy }}
+                    >
+                      <textPath href="#orbit-main" startOffset={`${(i / skills.filter(s => !s.is_highlight).length) * 100}%`} className="fill-white/60" style={{ fontSize: 10, letterSpacing: 1.5 }}>
+                        {s.name.toUpperCase()}
+                      </textPath>
+                      <circle cx={cx} cy={cy} r={28} fill="rgba(255,106,0,0.1)" stroke="#FF6A00" strokeWidth="1.5" />
+                      <text x={cx} y={cy + 4} textAnchor="middle" className="fill-white" style={{ fontSize: 9.5 }}>{s.name}</text>
+                    </motion.g>
+                  );
+                })}
+              </svg>
+            </motion.div>
           </div>
-          <p className="mt-6 text-[10px] tracking-[0.25em] text-[#8A8883]">{site.tools_title}</p>
-          <div className="mt-3 flex gap-2.5">
+
+          <p className="mt-10 text-[10px] tracking-[0.25em] text-[#8A8883]">{site.tools_title}</p>
+          <div className="mt-3 flex flex-wrap gap-2 justify-center">
             {tools.map((t) => (
               <motion.span
                 key={t.id}
