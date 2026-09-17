@@ -1,3 +1,4 @@
+"use client";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
 import { Counter } from "@/components/motion/Counter";
 import { SkillBar } from "@/components/motion/SkillBar";
@@ -18,30 +19,36 @@ function parseStat(v: string): { num: number; prefix: string; suffix: string } {
 /** 06 • Hasil — light + dark skill card */
 export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skills: PklSkill[] }) {
   return (
-    <section id="hasil" className="bg-[#F2EFE8] text-neutral-900 px-5 md:px-12 py-12 md:py-16">
-      <div className="grid md:grid-cols-2 gap-8 items-start">
+    <section id="hasil" className="bg-cream text-ink section-padding relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+      </div>
+      
+      <div className="relative grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
-            <span className="text-[#FF6A00] mr-2">{s.res_no}</span> {s.res_eyebrow}
+          <p className="eyebrow tracking-[0.2em] dark">
+            <span className="text-orange mr-2">{s.res_no}</span> {s.res_eyebrow}
           </p>
-          <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.res_title}</h2>
-          <p className="mt-3 text-[12.5px] text-neutral-600 leading-relaxed max-w-[400px]">{s.res_desc}</p>
-          <div className="mt-6 grid grid-cols-3 gap-3">
+          <h2 className="heading-2 mt-2">{s.res_title}</h2>
+          <p className="mt-3 body-base text-neutral-600 max-w-[400px]">{s.res_desc}</p>
+          
+          <div className="mt-8 grid grid-cols-3 gap-3">
             {stats.slice(0, 3).map((st, si) => {
               const { num, prefix, suffix } = parseStat(st.value);
               return (
                 <div key={st.id} className="rounded-2xl bg-white border border-neutral-900/10 p-4 text-center">
-                  <p className="text-[#FF6A00] text-sm">{["◷", "❖", "♡"][si % 3]}</p>
+                  <p className="text-orange text-sm">{["◷", "❖", "♡"][si % 3]}</p>
                   <p className="font-serif-d text-2xl md:text-3xl mt-1">
                     <Counter value={num} prefix={prefix} suffix={suffix} />
                   </p>
-                  <p className="mt-1 text-[10.5px] text-[#8A8883]">{st.label}</p>
+                  <p className="mt-1 text-sm text-neutral-500">{st.label}</p>
                 </div>
               );
             })}
           </div>
+          
           {stats.length > 3 && (
-            <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="mt-4 grid grid-cols-2 gap-3">
               {stats.slice(3).map((st) => {
                 const { num, prefix, suffix } = parseStat(st.value);
                 return (
@@ -49,19 +56,20 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
                     <p className="font-serif-d text-2xl">
                       <Counter value={num} prefix={prefix} suffix={suffix} />
                     </p>
-                    <p className="mt-1 text-[10.5px] text-[#8A8883]">{st.label}</p>
+                    <p className="mt-1 text-sm text-neutral-500">{st.label}</p>
                   </div>
                 );
               })}
             </div>
           )}
-          {/* mobile-only learnings checklist (mobile design screen 11) */}
-          <div className="md:hidden mt-4 rounded-2xl bg-white border border-neutral-900/10 p-5">
-            <p className="text-[13px] font-medium">Apa yang saya pelajari?</p>
+          
+          {/* mobile-only learnings checklist */}
+          <div className="lg:hidden mt-6 rounded-2xl bg-white border border-neutral-900/10 p-5">
+            <p className="text-base font-medium">Apa yang saya pelajari?</p>
             <ul className="mt-3 space-y-2.5">
               {splitPipe(s.learn_points).map((pt) => (
-                <li key={pt} className="flex items-start gap-2.5 text-[12px] text-neutral-700">
-                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-[#FF6A00] text-white text-[9px] flex items-center justify-center">✓</span>
+                <li key={pt} className="flex items-start gap-2.5 text-sm text-neutral-700">
+                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-orange text-white text-xs flex items-center justify-center">✓</span>
                   {pt}
                 </li>
               ))}
@@ -72,8 +80,9 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
             </div>
           </div>
         </Reveal>
-        <Reveal delay={0.1} className="rounded-2xl bg-[#141414] text-white p-6">
-          <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.res_skills_title}</p>
+        
+        <Reveal delay={0.1} className="rounded-3xl bg-gradient-to-br from-ink-soft to-ink text-white p-6 lg:p-10">
+          <p className="text-xs tracking-[0.25em] text-neutral-500">{s.res_skills_title}</p>
           <div className="mt-4 space-y-4">
             {skills.map((sk) => (
               <SkillBar key={sk.id} name={sk.name} percent={sk.percent} />
@@ -88,14 +97,13 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
 /** 07 • Pembelajaran + testimoni — dark w/ bg */
 export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: string; testimonials: PklTestimonial[] }) {
   return (
-    <section id="testimoni" className="relative bg-[#0A0A0A] text-white px-5 md:px-12 py-12 md:py-16 overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+    <section id="testimoni" className="relative bg-ink text-white section-padding relative overflow-hidden">
       <img src={s.learn_bg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover opacity-20" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-      {/* mobile-only Tentang Saya card (mobile design screen 12) */}
-      <Reveal className="md:hidden relative rounded-2xl bg-[#141414] border border-white/10 p-5 mb-8">
-        <p className="font-serif-d text-[19px] leading-snug">“{s.ts_quote}”</p>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" />
+      
+      {/* mobile-only Tentang Saya card */}
+      <Reveal className="lg:hidden relative rounded-3xl bg-ink-soft border border-white/10 p-5 mb-8">
+        <p className="font-serif-d text-xl leading-snug">“{s.ts_quote}”</p>
         <img src={portraits} alt={s.ts_name} className="mt-4 w-full h-56 object-cover object-top rounded-xl grayscale" />
         <div className="mt-4 space-y-2.5">
           {[
@@ -104,35 +112,37 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
             ["Jurusan", s.ts_major],
             ["Kampus", s.ts_campus],
           ].map(([k, v]) => (
-            <div key={k} className="flex items-center gap-2.5 text-[12px]">
-              <span className="w-6 h-6 rounded-full bg-[#FF6A00]/15 text-[#FF6A00] flex items-center justify-center text-[10px]">◍</span>
-              <span className="text-[#8A8883] w-14">{k}</span>
-              <span className="text-neutral-200">{v}</span>
+            <div key={k} className="flex items-center gap-2.5 text-sm">
+              <span className="w-6 h-6 rounded-full bg-orange/15 text-orange flex items-center justify-center text-xs">◍</span>
+              <span className="text-neutral-500 w-14">{k}</span>
+              <span className="text-white">{v}</span>
             </div>
           ))}
         </div>
       </Reveal>
-      <div className="relative grid md:grid-cols-2 gap-8 items-center">
+      
+      <div className="relative grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
         <Reveal>
-          <h2 className="font-serif-d text-3xl md:text-5xl">{s.learn_title}</h2>
-          <div className="mt-5 rounded-2xl bg-black/55 backdrop-blur border border-white/12 p-5 md:p-6">
-            <p className="font-serif-d italic text-[15px] md:text-lg leading-relaxed text-neutral-100">
+          <h2 className="heading-2">{s.learn_title}</h2>
+          <div className="mt-5 rounded-3xl bg-black/55 backdrop-blur border border-white/12 p-5 lg:p-6">
+            <p className="font-serif-d italic text-lg lg:text-lg leading-relaxed text-white">
               “{s.learn_quote}”
             </p>
             <p className="mt-4 font-script text-2xl text-neutral-300">{s.learn_signature}</p>
           </div>
           <div className="mt-5">
             <Magnetic>
-              <a href="#penutup" className="inline-flex items-center gap-3 border border-[#FF6A00] text-[12px] pl-4 pr-1.5 py-1.5 rounded-full text-neutral-100">
+              <a href="#penutup" className="btn-secondary">
                 {s.learn_cta}
-                <span className="w-7 h-7 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
         </Reveal>
+        
         <div>
           <Reveal delay={0.1}>
-            <p className="text-[10px] tracking-[0.25em] text-neutral-500">{s.testi_title}</p>
+            <p className="text-xs tracking-[0.25em] text-neutral-500">{s.testi_title}</p>
           </Reveal>
           <div className="mt-4">
             <TestiCarousel items={testimonials} />
@@ -146,27 +156,33 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
 /** Penutup — dark footer */
 export function PklClosing({ s, socials }: { s: S; socials: { id: string; platform: string; url: string }[] }) {
   return (
-    <footer id="penutup" className="bg-[#0A0A0A] text-white px-5 md:px-12 pt-12 pb-6 border-t border-white/5">
-      <div className="grid md:grid-cols-[1.1fr_1fr_0.7fr] gap-8">
+    <footer id="penutup" className="bg-ink text-white section-padding border-t border-white/5 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] translate-y-1/2 rounded-full bg-gradient-to-tr from-orange/10 via-transparent to-transparent blur-3xl" />
+      </div>
+      
+      <div className="relative grid md:grid-cols-[1.1fr_1fr_0.7fr] gap-8 lg:gap-12">
         <Reveal>
-          <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">{s.close_eyebrow}</p>
-          <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.close_title}</h2>
-          <p className="mt-3 text-[12.5px] text-neutral-400 leading-relaxed max-w-[380px]">{s.close_desc}</p>
+          <p className="eyebrow">{s.close_eyebrow}</p>
+          <h2 className="heading-2 mt-2">{s.close_title}</h2>
+          <p className="mt-3 body-base text-neutral-400 leading-relaxed max-w-[380px]">{s.close_desc}</p>
         </Reveal>
+        
         <Reveal delay={0.1}>
-          <p className="text-[14px] font-medium">{s.close_cta_title}</p>
-          <p className="mt-1.5 text-[12px] text-[#8A8883]">{s.close_cta_desc}</p>
+          <p className="text-lg font-medium">{s.close_cta_title}</p>
+          <p className="mt-1.5 body-sm text-neutral-500">{s.close_cta_desc}</p>
           <div className="mt-4">
             <Magnetic>
-              <a href="mailto:hello@akunstok.studio" className="inline-flex items-center gap-3 bg-[#FF6A00] text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full">
+              <a href="mailto:hello@akunstok.studio" className="btn-primary-orange">
                 {s.close_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
               </a>
             </Magnetic>
           </div>
         </Reveal>
+        
         <Reveal delay={0.15}>
-          <p className="text-[10px] tracking-[0.25em] text-[#8A8883]">{s.close_follow}</p>
+          <p className="text-xs tracking-[0.25em] text-neutral-500">{s.close_follow}</p>
           <div className="mt-3 space-y-2.5">
             {socials.map((soc) => {
               const Icon = soc.platform.toLowerCase() === 'instagram' ? InstagramIcon :
@@ -174,22 +190,23 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
                 soc.platform.toLowerCase() === 'linkedin' ? LinkedinIcon :
                 soc.platform.toLowerCase() === 'email' ? EmailIcon : null;
               return (
-                <a key={soc.id} href={soc.url} className="flex items-center gap-2.5 text-[13px] text-neutral-300 hover:text-white">
+                <a key={soc.id} href={soc.url} className="flex items-center gap-2.5 text-base text-neutral-300 hover:text-white">
                   {Icon && <Icon className="w-5 h-5" animated />}
                   {soc.platform}
                 </a>
               );
             })}
           </div>
-          <div className="mt-6 rounded-xl bg-gradient-to-br from-neutral-800 to-black border border-white/10 p-4 text-center">
+          <div className="mt-6 rounded-2xl bg-gradient-to-br from-neutral-800 to-black border border-white/10 p-4 text-center">
             <p className="font-serif-d text-lg">{s.thanks_title}</p>
-            <p className="text-[10.5px] text-[#8A8883] mt-0.5">{s.thanks_sub}</p>
+            <p className="text-sm text-neutral-500 mt-0.5">{s.thanks_sub}</p>
           </div>
         </Reveal>
       </div>
-      <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-[10.5px] text-neutral-600">
+      
+      <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-sm text-neutral-600">
         <p>{s.close_eyebrow}</p>
-        <a href="#top" className="hover:text-neutral-300">Scroll to top ↑</a>
+        <a href="#top" className="hover:text-neutral-300 transition-colors">Scroll to top ↑</a>
       </div>
     </footer>
   );

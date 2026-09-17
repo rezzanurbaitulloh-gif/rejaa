@@ -24,8 +24,8 @@ export type CarouselItem = {
   banking?: boolean;
 };
 
-const GAP = 20;
-const AUTOPLAY_MS = 4500;
+const GAP = 24;
+const AUTOPLAY_MS = 5000;
 const SIDE_ROTATE = 18;
 /** fling projection: velocity (px/s) mapped to travel distance */
 const FLING_FACTOR = 0.28;
