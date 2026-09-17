@@ -26,7 +26,7 @@ export function TestiCarousel({ items }: { items: PklTestimonial[] }) {
         <AnimatePresence mode="wait" custom={dir}>
           <motion.figure
             key={t.id}
-            className="rounded-2xl bg-[#141414] border border-white/10 p-5"
+            className="rounded-2xl bg-white/[0.04] backdrop-blur border border-white/10 p-5"
             custom={dir}
             initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 48 }}
             animate={{ opacity: 1, x: 0 }}

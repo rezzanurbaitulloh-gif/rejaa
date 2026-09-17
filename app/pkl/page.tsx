@@ -5,6 +5,7 @@ import { PklIntro, PklAbout, PklActivities, PklRules } from "@/components/pkl/Pk
 import { PklProjects, PklDetail } from "@/components/pkl/PklWork";
 import { PklResults, PklLearning, PklClosing } from "@/components/pkl/PklClosing";
 import { PklChapters } from "@/components/pkl/PklChapters";
+import { PklRail } from "@/components/pkl/PklRail";
 import { PklJourney } from "@/components/pkl/PklJourney";
 import { PklGallery } from "@/components/pkl/PklGallery";
 import { PklWireframe } from "@/components/pkl/PklWireframe";
@@ -46,6 +47,19 @@ export default async function PklPage() {
         }}
       />
       <PklHero s={pkl.s} />
+      <PklRail
+        items={[
+          { id: "top", label: "Pembuka" },
+          { id: "tentang", label: "Tentang" },
+          { id: "tujuan", label: "Tujuan" },
+          { id: "kegiatan", label: "Kegiatan" },
+          { id: "aturan", label: "Aturan" },
+          { id: "proyek", label: "Proyek" },
+          { id: "hasil", label: "Hasil" },
+          { id: "testimoni", label: "Testimoni" },
+          { id: "penutup", label: "Penutup" },
+        ]}
+      />
       <PklChapters
         items={[
           { id: "top", label: "Pembuka" },

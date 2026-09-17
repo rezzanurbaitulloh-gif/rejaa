@@ -4,6 +4,7 @@ import { springs, motionTokens } from "@/lib/motion-tokens";
 import { useMounted } from "@/hooks/use-safe-motion";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { Marquee } from "@/components/motion/Marquee";
+import { Stamp } from "@/components/motion/Stamp";
 import type { DEFAULT_SITE } from "@/lib/supabase";
 
 type Site = typeof DEFAULT_SITE;
@@ -156,6 +157,7 @@ export default function Hero({ site }: { site: Site }) {
             transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#F2EFE8] via-transparent to-transparent w-40 pointer-events-none" />
+          <Stamp className="absolute left-8 bottom-8 w-24 h-24 hidden md:block z-10" />
           <motion.div
             className="absolute right-10 top-24 text-right text-[11px] leading-5 text-neutral-700"
             initial={show ? { opacity: 0, x: motionTokens.distance.md } : false}

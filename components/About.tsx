@@ -42,11 +42,12 @@ export default function About({
           <h3 className="font-serif-d text-[30px] md:text-[38px] leading-[1.05] mt-2">{site.about_title}</h3>
           <p className="mt-3 text-[12px] text-neutral-400 leading-relaxed">{site.about_desc}</p>
           <div className="mt-5 flex gap-6">
-            {stats.map(([v, l]) => {
+            {stats.map(([v, l], si) => {
               const { num, suffix } = parseStat(v);
               return (
-                <div key={l}>
-                  <p className="font-serif-d text-2xl">
+                <div key={l} className={si > 0 ? "pl-6 border-l border-white/10" : ""}>
+                  <p className="text-[#FF6A00] text-sm">{["◷", "❖", "♡"][si]}</p>
+                  <p className="font-serif-d text-2xl mt-1">
                     <Counter value={num} suffix={suffix} />
                   </p>
                   <p className="text-[10px] text-[#8A8883] mt-0.5 max-w-[80px]">{l}</p>

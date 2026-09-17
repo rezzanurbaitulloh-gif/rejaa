@@ -1,11 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   motion,
   AnimatePresence,
   useReducedMotion,
-  useMotionValue,
-  useSpring,
 } from "motion/react";
 import { springs } from "@/lib/motion-tokens";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/Reveal";
@@ -14,18 +12,12 @@ import type { PKL_DEFAULTS, PklGallery } from "@/lib/pkl";
 type S = typeof PKL_DEFAULTS;
 
 /**
- * Interactive image wall + lightbox (spec bab 14):
- * editorial offset columns drift with the cursor,
- * tap opens 01/NN viewer with keyboard support.
+ * Image wall + lightbox (spec bab 14). The wall itself stays put —
+ * only the photos respond on hover. Tap opens 01/NN viewer.
  */
 export function PklGallery({ s, items }: { s: S; items: PklGallery[] }) {
   const reduce = useReducedMotion();
   const [open, setOpen] = useState<number | null>(null);
-  const wall = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const gx = useSpring(mx, springs.gentle);
-  const gy = useSpring(my, springs.gentle);
 
   useEffect(() => {
     if (open === null) return;
@@ -56,22 +48,7 @@ export function PklGallery({ s, items }: { s: S; items: PklGallery[] }) {
         <p className="mt-3 text-[12.5px] text-neutral-400">{s.gallery_desc}</p>
       </Reveal>
 
-      <motion.div
-        ref={wall}
-        className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3"
-        style={reduce ? undefined : { x: gx, y: gy }}
-        onPointerMove={(e) => {
-          if (reduce || e.pointerType !== "mouse") return;
-          const r = wall.current?.getBoundingClientRect();
-          if (!r) return;
-          mx.set(((e.clientX - r.left) / r.width - 0.5) * -18);
-          my.set(((e.clientY - r.top) / r.height - 0.5) * -14);
-        }}
-        onPointerLeave={() => {
-          mx.set(0);
-          my.set(0);
-        }}
-      >
+      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-3">
         {cols.map((col, ci) => (
           <Stagger
             key={ci}
@@ -105,7 +82,7 @@ export function PklGallery({ s, items }: { s: S; items: PklGallery[] }) {
             ))}
           </Stagger>
         ))}
-      </motion.div>
+      </div>
 
       <AnimatePresence>
         {open !== null && items[open] && (

@@ -26,11 +26,12 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
           <h2 className="font-serif-d text-3xl md:text-5xl mt-2">{s.res_title}</h2>
           <p className="mt-3 text-[12.5px] text-neutral-600 leading-relaxed max-w-[400px]">{s.res_desc}</p>
           <div className="mt-6 grid grid-cols-3 gap-3">
-            {stats.slice(0, 3).map((st) => {
+            {stats.slice(0, 3).map((st, si) => {
               const { num, prefix, suffix } = parseStat(st.value);
               return (
                 <div key={st.id} className="rounded-2xl bg-white border border-neutral-900/10 p-4 text-center">
-                  <p className="font-serif-d text-2xl md:text-3xl">
+                  <p className="text-[#FF6A00] text-sm">{["◷", "❖", "♡"][si % 3]}</p>
+                  <p className="font-serif-d text-2xl md:text-3xl mt-1">
                     <Counter value={num} prefix={prefix} suffix={suffix} />
                   </p>
                   <p className="mt-1 text-[10.5px] text-[#8A8883]">{st.label}</p>
