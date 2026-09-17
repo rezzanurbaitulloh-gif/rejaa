@@ -71,14 +71,12 @@ export default function Navbar({
 
   return (
     <>
-      <motion.header
-        className={`absolute top-0 left-0 right-0 z-40 transition-colors ${
-          scrolled ? "bg-[#F2EFE8]/85 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]" : ""
+      <header
+        className={`absolute top-0 left-0 right-0 z-40 transition-[background-color,box-shadow] duration-300 ${
+          scrolled ? "bg-[#F2EFE8]/85 backdrop-blur-md shadow-[0_1px_0_rgba(0,0,0,0.06)]" : "bg-transparent"
         }`}
-        initial={false}
-        animate={{ y: 0, opacity: 1 }}
       >
-        <div className={`flex items-center justify-between px-5 md:px-12 transition-all duration-300 ${scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"}`}>
+        <div className="flex items-center justify-between px-5 md:px-12 py-4 md:py-5">
           <a
             href={`${base}#home`}
             onClick={(e) => navClick(e, `${base}#home`)}
@@ -125,7 +123,7 @@ export default function Navbar({
             </motion.button>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {open && (

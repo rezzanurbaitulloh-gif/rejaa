@@ -1,6 +1,5 @@
 "use client";
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
 import { useMounted } from "@/hooks/use-safe-motion";
 import { Magnetic } from "@/components/motion/Magnetic";
@@ -11,17 +10,9 @@ type S = typeof PKL_DEFAULTS;
 export default function PklHero({ s }: { s: S }) {
   const mounted = useMounted();
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const imgY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  /* opening words ignite one by one with scroll (spec bab 13) */
-  const wY = useTransform(scrollYProgress, [0, 0.35], [26, 0]);
-  const wOp0 = useTransform(scrollYProgress, [0, 0.12], [0.12, 1]);
-  const wOp1 = useTransform(scrollYProgress, [0.1, 0.24], [0.12, 1]);
-  const wOp2 = useTransform(scrollYProgress, [0.2, 0.36], [0.12, 1]);
-  const wOps = [wOp0, wOp1, wOp2];
-  const openWords = (s.hero_title_mobile || "").split(".").map((w) => w.trim()).filter(Boolean);
   const show = mounted && !reduce;
+  /* opening words ignite one by one on entrance, then stay put */
+  const openWords = (s.hero_title_mobile || "").split(".").map((w) => w.trim()).filter(Boolean);
 
   const words = s.hero_title.split(" ");
   const infos = [
@@ -31,7 +22,7 @@ export default function PklHero({ s }: { s: S }) {
   ];
 
   return (
-    <section ref={ref} className="relative bg-[#0A0A0A] text-white overflow-hidden">
+    <section className="relative bg-[#0A0A0A] text-white overflow-hidden">
       <div className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[90vh]">
         <div className="px-5 md:px-12 pt-24 md:pt-28 pb-8 flex flex-col justify-center">
           <motion.p
@@ -71,15 +62,18 @@ export default function PklHero({ s }: { s: S }) {
           </motion.p>
           <motion.h2
             className="md:hidden font-serif-d text-[34px] leading-[1.12] mt-2"
-            initial={show ? { opacity: 0 } : false}
-            animate={{ opacity: 1 }}
-            transition={springs.gentle}
+            initial={show ? "hidden" : false}
+            animate="visible"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.14, delayChildren: 0.15 } } }}
           >
             {openWords.map((w, i) => (
-              <span key={i} className="block">
+              <span key={i} className="block overflow-hidden">
                 <motion.span
                   className="inline-block"
-                  style={reduce ? undefined : { opacity: wOps[i % wOps.length], y: wY }}
+                  variants={{
+                    hidden: { opacity: 0, y: 26 },
+                    visible: { opacity: 1, y: 0, transition: springs.gentle },
+                  }}
                 >
                   {w}.
                 </motion.span>
@@ -151,7 +145,6 @@ export default function PklHero({ s }: { s: S }) {
             src={s.hero_image}
             alt="pkl portrait"
             className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"
-            style={reduce ? undefined : { y: imgY }}
             initial={show ? { scale: 1.12 } : false}
             animate={{ scale: 1 }}
             transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}

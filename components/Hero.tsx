@@ -1,6 +1,5 @@
 "use client";
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform, useMotionValue, useSpring } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { springs, motionTokens } from "@/lib/motion-tokens";
 import { useMounted } from "@/hooks/use-safe-motion";
 import { Magnetic } from "@/components/motion/Magnetic";
@@ -12,28 +11,10 @@ type Site = typeof DEFAULT_SITE;
 export default function Hero({ site }: { site: Site }) {
   const mounted = useMounted();
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  /* cinematic exit: hero shrinks/fades into Featured (spec bab 2) */
-  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
-  const sceneFade = useTransform(scrollYProgress, [0, 0.85], [1, 0.15]);
-  /* mouse depth: photo / text / script drift at different rates (spec bab 1) */
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const mImgX = useSpring(useTransform(mx, [0, 1], [16, -16]), springs.gentle);
-  const mImgY = useSpring(useTransform(my, [0, 1], [10, -10]), springs.gentle);
-  const mTextX = useSpring(useTransform(mx, [0, 1], [-8, 8]), springs.gentle);
-  const mScriptX = useSpring(useTransform(mx, [0, 1], [26, -26]), springs.gentle);
-
+  const show = mounted && !reduce;
   const sides = (site.hero_side_text || "Design|Build|Create").split("|");
   const words = (site.hero_title || "").split(" ");
   const wordsMobile = (site.hero_title_mobile || site.hero_title || "").split(" ");
-  const show = mounted && !reduce;
 
   const parent = {
     hidden: {},
@@ -52,24 +33,14 @@ export default function Hero({ site }: { site: Site }) {
   return (
     <section
       id="home"
-      ref={ref}
       className="relative bg-[#F2EFE8] text-neutral-900 overflow-hidden"
-      onPointerMove={(e) => {
-        if (reduce || e.pointerType !== "mouse") return;
-        const r = ref.current?.getBoundingClientRect();
-        if (!r) return;
-        mx.set((e.clientX - r.left) / r.width);
-        my.set((e.clientY - r.top) / r.height);
-      }}
     >
-      <motion.div
+      <div
         className="grid md:grid-cols-2 min-h-[92vh] md:min-h-[88vh]"
-        style={reduce ? undefined : { scale: sceneScale, opacity: sceneFade }}
       >
         {/* left */}
         <motion.div
           className="px-5 md:px-12 pt-20 md:pt-28 pb-8 flex flex-col justify-center"
-          style={reduce ? undefined : { y: textY, x: mTextX }}
         >
           <motion.p
             className="text-[10px] md:text-[11px] tracking-[0.2em] text-[#8A8883] max-w-[190px] leading-[1.9]"
@@ -180,7 +151,6 @@ export default function Hero({ site }: { site: Site }) {
             src={site.hero_image_url}
             alt="portrait"
             className="absolute inset-0 w-full h-[115%] object-cover object-top grayscale"
-            style={reduce ? undefined : { y: imgY, x: mImgX }}
             initial={show ? { scale: 1.12 } : false}
             animate={{ scale: 1 }}
             transition={{ duration: motionTokens.duration.slow, ease: [...motionTokens.easing.smooth] }}
@@ -203,7 +173,6 @@ export default function Hero({ site }: { site: Site }) {
           </motion.div>
           <motion.div
             className="absolute right-10 bottom-16 font-script text-3xl text-white/90 -rotate-6"
-            style={reduce ? undefined : { x: mScriptX }}
             initial={show ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: motionTokens.duration.slow }}
@@ -211,7 +180,7 @@ export default function Hero({ site }: { site: Site }) {
             {site.hero_script}
           </motion.div>
         </div>
-      </motion.div>
+      </div>
       {/* mobile side script overlay */}
       <div className="md:hidden absolute top-[420px] right-4 font-script text-2xl text-white/90 -rotate-6 pointer-events-none">
         {site.hero_script}
