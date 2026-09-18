@@ -129,7 +129,7 @@ export function PklGallery({ s, items }: { s: S; items: PklGallery[] }) {
                 <button
                   aria-label="berikutnya"
                   onClick={() => setOpen((open + 1) % items.length)}
-                  className="w-10 h-10 rounded-full bg-[#FF6A00] text-white"
+                  className="w-10 h-10 rounded-full bg-[#B5E332] text-white"
                 >
                   →
                 </button>

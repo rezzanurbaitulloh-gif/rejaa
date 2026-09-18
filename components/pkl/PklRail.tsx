@@ -47,7 +47,7 @@ export function PklRail({ items }: { items: { id: string; label: string }[] }) {
           <span
             className={`relative z-10 w-[11px] h-[11px] rounded-full border transition-colors ${
               i === current
-                ? "bg-[#FF6A00] border-[#FF6A00]"
+                ? "bg-[#B5E332] border-[#B5E332]"
                 : "border-white/30 bg-[#0A0A0A] group-hover:border-white/70"
             }`}
           />

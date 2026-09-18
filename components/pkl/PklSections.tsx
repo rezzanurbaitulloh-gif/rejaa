@@ -11,7 +11,7 @@ type S = typeof PKL_DEFAULTS;
 function Eyebrow({ no, label, dark = false }: { no: string; label: string; dark?: boolean }) {
   return (
     <p className={`text-xs tracking-[0.2em] ${dark ? "text-neutral-500" : "text-neutral-400"}`}>
-      <span className="text-orange mr-2">{no}</span> {label}
+      <span className="text-acid mr-2">{no}</span> {label}
     </p>
   );
 }
@@ -22,7 +22,7 @@ export function PklIntro({ s }: { s: S }) {
   return (
     <section id="intro" className="bg-cream text-ink section-padding relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-acid/10 via-transparent to-transparent blur-3xl" />
       </div>
       
       <div className="relative grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -32,7 +32,7 @@ export function PklIntro({ s }: { s: S }) {
           <p className="mt-3 body-base text-neutral-600 max-w-[420px]">{s.intro_desc}</p>
           <div className="mt-5">
             <Magnetic>
-              <a href="#tentang" className="btn-primary-orange">
+              <a href="#tentang" className="btn-primary-acid">
                 {s.intro_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
               </a>
@@ -75,7 +75,7 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
             <Magnetic>
               <a href="#tujuan" className="btn-secondary">
                 {s.about_cta}
-                <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
@@ -104,7 +104,7 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
               <p className="text-sm font-medium">◍ {s.about_company}</p>
               <p className="text-xs text-neutral-400 mt-0.5">{s.about_caption}</p>
             </div>
-            <span className="w-8 h-8 shrink-0 rounded-full bg-orange text-white flex items-center justify-center text-sm">→</span>
+            <span className="w-8 h-8 shrink-0 rounded-full bg-acid text-white flex items-center justify-center text-sm">→</span>
           </div>
         </Reveal>
       </div>
@@ -123,8 +123,8 @@ export function PklAbout({ s, goals }: { s: S; goals: PklGoal[] }) {
         <Stagger className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4" gap={0.08}>
           {goals.map((g) => (
             <StaggerItem key={g.id}>
-              <div className="h-full rounded-3xl bg-ink-soft border border-white/10 p-4 md:p-6 transition-all hover:border-orange/50 hover:shadow-xl hover:shadow-orange/10">
-                <span className="w-10 h-10 rounded-full bg-orange/15 text-orange flex items-center justify-center text-sm mx-auto">{g.icon || "◍"}</span>
+              <div className="h-full rounded-3xl bg-ink-soft border border-white/10 p-4 md:p-6 transition-all hover:border-acid/50 hover:shadow-xl hover:shadow-acid/10">
+                <span className="w-10 h-10 rounded-full bg-acid/15 text-acid flex items-center justify-center text-sm mx-auto">{g.icon || "◍"}</span>
                 <p className="mt-3 text-base font-medium">{g.title}</p>
                 <p className="mt-2 text-sm text-neutral-400 leading-relaxed">{g.description}</p>
               </div>
@@ -154,7 +154,7 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
           <p className="mt-3 body-base text-neutral-600 max-w-[380px]">{s.act_desc}</p>
           <div className="mt-5">
             <Magnetic>
-              <a href="#aturan" className="btn-primary-orange">
+              <a href="#aturan" className="btn-primary-acid">
                 {s.act_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
               </a>
@@ -181,7 +181,7 @@ export function PklActivities({ s, activities }: { s: S; activities: PklActivity
             {activities.slice(4).map((a) => (
               <StaggerItem key={a.id}>
                 <div className="flex gap-4 py-4 border-t border-neutral-900/10">
-                  <span className="text-sm text-orange font-medium shrink-0">{a.label}</span>
+                  <span className="text-sm text-acid font-medium shrink-0">{a.label}</span>
                   <div>
                     <p className="text-lg font-medium">{a.title}</p>
                     <p className="text-sm text-neutral-600">{a.description}</p>
@@ -211,7 +211,7 @@ export function PklRules({ s, rules }: { s: S; rules: PklRule[] }) {
             <Magnetic>
               <a href="#proyek" className="btn-secondary">
                 {s.rules_cta}
-                <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>

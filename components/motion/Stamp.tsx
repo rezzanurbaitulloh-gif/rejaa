@@ -50,7 +50,7 @@ export function Stamp({
         <text className="fill-white/80" style={{ fontSize: 12.5, letterSpacing: 2.5 }}>
           <textPath href="#stamp-circle">{text}</textPath>
         </text>
-        <text x="60" y="68" textAnchor="middle" className="fill-[#FF6A00]" style={{ fontSize: 22 }}>
+        <text x="60" y="68" textAnchor="middle" className="fill-[#B5E332]" style={{ fontSize: 22 }}>
           ✦
         </text>
       </svg>

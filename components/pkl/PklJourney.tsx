@@ -73,7 +73,7 @@ export function PklJourney({ s, items }: { s: S; items: PklTimeline[] }) {
             <div className="relative pl-1 hidden md:block">
               <div className="absolute left-[5px] top-2 bottom-2 w-px bg-white/10" />
               <motion.div
-                className="absolute left-[5px] top-2 bottom-2 w-px bg-[#FF6A00] origin-top"
+                className="absolute left-[5px] top-2 bottom-2 w-px bg-[#B5E332] origin-top"
                 style={{ scaleY: reduce ? 1 : scrollYProgress }}
               />
               {items.map((m, i) => {
@@ -87,11 +87,11 @@ export function PklJourney({ s, items }: { s: S; items: PklTimeline[] }) {
                   >
                     <span
                       className={`relative z-10 mt-1 w-2.5 h-2.5 shrink-0 rounded-full ${
-                        now ? "bg-[#FF6A00]" : done ? "bg-[#FF6A00]/60" : "border border-neutral-600 bg-[#0A0A0A]"
+                        now ? "bg-[#B5E332]" : done ? "bg-[#B5E332]/60" : "border border-neutral-600 bg-[#0A0A0A]"
                       }`}
                     />
                     <span>
-                      <span className={`text-[11px] tracking-[0.2em] ${now ? "text-[#FF6A00]" : "text-[#8A8883]"}`}>
+                      <span className={`text-[11px] tracking-[0.2em] ${now ? "text-[#B5E332]" : "text-[#8A8883]"}`}>
                         {m.month_label}
                       </span>
                       <span className={`block mt-0.5 text-[15px] font-medium transition-colors ${now || done ? "text-white" : "text-neutral-500 group-hover:text-neutral-300"}`}>
@@ -124,7 +124,7 @@ export function PklJourney({ s, items }: { s: S; items: PklTimeline[] }) {
                   onClick={() => jumpTo(i)}
                   className={`shrink-0 text-[11px] px-4 py-2 rounded-full border transition-colors ${
                     i === active
-                      ? "bg-[#FF6A00] border-[#FF6A00] text-white"
+                      ? "bg-[#B5E332] border-[#B5E332] text-white"
                       : "border-white/15 text-neutral-400"
                   }`}
                 >
@@ -150,7 +150,7 @@ export function PklJourney({ s, items }: { s: S; items: PklTimeline[] }) {
                 </AnimatePresence>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-3 left-3 right-3">
-                  <p className="text-[10px] tracking-[0.2em] text-[#FF6A00]">{cur.month_label}</p>
+                  <p className="text-[10px] tracking-[0.2em] text-[#B5E332]">{cur.month_label}</p>
                   <div className="flex items-end justify-between gap-3">
                     <p className="font-serif-d text-xl mt-0.5">{cur.title}</p>
                     <p className="text-[11px] text-neutral-300 tabular-nums shrink-0">

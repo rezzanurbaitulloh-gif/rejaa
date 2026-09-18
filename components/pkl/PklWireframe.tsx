@@ -62,7 +62,7 @@ function WireframeDraw() {
           <motion.rect
             key={`r${i}`}
             x={s.x} y={s.y} width={s.w} height={s.h} rx={s.rx ?? 0}
-            stroke={s.accent ? "#FF6A00" : "#8A8883"}
+            stroke={s.accent ? "#B5E332" : "#8A8883"}
             strokeWidth={s.accent ? 2.5 : 1.5}
             initial={init}
             whileInView={{ pathLength: 1, opacity: 1 }}
@@ -77,7 +77,7 @@ function WireframeDraw() {
           <motion.line
             key={`l${i}`}
             x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
-            stroke={s.accent ? "#FF6A00" : "#8A8883"}
+            stroke={s.accent ? "#B5E332" : "#8A8883"}
             strokeWidth={1.5}
             initial={init}
             whileInView={{ pathLength: 1, opacity: 1 }}
@@ -92,7 +92,7 @@ function WireframeDraw() {
           <motion.circle
             key={`c${i}`}
             cx={s.cx} cy={s.cy} r={s.r}
-            stroke={s.accent ? "#FF6A00" : "#8A8883"}
+            stroke={s.accent ? "#B5E332" : "#8A8883"}
             strokeWidth={2}
             initial={init}
             whileInView={{ pathLength: 1, opacity: 1 }}
@@ -157,7 +157,7 @@ function CompareSlider({
         <img src={after} alt={afterLabel} draggable={false} className="block w-full h-[300px] md:h-[420px] object-cover pointer-events-none" />
       </motion.div>
       <motion.div className="absolute inset-y-0 w-[2px] bg-white shadow-[0_0_12px_rgba(0,0,0,0.6)]" style={{ left }}>
-        <span className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 w-10 h-10 rounded-full bg-[#FF6A00] text-white text-sm flex items-center justify-center font-bold">
+        <span className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 left-1/2 w-10 h-10 rounded-full bg-[#B5E332] text-white text-sm flex items-center justify-center font-bold">
           ↔
         </span>
       </motion.div>
@@ -200,7 +200,7 @@ export function PklWireframe({ s }: { s: S }) {
               {tab === key && (
                 <motion.span
                   layoutId="wf-tab"
-                  className="absolute inset-0 rounded-full bg-[#FF6A00]"
+                  className="absolute inset-0 rounded-full bg-[#B5E332]"
                   transition={reduce ? { duration: 0 } : springs.snappy}
                 />
               )}
@@ -246,7 +246,7 @@ export function PklWireframe({ s }: { s: S }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <p className="absolute bottom-3 left-4 text-[12px] text-neutral-200">Final Design</p>
               </div>
-              <div className="rounded-2xl bg-[#FF6A00] text-white p-6 md:p-8 flex flex-col justify-center">
+              <div className="rounded-2xl bg-[#B5E332] text-white p-6 md:p-8 flex flex-col justify-center">
                 <p className="font-serif-d text-2xl md:text-3xl leading-snug">“{s.ui_caption}”</p>
                 <p className="mt-3 text-[12px] text-white/80">Klik tab Wireframe untuk melihat titik awalnya.</p>
               </div>

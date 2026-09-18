@@ -7,9 +7,12 @@ type Row = Record<string, unknown>;
 
 const TABLES: { key: string; label: string; fields: { name: string; type: string }[] }[] = [
   { key: "nav_links", label: "Navigasi", fields: [{ name: "label", type: "text" }, { name: "href", type: "text" }, { name: "sort_order", type: "number" }] },
-  { key: "projects", label: "Projects", fields: [{ name: "num_label", type: "text" }, { name: "title", type: "text" }, { name: "category", type: "text" }, { name: "subtitle", type: "text" }, { name: "image_url", type: "image" }, { name: "link_url", type: "text" }, { name: "sort_order", type: "number" }, { name: "is_active", type: "boolean" }] },
+  { key: "projects", label: "Projects", fields: [{ name: "num_label", type: "text" }, { name: "title", type: "text" }, { name: "category", type: "text" }, { name: "subtitle", type: "text" }, { name: "image_url", type: "image" }, { name: "link_url", type: "text" }, { name: "result", type: "text" }, { name: "sort_order", type: "number" }, { name: "is_active", type: "boolean" }] },
+  { key: "traits", label: "Traits", fields: [{ name: "icon", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "band_stats", label: "Band Stats", fields: [{ name: "value", type: "text" }, { name: "label", type: "text" }, { name: "sort_order", type: "number" }] },
+  { key: "testimonials", label: "Testimoni", fields: [{ name: "quote", type: "text" }, { name: "name", type: "text" }, { name: "role", type: "text" }, { name: "avatar_url", type: "image" }, { name: "sort_order", type: "number" }] },
   { key: "process_steps", label: "Proses", fields: [{ name: "step_no", type: "text" }, { name: "title", type: "text" }, { name: "description", type: "text" }, { name: "sort_order", type: "number" }] },
-  { key: "skills", label: "Skills", fields: [{ name: "name", type: "text" }, { name: "is_highlight", type: "boolean" }, { name: "sort_order", type: "number" }] },
+  { key: "skills", label: "Skills", fields: [{ name: "name", type: "text" }, { name: "description", type: "text" }, { name: "is_highlight", type: "boolean" }, { name: "sort_order", type: "number" }] },
   { key: "skill_bars", label: "Skill Bars", fields: [{ name: "name", type: "text" }, { name: "percent", type: "number" }, { name: "sort_order", type: "number" }] },
   { key: "tools", label: "Tools", fields: [{ name: "name", type: "text" }, { name: "short", type: "text" }, { name: "sort_order", type: "number" }] },
   { key: "socials", label: "Sosmed", fields: [{ name: "platform", type: "text" }, { name: "url", type: "text" }, { name: "sort_order", type: "number" }] },

@@ -42,7 +42,7 @@ export function PklChapters({ items }: { items: { id: string; label: string }[] 
           animate={{ opacity: 1, y: 0 }}
           transition={springs.snappy}
         >
-          <span className="text-[#FF6A00]">0{current + 1}</span>
+          <span className="text-[#B5E332]">0{current + 1}</span>
           <span className="text-neutral-500"> / 0{items.length}</span>
           <span className="ml-2.5">{label}</span>
         </motion.p>
@@ -50,7 +50,7 @@ export function PklChapters({ items }: { items: { id: string; label: string }[] 
       </div>
       <div className="h-[2px] bg-white/10">
         <div
-          className="h-full bg-[#FF6A00] transition-all duration-300"
+          className="h-full bg-[#B5E332] transition-all duration-300"
           style={{ width: `${((current + 1) / items.length) * 100}%` }}
         />
       </div>

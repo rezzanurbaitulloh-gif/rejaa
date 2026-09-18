@@ -51,7 +51,7 @@ export function Cursor() {
     <>
       {/* dot follows instantly */}
       <motion.div
-        className="fixed top-0 left-0 z-[90] pointer-events-none w-2 h-2 rounded-full bg-[#FF6A00]"
+        className="fixed top-0 left-0 z-[90] pointer-events-none w-2 h-2 rounded-full bg-[#B5E332]"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       {/* ring trails + carries the label */}

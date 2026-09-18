@@ -1,33 +1,29 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import FeaturedProjects from "@/components/FeaturedProjects";
-import CaseStudy from "@/components/CaseStudy";
-import About from "@/components/About";
-import SkillsExperience from "@/components/SkillsExperience";
-import ContactFooter from "@/components/ContactFooter";
-import FeaturedList from "@/components/FeaturedList";
+import HomeHero from "@/components/home/HomeHero";
+import HomeAbout from "@/components/home/HomeAbout";
+import HomeServices from "@/components/home/HomeServices";
+import HomeSkills from "@/components/home/HomeSkills";
+import HomeProjects from "@/components/home/HomeProjects";
+import HomeTestimonials from "@/components/home/HomeTestimonials";
+import { HomeContact, HomeFooter } from "@/components/home/HomeContact";
 import { getSite } from "@/lib/supabase";
 
 export const revalidate = 0;
 
 export default async function Home() {
-  const { site, nav, projects, steps, skills, bars, tools, socials, experiences } =
+  const { site, nav, projects, skills, bars, tools, socials, traits, bandStats, testimonials } =
     await getSite();
   return (
     <main className="min-h-screen bg-[#0A0A0A]">
       <Navbar logo={site.logo_text} links={nav} socials={socials} hideHrefs={["/pkl"]} />
-      <Hero site={site} />
-      <FeaturedProjects site={site} projects={projects} />
-      <CaseStudy site={site} steps={steps} />
-      <About site={site} skills={skills} tools={tools} />
-      {/* mobile-only flow screens (desktop design ends at Contact) */}
-      <div className="md:hidden">
-        <SkillsExperience site={site} bars={bars} experiences={experiences} tools={tools} />
-      </div>
-      <ContactFooter site={site} socials={socials} />
-      <div className="md:hidden">
-        <FeaturedList projects={projects} />
-      </div>
+      <HomeHero site={site} />
+      <HomeAbout site={site} traits={traits} />
+      <HomeServices site={site} skills={skills} />
+      <HomeSkills title={site.skills_band_title} bars={bars} band={bandStats} tools={tools} />
+      <HomeProjects projects={projects} viewAllText={site.featured_view_all} bandTitle={site.proj_band_title} />
+      <HomeTestimonials testimonials={testimonials} achievements={site.achievements} title={site.testi_title} sub={site.testi_sub} />
+      <HomeContact site={site} socials={socials} />
+      <HomeFooter site={site} nav={nav} skills={skills} socials={socials} />
     </main>
   );
 }

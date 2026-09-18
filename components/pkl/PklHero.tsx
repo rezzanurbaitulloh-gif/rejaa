@@ -48,7 +48,7 @@ export default function PklHero({ s }: { s: S }) {
     }}>
       {/* Background ambient */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] -translate-y-1/2 rounded-full bg-gradient-to-br from-acid/10 via-transparent to-transparent blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] translate-x-1/2 translate-y-1/2 rounded-full bg-gradient-to-tl from-cyan/10 via-transparent to-transparent blur-3xl" />
       </div>
 
@@ -131,7 +131,7 @@ export default function PklHero({ s }: { s: S }) {
             <Magnetic>
               <a
                 href="#intro"
-                className="inline-flex items-center gap-3 bg-orange text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
+                className="inline-flex items-center gap-3 bg-acid text-white text-[12px] pl-4 pr-1.5 py-1.5 rounded-full"
               >
                 {s.hero_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
@@ -158,7 +158,7 @@ export default function PklHero({ s }: { s: S }) {
           >
             {infos.map(([v, l, icon]) => (
               <div key={l} className="rounded-xl bg-ink-soft border border-white/10 p-3 md:p-4">
-                <p className="text-orange text-sm">{icon}</p>
+                <p className="text-acid text-sm">{icon}</p>
                 <p className="mt-1.5 text-[12px] md:text-[13px] font-medium leading-tight">{v}</p>
                 <p className="text-[10px] text-neutral-500 mt-0.5">{l}</p>
               </div>
@@ -216,7 +216,7 @@ export default function PklHero({ s }: { s: S }) {
             transition={{ delay: 0.7, duration: motionTokens.duration.slow }}
           >
             {s.hero_script.split(" ").map((w, i) => (
-              <div key={i} className={i === 1 ? "text-orange" : ""}>{w}</div>
+              <div key={i} className={i === 1 ? "text-acid" : ""}>{w}</div>
             ))}
           </motion.div>
           

@@ -29,8 +29,8 @@ export function Logo({ className = "", animated = false, fill = "currentColor" }
     >
       <defs>
         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FF6A00" />
-          <stop offset="100%" stopColor="#FF9F1A" />
+          <stop offset="0%" stopColor="#B5E332" />
+          <stop offset="100%" stopColor="#CDF463" />
         </linearGradient>
       </defs>
       {/* Background circle */}
@@ -150,14 +150,14 @@ export function LogoWordmark({ className = "", animated = false }: { className?:
       initial={false}
       animate={shouldAnimate ? { opacity: 1 } : false}
     >
-      <span className="font-serif text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#FF6A00] to-[#FF9F1A] bg-clip-text text-transparent tracking-tight">
+      <span className="font-serif text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#B5E332] to-[#CDF463] bg-clip-text text-transparent tracking-tight">
         AKUNSTOK
       </span>
       <motion.span
         className="w-2 h-2 rounded-full ml-1"
         animate={shouldAnimate ? { scale: [1, 1.3, 1] } : false}
         transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        style={{ background: "linear-gradient(135deg, #FF6A00, #FF9F1A)" }}
+        style={{ background: "linear-gradient(135deg, #B5E332, #CDF463)" }}
       />
     </motion.div>
   );
@@ -169,18 +169,18 @@ export function LogoWordmark({ className = "", animated = false }: { className?:
 export function LogoMark({ className = "", fill = "currentColor" }: { className?: string; fill?: string }) {
   return (
     <svg className={`inline-block ${className}`} viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ fill }}>
-      <circle cx="30" cy="30" r="28" fill="#FF6A00" opacity="0.15" />
+      <circle cx="30" cy="30" r="28" fill="#B5E332" opacity="0.15" />
       <path
         d="M30 10 L20 50 L40 50 Z"
         fill="none"
-        stroke="#FF6A00"
+        stroke="#B5E332"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M25 32 L35 32"
-        stroke="#FF6A00"
+        stroke="#B5E332"
         strokeWidth="3"
         strokeLinecap="round"
       />

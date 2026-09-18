@@ -24,7 +24,7 @@ export function RulesAccordion({ rules }: { rules: PklRule[] }) {
               aria-expanded={isOpen}
               className="w-full flex items-center gap-4 py-3.5 text-left"
             >
-              <span className="text-[12px] text-[#FF6A00] font-medium w-6 shrink-0">
+              <span className="text-[12px] text-[#B5E332] font-medium w-6 shrink-0">
                 {r.label}
               </span>
               <span className="flex-1 text-[13.5px] font-medium text-neutral-100">

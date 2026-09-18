@@ -9,7 +9,7 @@ export const usePageTransition = () => useContext(Ctx);
 
 /**
  * Cinematic route transition Portfolio ↔ PKL (spec level 6):
- * orange leading edge + black wipe covers, route swaps mid-cover,
+ * acid leading edge + black wipe covers, route swaps mid-cover,
  * wipe lifts to reveal the new scene.
  */
 export function PageTransitionProvider({ children }: { children: React.ReactNode }) {
@@ -56,7 +56,7 @@ export function PageTransitionProvider({ children }: { children: React.ReactNode
             style={{ y: "100%" }}
           >
             <div className="absolute inset-0 bg-[#0A0A0A]" />
-            <div className="absolute inset-x-0 top-0 h-[6px] bg-[#FF6A00]" />
+            <div className="absolute inset-x-0 top-0 h-[6px] bg-[#B5E332]" />
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="font-serif-d text-3xl text-white/90">AKUNSTOK</p>
             </div>

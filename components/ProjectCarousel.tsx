@@ -91,7 +91,7 @@ function TiltInner({
 
 function BankingMock({ reduce }: { reduce: boolean }) {
   return (
-    <div className="absolute inset-0 bg-gradient-to-br from-[#FF6A00] via-[#7a1e00] to-black p-3">
+    <div className="absolute inset-0 bg-gradient-to-br from-[#B5E332] via-[#7a1e00] to-black p-3">
       <motion.div
         className="mx-auto w-[130px] rounded-[22px] bg-black border border-white/15 p-2.5 shadow-2xl"
         animate={reduce ? undefined : { y: [0, -6, 0] }}
@@ -259,7 +259,7 @@ export default function ProjectCarousel({
       <div className="flex items-start justify-between gap-6">
         <div>
           <p className="text-[10px] tracking-[0.2em] text-[#8A8883]">
-            <span className="text-[#FF6A00] mr-2">{eyebrowNo}</span> {eyebrowLabel}
+            <span className="text-[#B5E332] mr-2">{eyebrowNo}</span> {eyebrowLabel}
           </p>
           <h2 className="font-serif-d text-4xl md:text-6xl leading-[1.02] mt-2 whitespace-pre-line">
             {title}
@@ -275,7 +275,7 @@ export default function ProjectCarousel({
             <motion.button
               onClick={() => go(-1)}
               aria-label="previous project"
-              className="w-9 h-9 rounded-full border border-white/20 text-neutral-300 hover:border-[#FF6A00]"
+              className="w-9 h-9 rounded-full border border-white/20 text-neutral-300 hover:border-[#B5E332]"
               whileHover={reduce ? undefined : { scale: motionTokens.scale.pop }}
               whileTap={reduce ? undefined : { scale: motionTokens.scale.press }}
             >
@@ -284,7 +284,7 @@ export default function ProjectCarousel({
             <motion.button
               onClick={() => go(1)}
               aria-label="next project"
-              className="w-9 h-9 rounded-full border border-white/20 text-neutral-300 hover:border-[#FF6A00]"
+              className="w-9 h-9 rounded-full border border-white/20 text-neutral-300 hover:border-[#B5E332]"
               whileHover={reduce ? undefined : { scale: motionTokens.scale.pop }}
               whileTap={reduce ? undefined : { scale: motionTokens.scale.press }}
             >
@@ -346,7 +346,7 @@ export default function ProjectCarousel({
                 }}
                 className={`shrink-0 relative rounded-xl overflow-hidden border bg-[#141414] ${
                   active
-                    ? "border-[#FF6A00]/80 shadow-[0_0_50px_rgba(255,106,0,0.3)]"
+                    ? "border-[#B5E332]/80 shadow-[0_0_50px_rgba(181,227,50,0.3)]"
                     : "border-white/10"
                 } w-[68vw] max-w-[250px] md:w-[300px] md:max-w-none`}
                 initial={false}
@@ -363,7 +363,7 @@ export default function ProjectCarousel({
               >
                 <TiltInner enabled={active} reduce={!!reduce}>
                   <div className="px-3 pt-2.5 flex justify-between text-[9px] text-neutral-400">
-                    <span className={active ? "text-[#FF6A00]" : ""}>{p.num}</span>
+                    <span className={active ? "text-[#B5E332]" : ""}>{p.num}</span>
                     <span>↗</span>
                   </div>
                   <AnimatePresence>
@@ -388,7 +388,7 @@ export default function ProjectCarousel({
                         whileTap={reduce ? undefined : { scale: 0.94 }}
                       >
                         Visit
-                        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FF6A00] text-[9px] text-white">
+                        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#B5E332] text-[9px] text-white">
                           ↗
                         </span>
                       </motion.a>
@@ -414,13 +414,13 @@ export default function ProjectCarousel({
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute bottom-2.5 left-2.5 right-2.5">
-                      <p className="text-[9px] text-[#ff8a3d]">● {p.category}</p>
+                      <p className="text-[9px] text-[#D6F768]">● {p.category}</p>
                       <p className="font-serif-d text-[15px] leading-tight">{p.title}</p>
                       <p className="text-[9px] text-neutral-400 mt-0.5">{p.subtitle}</p>
                     </div>
                     {active && (
                       <motion.span
-                        className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full bg-[#FF6A00] text-white text-sm flex items-center justify-center"
+                        className="absolute bottom-2.5 right-2.5 w-7 h-7 rounded-full bg-[#B5E332] text-white text-sm flex items-center justify-center"
                         initial={reduce ? false : { scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={springs.bouncy}
@@ -451,7 +451,7 @@ export default function ProjectCarousel({
               className="h-1.5 rounded-full transition-all"
               style={{
                 width: i === dot ? 22 : 8,
-                background: i === dot ? "#FF6A00" : "rgba(255,255,255,0.2)",
+                background: i === dot ? "#B5E332" : "rgba(255,255,255,0.2)",
               }}
             />
           ))}

@@ -43,7 +43,7 @@ const steps = [
     no: "04",
     eyebrow: "DESIGN",
     title: "Visual language built for trust and calm.",
-    desc: "Soft neutrals, generous whitespace, purposeful orange accents for primary actions. Typography scale optimized for financial legibility.",
+    desc: "Soft neutrals, generous whitespace, purposeful acid accents for primary actions. Typography scale optimized for financial legibility.",
     bg: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&q=80&auto=format&fit=crop",
   },
   {
@@ -133,7 +133,7 @@ export function CaseStudyFullscreen({
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
                 <div>
-                  <p className="text-[10px] tracking-[0.2em] text-[#FF6A00]">{item.category}</p>
+                  <p className="text-[10px] tracking-[0.2em] text-[#B5E332]">{item.category}</p>
                   <p className="font-serif-d text-3xl md:text-4xl mt-1 text-white">{item.title}</p>
                 </div>
                 <button
@@ -167,7 +167,7 @@ export function CaseStudyFullscreen({
                       >
                         <span
                           className={`relative z-10 w-2 h-2 rounded-full transition-colors ${
-                            i <= 0 ? "bg-[#FF6A00]" : "border border-white/30 bg-transparent group-hover:border-white/70"
+                            i <= 0 ? "bg-[#B5E332]" : "border border-white/30 bg-transparent group-hover:border-white/70"
                           }`}
                         />
                         <span
@@ -210,7 +210,7 @@ export function CaseStudyFullscreen({
                       {/* Content */}
                       <div className="relative z-10 max-w-2xl">
                         <motion.p
-                          className="text-[10px] tracking-[0.2em] text-[#FF6A00]"
+                          className="text-[10px] tracking-[0.2em] text-[#B5E332]"
                           initial={reduce ? false : { opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true, margin: "-100px" }}
@@ -250,7 +250,7 @@ export function CaseStudyFullscreen({
                           <span
                             key={j}
                             className={`w-2 h-2 rounded-full transition-colors ${
-                              j <= i ? "bg-[#FF6A00]" : "bg-white/20"
+                              j <= i ? "bg-[#B5E332]" : "bg-white/20"
                             }`}
                           />
                         ))}
@@ -286,7 +286,7 @@ export function CaseStudyFullscreen({
                         className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[13px] font-medium text-neutral-900"
                       >
                         View Live Project
-                        <span className="w-6 h-6 rounded-full bg-[#FF6A00] flex items-center justify-center text-sm text-white">
+                        <span className="w-6 h-6 rounded-full bg-[#B5E332] flex items-center justify-center text-sm text-white">
                           ↗
                         </span>
                       </a>

@@ -72,7 +72,7 @@ export function CaseModal({
                 className="relative h-[280px] md:h-[360px] overflow-hidden"
               >
                 {item.title === "Mobile Banking App" ? (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6A00] via-[#7a1e00] to-black" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#B5E332] via-[#7a1e00] to-black" />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -92,7 +92,7 @@ export function CaseModal({
               </motion.div>
               <div className="p-5 md:p-7">
                 <div className="flex items-center justify-between text-[11px]">
-                  <p className="text-[#FF6A00]">
+                  <p className="text-[#B5E332]">
                     {item.num ? `${item.num} ● ` : "● "}
                     {item.category}
                   </p>
@@ -108,7 +108,7 @@ export function CaseModal({
                       href={item.link_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full bg-[#FF6A00] px-5 py-2.5 text-[12.5px] font-medium text-white"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#B5E332] px-5 py-2.5 text-[12.5px] font-medium text-white"
                     >
                       Visit Project <span>↗</span>
                     </a>

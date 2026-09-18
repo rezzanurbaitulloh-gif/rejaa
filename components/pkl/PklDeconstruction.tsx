@@ -89,7 +89,7 @@ export function PklDeconstruction({ s, items }: { s: S; items: PklProject[] }) {
                   </AnimatePresence>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-[10px] tracking-[0.2em] text-[#FF6A00]">{c.label}</p>
+                    <p className="text-[10px] tracking-[0.2em] text-[#B5E332]">{c.label}</p>
                     <p className="font-serif-d text-xl mt-1 text-white">{c.desc}</p>
                   </div>
                 </div>
@@ -97,18 +97,18 @@ export function PklDeconstruction({ s, items }: { s: S; items: PklProject[] }) {
 
               {/* Content: Why/How/Changed */}
               <div className="space-y-4">
-                <p className="text-[10px] tracking-[0.2em] text-[#FF6A00]">{c.label}</p>
+                <p className="text-[10px] tracking-[0.2em] text-[#B5E332]">{c.label}</p>
                 <div className="space-y-3">
                   <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4">
-                    <p className="text-[11px] tracking-[0.15em] text-[#FF6A00] mb-2">WHY</p>
+                    <p className="text-[11px] tracking-[0.15em] text-[#B5E332] mb-2">WHY</p>
                     <p className="text-[13px] text-neutral-300">{c.why}</p>
                   </div>
                   <div className="rounded-xl bg-white/[0.03] border border-white/10 p-4">
-                    <p className="text-[11px] tracking-[0.15em] text-[#FF6A00] mb-2">HOW</p>
+                    <p className="text-[11px] tracking-[0.15em] text-[#B5E332] mb-2">HOW</p>
                     <p className="text-[13px] text-neutral-300">{c.how}</p>
                   </div>
-                  <div className="rounded-xl bg-[#FF6A00]/15 border border-[#FF6A00]/30 p-4">
-                    <p className="text-[11px] tracking-[0.15em] text-[#FF6A00] mb-2">WHAT CHANGED</p>
+                  <div className="rounded-xl bg-[#B5E332]/15 border border-[#B5E332]/30 p-4">
+                    <p className="text-[11px] tracking-[0.15em] text-[#B5E332] mb-2">WHAT CHANGED</p>
                     <p className="font-semibold text-white">{c.changed}</p>
                   </div>
                 </div>

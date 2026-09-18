@@ -15,18 +15,22 @@ export type Project = {
   subtitle: string;
   image_url: string;
   link_url: string;
+  result: string;
   sort_order: number;
   is_active: boolean;
 };
+export type Trait = { id: string; icon: string; title: string; description: string; sort_order: number };
+export type BandStat = { id: string; value: string; label: string; sort_order: number };
+export type Testimonial = { id: string; quote: string; name: string; role: string; avatar_url: string; sort_order: number };
 export type ProcessStep = { id: string; step_no: string; title: string; description: string; sort_order: number };
-export type Skill = { id: string; name: string; is_highlight: boolean; sort_order: number };
+export type Skill = { id: string; name: string; description: string; is_highlight: boolean; sort_order: number };
 export type SkillBar = { id: string; name: string; percent: number; sort_order: number };
 export type Tool = { id: string; name: string; short: string; sort_order: number };
 export type Social = { id: string; platform: string; url: string; sort_order: number };
 export type Experience = { id: string; period: string; role: string; company: string; sort_order: number };
 
 export async function getSite() {
-  const [s, nav, proj, steps, skills, bars, tools, socials, exps] = await Promise.all([
+  const [s, nav, proj, steps, skills, bars, tools, socials, exps, traits, band, testi] = await Promise.all([
     supabase.from("site_settings").select("*").eq("id", 1).single(),
     supabase.from("nav_links").select("*").order("sort_order"),
     supabase.from("projects").select("*").eq("is_active", true).order("sort_order"),
@@ -36,6 +40,9 @@ export async function getSite() {
     supabase.from("tools").select("*").order("sort_order"),
     supabase.from("socials").select("*").order("sort_order"),
     supabase.from("experiences").select("*").order("sort_order"),
+    supabase.from("traits").select("*").order("sort_order"),
+    supabase.from("band_stats").select("*").order("sort_order"),
+    supabase.from("testimonials").select("*").order("sort_order"),
   ]);
   return {
     site: { ...DEFAULT_SITE, ...(s.data ?? {}) } as typeof DEFAULT_SITE,
@@ -47,6 +54,9 @@ export async function getSite() {
     tools: (tools.data?.length ? tools.data : DEFAULT_TOOLS) as Tool[],
     socials: (socials.data?.length ? socials.data : DEFAULT_SOCIALS) as Social[],
     experiences: (exps.data?.length ? exps.data : DEFAULT_EXPS) as Experience[],
+    traits: (traits.data?.length ? traits.data : DEFAULT_TRAITS) as Trait[],
+    bandStats: (band.data?.length ? band.data : DEFAULT_BAND) as BandStat[],
+    testimonials: (testi.data?.length ? testi.data : DEFAULT_TESTI) as Testimonial[],
   };
 }
 
@@ -119,6 +129,25 @@ export const DEFAULT_SITE = {
   menu_card_name: "AKUNSTOK",
   menu_card_role: "Digital Designer & Creative",
   menu_card_thanks: "Thanks for scrolling",
+  hero_title_accent: "GROWTH.",
+  hero_role: "DIGITAL DESIGNER. CREATIVE PROBLEM SOLVER.",
+  hero_cta2_text: "DOWNLOAD RESUME",
+  hero_resume_url: "#",
+  trusted_eyebrow: "TRUSTED BY BRANDS WORLDWIDE",
+  trusted_logos: "verda|LUMIERE|PULSE|NEXORA|FORMA",
+  stat4_value: "100%",
+  stat4_label: "Commitment",
+  achievements: "Available for Freelance|Fast Response & Revisions|Pixel-Perfect Delivery|Clean Developer Handoff",
+  about_cta: "MORE ABOUT ME",
+  svc_eyebrow: "WHAT I DO",
+  svc_title: "Services that drive growth",
+  skills_band_title: "Skills & Expertise",
+  proj_band_title: "FEATURED PROJECTS",
+  testi_title: "What clients are saying",
+  testi_sub: "Real results. Real relationships.",
+  contact_email: "hello@akunstok.studio",
+  contact_phone: "+62 812-3456-7890",
+  contact_location: "Indonesia — Working Worldwide",
 };
 
 const DEFAULT_NAV: NavLink[] = [
@@ -128,11 +157,11 @@ const DEFAULT_NAV: NavLink[] = [
   { id: "4", label: "Contact", href: "#contact", sort_order: 3 },
 ];
 const DEFAULT_PROJECTS: Project[] = [
-  { id: "1", num_label: "05 / 05", title: "The Greater", category: "Visual Campaign", subtitle: "Art Direction • Visual Design", image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 0, is_active: true },
-  { id: "2", num_label: "02 / 05", title: "Nexora", category: "Brand Identity", subtitle: "Branding • Visual Design", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 1, is_active: true },
-  { id: "3", num_label: "01 / 05", title: "Mobile Banking App", category: "Fintech", subtitle: "UI/UX Design • Product Design", image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 2, is_active: true },
-  { id: "4", num_label: "03 / 05", title: "PortoLab", category: "Web Design", subtitle: "UI/UX • Web Design", image_url: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 3, is_active: true },
-  { id: "5", num_label: "04 / 05", title: "Lume", category: "Packaging Design", subtitle: "Branding • Packaging", image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80&auto=format&fit=crop", link_url: "#", sort_order: 4, is_active: true },
+  { id: "1", num_label: "05 / 05", title: "The Greater", category: "Visual Campaign", subtitle: "Art Direction • Visual Design", image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&auto=format&fit=crop", link_url: "#", result: "", sort_order: 0, is_active: true },
+  { id: "2", num_label: "02 / 05", title: "Nexora", category: "Brand Identity", subtitle: "Branding • Visual Design", image_url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80&auto=format&fit=crop", link_url: "#", result: "", sort_order: 1, is_active: true },
+  { id: "3", num_label: "01 / 05", title: "Mobile Banking App", category: "Fintech", subtitle: "UI/UX Design • Product Design", image_url: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80&auto=format&fit=crop", link_url: "#", result: "", sort_order: 2, is_active: true },
+  { id: "4", num_label: "03 / 05", title: "PortoLab", category: "Web Design", subtitle: "UI/UX • Web Design", image_url: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&q=80&auto=format&fit=crop", link_url: "#", result: "", sort_order: 3, is_active: true },
+  { id: "5", num_label: "04 / 05", title: "Lume", category: "Packaging Design", subtitle: "Branding • Packaging", image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80&auto=format&fit=crop", link_url: "#", result: "", sort_order: 4, is_active: true },
 ];
 const DEFAULT_STEPS: ProcessStep[] = [
   { id: "1", step_no: "01", title: "Problem & Research", description: "Understanding user needs", sort_order: 0 },
@@ -142,11 +171,27 @@ const DEFAULT_STEPS: ProcessStep[] = [
   { id: "5", step_no: "05", title: "Result", description: "Measure the impact", sort_order: 4 },
 ];
 const DEFAULT_SKILLS: Skill[] = [
-  { id: "1", name: "UI/UX", is_highlight: true, sort_order: 0 },
-  { id: "2", name: "Branding", is_highlight: false, sort_order: 1 },
-  { id: "3", name: "Visual Design", is_highlight: false, sort_order: 2 },
-  { id: "4", name: "Motion", is_highlight: false, sort_order: 3 },
-  { id: "5", name: "Web Design", is_highlight: false, sort_order: 4 },
+  { id: "1", name: "UI/UX", description: "Interfaces that convert — research, flows and prototypes.", is_highlight: true, sort_order: 0 },
+  { id: "2", name: "Branding", description: "Identities that stick — logo, voice and guidelines.", is_highlight: false, sort_order: 1 },
+  { id: "3", name: "Visual Design", description: "Striking visuals with purpose and restraint.", is_highlight: false, sort_order: 2 },
+  { id: "4", name: "Motion", description: "Micro-interactions and stories in motion.", is_highlight: false, sort_order: 3 },
+  { id: "5", name: "Web Design", description: "Fast, responsive sites built to perform.", is_highlight: false, sort_order: 4 },
+];
+const DEFAULT_TRAITS: Trait[] = [
+  { id: "t1", icon: "◍", title: "STRATEGIC THINKER", description: "I connect insights to opportunities and build strategies that scale.", sort_order: 0 },
+  { id: "t2", icon: "⬢", title: "DATA-DRIVEN", description: "Every decision is backed by evidence and focused on performance.", sort_order: 1 },
+  { id: "t3", icon: "◎", title: "RESULTS OBSESSED", description: "I do not chase vanity metrics. I deliver real business impact.", sort_order: 2 },
+];
+const DEFAULT_BAND: BandStat[] = [
+  { id: "b1", value: "15+", label: "Projects Completed", sort_order: 0 },
+  { id: "b2", value: "08+", label: "Happy Clients", sort_order: 1 },
+  { id: "b3", value: "02+", label: "Years Learning", sort_order: 2 },
+  { id: "b4", value: "05", label: "Design Disciplines", sort_order: 3 },
+];
+const DEFAULT_TESTI: Testimonial[] = [
+  { id: "q1", quote: "Working with Akunstok completely transformed our product. Clean process, sharp instincts, zero drama.", name: "Sarah M.", role: "CMO, Fintech", avatar_url: "", sort_order: 0 },
+  { id: "q2", quote: "Rare mix of taste and rigor. Every review made the work measurably better.", name: "Daniel K.", role: "Founder, SaaS", avatar_url: "", sort_order: 1 },
+  { id: "q3", quote: "Delivered ahead of schedule without cutting a single corner. Highly recommended.", name: "Alex R.", role: "Director, Agency", avatar_url: "", sort_order: 2 },
 ];
 const DEFAULT_BARS: SkillBar[] = [
   { id: "1", name: "UI/UX", percent: 90, sort_order: 0 },

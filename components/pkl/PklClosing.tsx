@@ -21,13 +21,13 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
   return (
     <section id="hasil" className="bg-cream text-ink section-padding relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-acid/10 via-transparent to-transparent blur-3xl" />
       </div>
       
       <div className="relative grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
         <Reveal>
           <p className="eyebrow tracking-[0.2em] dark">
-            <span className="text-orange mr-2">{s.res_no}</span> {s.res_eyebrow}
+            <span className="text-acid mr-2">{s.res_no}</span> {s.res_eyebrow}
           </p>
           <h2 className="heading-2 mt-2">{s.res_title}</h2>
           <p className="mt-3 body-base text-neutral-600 max-w-[400px]">{s.res_desc}</p>
@@ -37,7 +37,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
               const { num, prefix, suffix } = parseStat(st.value);
               return (
                 <div key={st.id} className="rounded-2xl bg-white border border-neutral-900/10 p-4 text-center">
-                  <p className="text-orange text-sm">{["◷", "❖", "♡"][si % 3]}</p>
+                  <p className="text-acid text-sm">{["◷", "❖", "♡"][si % 3]}</p>
                   <p className="font-serif-d text-2xl md:text-3xl mt-1">
                     <Counter value={num} prefix={prefix} suffix={suffix} />
                   </p>
@@ -69,7 +69,7 @@ export function PklResults({ s, stats, skills }: { s: S; stats: PklStat[]; skill
             <ul className="mt-3 space-y-2.5">
               {splitPipe(s.learn_points).map((pt) => (
                 <li key={pt} className="flex items-start gap-2.5 text-sm text-neutral-700">
-                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-orange text-white text-xs flex items-center justify-center">✓</span>
+                  <span className="mt-0.5 w-4 h-4 shrink-0 rounded-full bg-acid text-white text-xs flex items-center justify-center">✓</span>
                   {pt}
                 </li>
               ))}
@@ -113,7 +113,7 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
             ["Kampus", s.ts_campus],
           ].map(([k, v]) => (
             <div key={k} className="flex items-center gap-2.5 text-sm">
-              <span className="w-6 h-6 rounded-full bg-orange/15 text-orange flex items-center justify-center text-xs">◍</span>
+              <span className="w-6 h-6 rounded-full bg-acid/15 text-acid flex items-center justify-center text-xs">◍</span>
               <span className="text-neutral-500 w-14">{k}</span>
               <span className="text-white">{v}</span>
             </div>
@@ -134,7 +134,7 @@ export function PklLearning({ s, portraits, testimonials }: { s: S; portraits: s
             <Magnetic>
               <a href="#penutup" className="btn-secondary">
                 {s.learn_cta}
-                <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
+                <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm text-white">→</span>
               </a>
             </Magnetic>
           </div>
@@ -158,7 +158,7 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
   return (
     <footer id="penutup" className="bg-ink text-white section-padding border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] translate-y-1/2 rounded-full bg-gradient-to-tr from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] translate-y-1/2 rounded-full bg-gradient-to-tr from-acid/10 via-transparent to-transparent blur-3xl" />
       </div>
       
       <div className="relative grid md:grid-cols-[1.1fr_1fr_0.7fr] gap-8 lg:gap-12">
@@ -173,7 +173,7 @@ export function PklClosing({ s, socials }: { s: S; socials: { id: string; platfo
           <p className="mt-1.5 body-sm text-neutral-500">{s.close_cta_desc}</p>
           <div className="mt-4">
             <Magnetic>
-              <a href="mailto:hello@akunstok.studio" className="btn-primary-orange">
+              <a href="mailto:hello@akunstok.studio" className="btn-primary-acid">
                 {s.close_cta}
                 <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-sm">→</span>
               </a>

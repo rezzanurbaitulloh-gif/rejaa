@@ -79,7 +79,7 @@ export function Loader() {
           <p className="text-[12px] tracking-[0.3em] font-semibold">AKUNSTOK</p>
           <div className="mt-5 w-48 h-[2px] bg-white/15 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#FF6A00] rounded-full transition-all duration-300"
+              className="h-full bg-[#B5E332] rounded-full transition-all duration-300"
               style={{ width: `${pct}%` }}
             />
           </div>

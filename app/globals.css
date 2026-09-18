@@ -8,11 +8,11 @@
   --ink: #0A0A0A;
   --ink-soft: #1A1A1A;
   --ink-muted: #2A2A2A;
-  --orange: #FF6A00;
-  --orange-bright: #FF8533;
-  --orange-dark: #CC5500;
-  --orange-glow: rgba(255, 106, 0, 0.4);
-  --orange-glow-strong: rgba(255, 106, 0, 0.6);
+  --acid: #B5E332;
+  --acid-bright: #CDF463;
+  --acid-dark: #8FBF1A;
+  --acid-glow: rgba(181, 227, 50, 0.4);
+  --acid-glow-strong: rgba(181, 227, 50, 0.6);
   
   /* Neutral grays - refined for depth */
   --gray-50: #FAFAFA;
@@ -86,8 +86,8 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-glow: 0 0 40px rgba(255, 106, 0, 0.3);
-  --shadow-glow-strong: 0 0 60px rgba(255, 106, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(181, 227, 50, 0.3);
+  --shadow-glow-strong: 0 0 60px rgba(181, 227, 50, 0.5);
   
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -114,9 +114,9 @@
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-muted: var(--ink-muted);
-  --color-orange: var(--orange);
-  --color-orange-bright: var(--orange-bright);
-  --color-orange-dark: var(--orange-dark);
+  --color-acid: var(--acid);
+  --color-acid-bright: var(--acid-bright);
+  --color-acid-dark: var(--acid-dark);
   --color-accent-cyan: var(--accent-cyan);
   --color-accent-emerald: var(--accent-emerald);
   --color-accent-violet: var(--accent-violet);
@@ -168,8 +168,8 @@
 }
 
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 106, 0, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(255, 106, 0, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(181, 227, 50, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(181, 227, 50, 0.5); }
 }
 
 @keyframes float {
@@ -210,7 +210,7 @@
   }
   
   ::selection {
-    background: var(--orange);
+    background: var(--acid);
     color: #fff;
   }
   
@@ -281,7 +281,7 @@
   }
   
   .text-gradient {
-    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 100%);
+    background: linear-gradient(135deg, var(--acid) 0%, var(--acid-bright) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -304,7 +304,7 @@
   .border-gradient {
     border: 1px solid transparent;
     background: linear-gradient(var(--ink), var(--ink)) padding-box,
-                linear-gradient(135deg, var(--orange), var(--orange-bright)) border-box;
+                linear-gradient(135deg, var(--acid), var(--acid-bright)) border-box;
   }
   
   .bg-gradient-radial {
@@ -312,19 +312,19 @@
   }
   
   .bg-gradient-conic {
-    background: conic-gradient(from 0deg at 50% 50%, var(--orange), var(--orange-bright), var(--orange));
+    background: conic-gradient(from 0deg at 50% 50%, var(--acid), var(--acid-bright), var(--acid));
   }
   
   .bg-mesh {
     background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 106, 0, 0.15), transparent),
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(181, 227, 50, 0.15), transparent),
       radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 212, 212, 0.1), transparent),
       var(--ink);
   }
   
   .bg-mesh-cream {
     background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 106, 0, 0.1), transparent),
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(181, 227, 50, 0.1), transparent),
       radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 212, 212, 0.08), transparent),
       var(--cream);
   }
@@ -400,14 +400,14 @@
 @layer components {
   .btn-primary {
     @apply inline-flex items-center gap-3 px-6 py-3 bg-neutral-900 text-white text-sm font-medium rounded-full
-           hover:bg-neutral-800 hover:shadow-lg hover:shadow-orange/20
+           hover:bg-neutral-800 hover:shadow-lg hover:shadow-acid/20
            transition-all duration-300 ease-out
            active:scale-[0.98];
   }
   
-  .btn-primary-orange {
-    @apply inline-flex items-center gap-3 px-6 py-3 bg-orange text-white text-sm font-medium rounded-full
-           hover:bg-orange-dark hover:shadow-lg hover:shadow-orange/40
+  .btn-primary-acid {
+    @apply inline-flex items-center gap-3 px-6 py-3 bg-acid text-white text-sm font-medium rounded-full
+           hover:bg-acid-dark hover:shadow-lg hover:shadow-acid/40
            transition-all duration-300 ease-out
            active:scale-[0.98];
   }
@@ -436,14 +436,14 @@
   }
   
   .card-hover {
-    @apply hover:border-orange/50 hover:shadow-xl hover:shadow-orange/10
+    @apply hover:border-acid/50 hover:shadow-xl hover:shadow-acid/10
            transition-all duration-500 ease-out;
   }
   
   .input-base {
     @apply w-full px-4 py-3 bg-[#141414] border border-white/10 text-white placeholder:text-neutral-500
            rounded-xl outline-none
-           focus:border-orange focus:ring-2 focus:ring-orange/20
+           focus:border-acid focus:ring-2 focus:ring-acid/20
            transition-all duration-300;
   }
   
@@ -495,7 +495,7 @@
     @apply text-[10px] tracking-[0.2em] text-neutral-500 uppercase;
   }
   
-  .eyebrow-orange {
-    @apply text-[10px] tracking-[0.2em] text-orange uppercase;
+  .eyebrow-acid {
+    @apply text-[10px] tracking-[0.2em] text-acid uppercase;
   }
 }

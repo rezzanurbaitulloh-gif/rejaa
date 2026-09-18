@@ -12,7 +12,7 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
   return (
     <section id="proyek" className="bg-ink text-white section-padding border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-acid/10 via-transparent to-transparent blur-3xl" />
       </div>
       
       <ProjectCarousel
@@ -38,7 +38,7 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
               className="hidden md:inline-flex items-center gap-3 border border-white/25 text-sm pl-4 pr-1.5 py-1.5 rounded-full text-neutral-200 hover:border-white/40"
             >
               {s.proj_cta}
-              <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
+              <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm text-white">→</span>
             </a>
           </Magnetic>
         }
@@ -48,7 +48,7 @@ export function PklProjects({ s, projects }: { s: S; projects: PklProject[] }) {
         <Magnetic>
           <a href="#detail-proyek" className="btn-secondary">
             {s.proj_cta}
-            <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm text-white">→</span>
+            <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm text-white">→</span>
           </a>
         </Magnetic>
       </div>
@@ -63,7 +63,7 @@ export function PklDetail({ s, steps }: { s: S; steps: PklStep[] }) {
   return (
     <section id="detail-proyek" className="bg-cream text-ink section-padding relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-orange/10 via-transparent to-transparent blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] -translate-y-1/2 rounded-full bg-gradient-to-br from-acid/10 via-transparent to-transparent blur-3xl" />
       </div>
       
       <div className="relative grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -79,9 +79,9 @@ export function PklDetail({ s, steps }: { s: S; steps: PklStep[] }) {
           {s.detail_cta ? (
             <div className="mt-5">
               <Magnetic>
-                <a href="#hasil" className="btn-primary-orange">
+                <a href="#hasil" className="btn-primary-acid">
                   {s.detail_cta}
-                  <span className="w-7 h-7 rounded-full bg-orange flex items-center justify-center text-sm">→</span>
+                  <span className="w-7 h-7 rounded-full bg-acid flex items-center justify-center text-sm">→</span>
                 </a>
               </Magnetic>
             </div>
@@ -91,7 +91,7 @@ export function PklDetail({ s, steps }: { s: S; steps: PklStep[] }) {
             {steps.map((st) => (
               <StaggerItem key={st.id}>
                 <div className="flex gap-4 py-3 border-t border-neutral-900/10">
-                  <span className="text-sm text-orange font-medium w-6 shrink-0">{st.step_no}</span>
+                  <span className="text-sm text-acid font-medium w-6 shrink-0">{st.step_no}</span>
                   <div className="flex-1">
                     <p className="text-lg font-medium">{st.title}</p>
                     <p className="text-sm text-neutral-600">{st.description}</p>
