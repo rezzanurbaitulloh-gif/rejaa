@@ -154,53 +154,63 @@ export async function getSiteData(): Promise<SiteData> {
     ]);
     if (!prof || !prof.length) return { ...FALLBACK, live: true };
     const p = prof[0];
+    const fb = FALLBACK;
+    // Merge per-tabel: tabel DB yang masih kosong → pakai fallback,
+    // jadi web tetap penuh sebelum admin diisi.
+    const use = <T,>(db: T[] | null, fallback: T[]): T[] =>
+      db && db.length ? db : fallback;
+    const skillsMapped: SkillCoin[] = (skills ?? []).map((s, i) => ({
+      name: String(s.name ?? `Skill ${i + 1}`),
+      icon: String(s.icon ?? String(s.name ?? "?").slice(0, 2).toUpperCase()),
+    }));
+    const projectsMapped: Project[] = (projects ?? []).map((r, i) => ({
+      id: Number(r.id ?? i), slug: String(r.slug ?? `p-${i}`),
+      num: String(r.num ?? `0${i + 1}`), title: String(r.title ?? "Untitled"),
+      category: String(r.category ?? "Project"), year: String(r.year ?? "2025"),
+      status: (r.status === "Development" ? "Development" : "Deployed") as ProjectStatus,
+      description: String(r.description ?? ""), techStack: arr(r.tech_stack ?? r.techStack),
+      images: arr(r.images), linkGithub: String(r.link_github ?? r.linkGithub ?? "#"),
+      linkDemo: String(r.link_demo ?? r.linkDemo ?? "#"),
+      role: String(r.role ?? "Full-Stack Developer"),
+      overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
+    }));
+    const experiencesMapped: Experience[] = (exps ?? []).map((r, i) => ({
+      id: Number(r.id ?? i), num: String(r.num ?? `0${i + 1}`),
+      title: String(r.title ?? "Untitled"), company: String(r.company ?? ""),
+      category: String(r.category ?? "Experience"), date: String(r.date ?? ""),
+      year: String(r.year ?? "2025"), description: String(r.description ?? ""),
+      techStack: arr(r.tech_stack ?? r.techStack), images: arr(r.images),
+      overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
+    }));
+    const certificatesMapped: Certificate[] = (certs ?? []).map((r, i) => ({
+      id: Number(r.id ?? i), title: String(r.title ?? "Untitled"),
+      issuer: String(r.issuer ?? ""), year: String(r.year ?? ""),
+      category: String(r.category ?? "CERTIFIED"), description: String(r.description ?? ""),
+      credentialUrl: String(r.credential_url ?? r.credentialUrl ?? "#"),
+    }));
+    const socialsMapped: Social[] = (socials ?? []).map((s) => ({
+      name: String(s.name ?? "?"), icon: String(s.icon ?? "?"), link: String(s.link ?? "#"),
+    }));
     return {
       live: true,
       profile: {
-        name: String(p.name ?? FALLBACK.profile.name),
-        role: String(p.role ?? FALLBACK.profile.role),
-        bio: String(p.bio ?? FALLBACK.profile.bio),
+        name: String(p.name ?? fb.profile.name),
+        role: String(p.role ?? fb.profile.role),
+        bio: String(p.bio ?? fb.profile.bio),
         photo: String(p.photo ?? ""),
-        status: String(p.status ?? FALLBACK.profile.status),
-        location: String(p.location ?? FALLBACK.profile.location),
+        status: String(p.status ?? fb.profile.status),
+        location: String(p.location ?? fb.profile.location),
         cv_url: String(p.cv_url ?? "#"),
-        email: String(p.email ?? FALLBACK.profile.email),
-        spin_text: String(p.spin_text ?? FALLBACK.profile.spin_text),
+        email: String(p.email ?? fb.profile.email),
+        spin_text: String(p.spin_text ?? fb.profile.spin_text),
         github: String(p.github ?? "#"),
         instagram: String(p.instagram ?? "#"),
       },
-      skills: (skills ?? []).map((s, i) => ({
-        name: String(s.name ?? `Skill ${i + 1}`),
-        icon: String(s.icon ?? String(s.name ?? "?").slice(0, 2).toUpperCase()),
-      })),
-      projects: (projects ?? []).map((r, i) => ({
-        id: Number(r.id ?? i), slug: String(r.slug ?? `p-${i}`),
-        num: String(r.num ?? `0${i + 1}`), title: String(r.title ?? "Untitled"),
-        category: String(r.category ?? "Project"), year: String(r.year ?? "2025"),
-        status: (r.status === "Development" ? "Development" : "Deployed") as ProjectStatus,
-        description: String(r.description ?? ""), techStack: arr(r.tech_stack ?? r.techStack),
-        images: arr(r.images), linkGithub: String(r.link_github ?? r.linkGithub ?? "#"),
-        linkDemo: String(r.link_demo ?? r.linkDemo ?? "#"),
-        role: String(r.role ?? "Full-Stack Developer"),
-        overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
-      })),
-      experiences: (exps ?? []).map((r, i) => ({
-        id: Number(r.id ?? i), num: String(r.num ?? `0${i + 1}`),
-        title: String(r.title ?? "Untitled"), company: String(r.company ?? ""),
-        category: String(r.category ?? "Experience"), date: String(r.date ?? ""),
-        year: String(r.year ?? "2025"), description: String(r.description ?? ""),
-        techStack: arr(r.tech_stack ?? r.techStack), images: arr(r.images),
-        overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
-      })),
-      certificates: (certs ?? []).map((r, i) => ({
-        id: Number(r.id ?? i), title: String(r.title ?? "Untitled"),
-        issuer: String(r.issuer ?? ""), year: String(r.year ?? ""),
-        category: String(r.category ?? "CERTIFIED"), description: String(r.description ?? ""),
-        credentialUrl: String(r.credential_url ?? r.credentialUrl ?? "#"),
-      })),
-      socials: (socials ?? []).map((s) => ({
-        name: String(s.name ?? "?"), icon: String(s.icon ?? "?"), link: String(s.link ?? "#"),
-      })),
+      skills: use(skillsMapped, fb.skills),
+      projects: use(projectsMapped, fb.projects),
+      experiences: use(experiencesMapped, fb.experiences),
+      certificates: use(certificatesMapped, fb.certificates),
+      socials: use(socialsMapped, fb.socials),
     };
   } catch {
     return FALLBACK;
