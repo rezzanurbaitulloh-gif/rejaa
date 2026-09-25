@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# aboutme-fusion — Aboutme Production (Next.js + Supabase)
 
-## Getting Started
+Fusion DNA **Davin** (`portofoliodavin.vercel.app`) × **Shashank** (`shashank-modi.github.io/Portfolio`):
+scroll sinematik, orbit Skills + portal zoom, TargetCursor corner, dark mode + 2D mode,
+kulit cream editorial elegan.
 
-First, run the development server:
+## Jalankan
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd aboutme-fusion
+npm install
+npm run dev     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Jadi LIVE (dinamis penuh)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Bikin project di supabase.com → jalankan `supabase/schema.sql` di SQL Editor.
+2. Authentication → Users → Add user (email+password buat admin).
+3. Copy `.env.example` → `.env.local`, isi URL + anon key → restart dev server.
+4. Buka `/admin`: isi profile, tambah project (cover/foto upload di Storage →
+   copy URL), ganti logo+link medsos, teks logo muter (`spin_text`), sertifikat.
+5. Tanpa env pun web tetap jalan dengan data dummy + badge `○ DUMMY` di footer.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Konten dinamis: `profiles, skills, projects, experiences, certificates, socials,
+inquiries` (+ Storage: `covers avatar icons docs`). Copy statis (manifesto,
+urutan section, token warna, timeline animasi) sengaja tidak didinamiskan.
 
-## Learn More
+## Struktur
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app/page.tsx` — RSC, fetch Supabase (`revalidate 60`) + fallback
+- `src/components/chrome.tsx` — Lenis 1-loop, TargetCursor, pill nav, toggles, loader
+- `src/components/sections.tsx` — Hero, Manifesto, About tabs, Skills orbit
+- `src/components/more.tsx` — Works/Experience carousel + modal, Services,
+  GitHub, Certificates, Contact (jam WIB, copy email, form inquiries)
+- `src/app/admin/page.tsx` — CRUD semua tabel (login required)
+- `supabase/schema.sql` — tabel + RLS + buckets + seed
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Aturan performa (warisan riset 2026)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Satu RAF loop: Lenis didrive `gsap.ticker`, `lagSmoothing(0)`
+- Animasi `transform`/`opacity` saja; pin & 3D mati di &lt;768px + `prefers-reduced-motion`
+- `ScrollTrigger.refresh()` setelah fonts/data settle; `ignoreMobileResize: true`
+- `TargetCursor` throttle 60ms (`elementFromPoint`), mati di touch
