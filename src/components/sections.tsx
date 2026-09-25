@@ -106,8 +106,10 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
   useEffect(() => {
     const els = [a1.current, a2.current, a3.current].filter(Boolean) as HTMLAnchorElement[];
     // Mode 2D = kartu medsos statis total ( kayak Fallback2D Davin )
+    // killTweensOf WAJIB: tween parallax (efek sebelah) masih hidup & nulis ulang tiap tick
     if (reduced() || mode !== "3d") {
-      gsap.set(els, { clearProps: "transform" });
+      gsap.killTweensOf(els);
+      gsap.set(els, { clearProps: "all" });
       return;
     }
     const floats = [a1, a2, a3];
