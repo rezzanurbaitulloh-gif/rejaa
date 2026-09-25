@@ -11,7 +11,7 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
-type Field = { k: string; label: string; kind: "text" | "area" | "arr" | "status" };
+type Field = { k: string; label: string; kind: "text" | "area" | "arr" | "status"; upload?: string };
 type TableCfg = { label: string; fields: Field[]; readonly?: boolean };
 
 const TABLES: Record<string, TableCfg> = {
@@ -19,9 +19,9 @@ const TABLES: Record<string, TableCfg> = {
     label: "Profile",
     fields: [
       { k: "name", label: "Nama", kind: "text" }, { k: "role", label: "Role", kind: "text" },
-      { k: "bio", label: "Bio", kind: "area" }, { k: "photo", label: "Foto URL (bucket avatar)", kind: "text" },
+      { k: "bio", label: "Bio", kind: "area" }, { k: "photo", label: "Foto URL (atau upload)", kind: "text", upload: "avatar" },
       { k: "status", label: "Status freelance", kind: "text" }, { k: "location", label: "Lokasi", kind: "text" },
-      { k: "cv_url", label: "CV URL (bucket docs)", kind: "text" }, { k: "email", label: "Email", kind: "text" },
+      { k: "cv_url", label: "CV URL (atau upload PDF)", kind: "text", upload: "docs" }, { k: "email", label: "Email", kind: "text" },
       { k: "spin_text", label: "Teks logo muter", kind: "text" },
       { k: "github", label: "GitHub URL", kind: "text" }, { k: "instagram", label: "Instagram URL", kind: "text" },
     ],
@@ -42,7 +42,7 @@ const TABLES: Record<string, TableCfg> = {
       { k: "status", label: "Status", kind: "status" },
       { k: "description", label: "Deskripsi pendek (kartu)", kind: "area" },
       { k: "tech_stack", label: "Tech (1/baris)", kind: "arr" },
-      { k: "images", label: "Cover (URL per baris, atau c1/c2/c3 gradient)", kind: "arr" },
+      { k: "images", label: "Cover (URL per baris, upload, atau c1/c2/c3)", kind: "arr", upload: "covers" },
       { k: "link_github", label: "Link GitHub", kind: "text" }, { k: "link_demo", label: "Link live web", kind: "text" },
       { k: "role", label: "Role", kind: "text" }, { k: "overview", label: "Overview (modal)", kind: "area" },
       { k: "challenges", label: "Challenges (1/baris)", kind: "arr" },
@@ -58,6 +58,7 @@ const TABLES: Record<string, TableCfg> = {
       { k: "date", label: "Periode (2024 — now)", kind: "text" }, { k: "year", label: "Tahun", kind: "text" },
       { k: "description", label: "Deskripsi", kind: "area" },
       { k: "tech_stack", label: "Tech (1/baris)", kind: "arr" },
+      { k: "images", label: "Gambar (URL per baris, atau upload)", kind: "arr", upload: "covers" },
       { k: "overview", label: "Overview (modal)", kind: "area" },
       { k: "challenges", label: "Challenges (1/baris)", kind: "arr" },
       { k: "solutions", label: "Solutions (1/baris)", kind: "arr" },
@@ -77,7 +78,7 @@ const TABLES: Record<string, TableCfg> = {
     label: "Socials (kartu terbang + kontak)",
     fields: [
       { k: "name", label: "Nama (INSTAGRAM)", kind: "text" },
-      { k: "icon", label: "Ikon (◈ IG / URL gambar)", kind: "text" },
+      { k: "icon", label: "Ikon: 1-2 huruf ATAU upload gambar", kind: "text", upload: "icons" },
       { k: "link", label: "Link", kind: "text" }, { k: "sort", label: "Urutan", kind: "text" },
     ],
   },
@@ -92,6 +93,31 @@ const TABLES: Record<string, TableCfg> = {
 
 type Row = Record<string, unknown>;
 const str = (v: unknown) => (v === null || v === undefined ? "" : Array.isArray(v) ? v.join("\n") : String(v));
+
+// Upload langsung ke Storage bucket → URL publik otomatis masuk form.
+function Upload({ sb, bucket, onUrl }: {
+  sb: SupabaseClient | null; bucket: string;
+  onUrl: (url: string) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  if (!sb) return null;
+  const pick = async (f: File | undefined) => {
+    if (!f || !sb) return;
+    setBusy(true);
+    const path = `${Date.now()}-${f.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
+    const { error } = await sb.storage.from(bucket).upload(path, f);
+    if (error) { alert("Upload gagal: " + error.message); setBusy(false); return; }
+    const { data } = sb.storage.from(bucket).getPublicUrl(path);
+    onUrl(data.publicUrl);
+    setBusy(false);
+  };
+  return (
+    <label className="adm-btn ghost" style={{ cursor: "pointer", fontSize: 11 }}>
+      {busy ? "Mengupload…" : `⬆ Upload ke ${bucket}`}
+      <input type="file" hidden onChange={(e) => pick(e.target.files?.[0])} />
+    </label>
+  );
+}
 
 export default function Admin() {
   const [sb, setSb] = useState<SupabaseClient | null>(null);
@@ -200,7 +226,12 @@ export default function Admin() {
         <form className="adm-card" onSubmit={save}>
           <h3>{editId ? `Edit #${editId}` : "Tambah baru"}</h3>
           <div className="adm-row">
-            {cfg.fields.map((f) => f.kind === "status" ? (
+            {cfg.fields.map((f) => (
+              <div key={f.k}
+                style={f.kind === "area" || f.kind === "arr"
+                  ? { gridColumn: "1 / -1", display: "grid", gap: 6 }
+                  : { display: "grid", gap: 6 }}>
+                {f.kind === "status" ? (
               <select key={f.k} className="adm-input" value={str(form[f.k]) || "Deployed"}
                 onChange={(e) => setForm({ ...form, [f.k]: e.target.value })}>
                 <option>Deployed</option><option>Development</option>
@@ -212,6 +243,22 @@ export default function Admin() {
             ) : (
               <input key={f.k} className="adm-input" placeholder={f.label} value={str(form[f.k])}
                 onChange={(e) => setForm({ ...form, [f.k]: e.target.value })} />
+            )}
+            {f.upload && (
+              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                <Upload sb={sb} bucket={f.upload}
+                  onUrl={(url) => setForm((prev) => {
+                    const cur = str(prev[f.k]);
+                    return { ...prev, [f.k]: f.kind === "arr" ? (cur ? cur + "\n" + url : url) : url };
+                  })} />
+                {str(form[f.k]).startsWith("http") && (
+                  <a href={str(form[f.k]).split("\n")[0]} target="_blank" rel="noreferrer" style={{ fontSize: 11 }}>
+                    lihat ↗
+                  </a>
+                )}
+              </div>
+            )}
+            </div>
             ))}
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
@@ -220,8 +267,8 @@ export default function Admin() {
               onClick={() => { setForm({}); setEditId(null); }}>Batal</button>}
           </div>
           <p style={{ fontSize: 12, opacity: 0.7 }}>
-            Upload file (cover/foto/CV/ikon) di Storage → copy URL-nya ke field yang sesuai.
-            Buckets: <code>covers</code> <code>avatar</code> <code>icons</code> <code>docs</code>.
+            Field bertanda upload: klik ⬆ untuk upload file langsung (otomatis jadi URL).
+            Ikon medsos bisa berupa 1-2 huruf ATAU hasil upload gambar.
           </p>
         </form>
       )}

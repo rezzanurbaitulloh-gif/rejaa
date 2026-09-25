@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   IntroLoader, ModeOverlay, PillNav, TargetCursor, Toggles,
-  useLenis, type ViewMode,
+  getLenis, useLenis, type ViewMode,
 } from "./chrome";
 import { About, Hero, Manifesto, Skills } from "./sections";
 import {
@@ -22,9 +22,12 @@ export default function Site({ data }: { data: SiteData }) {
   const [modal, setModal] = useState<ModalData | null>(null);
   useLenis(true);
 
-  // Zoom scrub ala preview (scale 0.92 → 1 ngikutin scroll)
+  // Zoom scrub ala preview — hanya mode 3D (2D = final state)
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || mode !== "3d") {
+      gsap.set("[data-zoom]", { scale: 1, opacity: 1 });
+      return;
+    }
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>("[data-zoom]").forEach((el) => {
         gsap.fromTo(el, { scale: 0.92, opacity: 0.5 }, {
@@ -34,7 +37,7 @@ export default function Site({ data }: { data: SiteData }) {
       });
     });
     return () => ctx.revert();
-  }, []);
+  }, [mode]);
 
   // Lock 2D di HP ala Davin (VIEW_MODE_CUTOFF 768)
   useEffect(() => {
@@ -47,14 +50,11 @@ export default function Site({ data }: { data: SiteData }) {
   const onMode = useCallback((m: ViewMode) => {
     setMode(m);
     document.body.classList.toggle("no3d", m === "2d");
-    import("./chrome").then(({ getLenis }) => {
-      const l = getLenis();
-      if (m === "2d") l?.stop();
-      else l?.start();
-    });
-    import("gsap").then(({ default: gsap }) =>
-      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => ScrollTrigger.refresh())
-    );
+    const l = getLenis();
+    if (m === "2d") l?.stop();
+    else l?.start();
+    // trigger di-recreate oleh efek mode — refresh setelah layout settle
+    setTimeout(() => ScrollTrigger.refresh(), 80);
   }, []);
 
   const openProject = useCallback((p: Project) => setModal({ kind: "p", item: p }), []);
@@ -70,17 +70,17 @@ export default function Site({ data }: { data: SiteData }) {
       <PillNav />
       <Toggles mode={mode} onMode={onMode} />
       <main style={{ visibility: ready ? "visible" : "hidden" }}>
-        <Hero profile={data.profile} socials={data.socials} />
-        <Manifesto />
+        <Hero profile={data.profile} socials={data.socials} mode={mode} />
+        <Manifesto mode={mode} />
         <About
           profile={data.profile}
           experiences={data.experiences}
           projectTitles={data.projects.map((p) => p.title)}
         />
-        <Skills skills={data.skills} />
-        <Works projects={data.projects} onOpen={openProject} />
+        <Skills skills={data.skills} mode={mode} />
+        <Works projects={data.projects} onOpen={openProject} mode={mode} />
         <Services />
-        <Experience exps={data.experiences} onOpen={openExp} />
+        <Experience exps={data.experiences} onOpen={openExp} mode={mode} />
         <GitHub profile={data.profile} projects={data.projects} />
         <Certificates certs={data.certificates} />
         <Contact profile={data.profile} socials={data.socials} live={data.live} />

@@ -158,9 +158,9 @@ create policy "auth write docs"   on storage.objects for insert to authenticated
 create policy "auth del files" on storage.objects for delete to authenticated
   using (bucket_id in ('covers','avatar','icons','docs'));
 
--- ---------- SEED (1x, opsional — hapus kalau mau isi via /admin) ----------
-insert into profiles (name, role, bio, status, location, email) values
-('Reja.', 'Full-Stack Web Developer',
+-- ---------- SEED (aman di-run ulang: hanya isi kalau profiles kosong) ----------
+insert into profiles (name, role, bio, status, location, email)
+select 'Reja.', 'Full-Stack Web Developer',
  'Gue biasa bikin marketplace, web penjualan, dan konverter dokumen — dari ide mentah sampai deploy, dipercepat AI tapi hasilnya rapi dan bisa dipake.',
- 'Open freelance', 'Indonesia • remote ok', 'HALO@REJA.DEV')
-on conflict do nothing;
+ 'Open freelance', 'Indonesia • remote ok', 'HALO@REJA.DEV'
+where not exists (select 1 from profiles);

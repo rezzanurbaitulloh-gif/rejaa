@@ -114,11 +114,11 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 // ---------------- WORKS ----------------
-export function Works({ projects, onOpen }: { projects: Project[]; onOpen: (p: Project) => void }) {
+export function Works({ projects, onOpen, mode }: { projects: Project[]; onOpen: (p: Project) => void; mode: "3d" | "2d" }) {
   const rootRef = useRef<HTMLElement>(null);
-  // Entrance kartu ala WorkCard Davin (stagger per index, sekali main)
+  // Entrance kartu ala WorkCard Davin — hanya mode 3D (2D = statis)
   useLayoutEffect(() => {
-    if (reduced()) return;
+    if (reduced() || mode !== "3d") return;
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>(".work-slide-card").forEach((c, i) => {
         gsap.from(c, {
@@ -128,7 +128,7 @@ export function Works({ projects, onOpen }: { projects: Project[]; onOpen: (p: P
       });
     }, rootRef);
     return () => ctx.revert();
-  }, [projects]);
+  }, [projects, mode]);
   return (
     <section className="block" id="works" ref={rootRef}>
       <div className="whead">
@@ -176,10 +176,10 @@ export function Works({ projects, onOpen }: { projects: Project[]; onOpen: (p: P
 }
 
 // ---------------- EXPERIENCE ----------------
-export function Experience({ exps, onOpen }: { exps: Experience[]; onOpen: (e: Experience) => void }) {
+export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen: (e: Experience) => void; mode: "3d" | "2d" }) {
   const rootRef = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
-    if (reduced()) return;
+    if (reduced() || mode !== "3d") return;
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>(".experience-slide-card").forEach((c, i) => {
         gsap.from(c, {
@@ -189,9 +189,9 @@ export function Experience({ exps, onOpen }: { exps: Experience[]; onOpen: (e: E
       });
     }, rootRef);
     return () => ctx.revert();
-  }, [exps]);
+  }, [exps, mode]);
   return (
-    <section id="exp" style={{ background: "#fff" }} ref={rootRef}>
+    <section id="exp" ref={rootRef}>
       <div className="block" style={{ maxWidth: 1100 }}>
         <div className="whead">
           <div>

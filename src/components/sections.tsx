@@ -84,7 +84,7 @@ const ART_META = [
   { tag: "SECURED", foot: "respon < 2 hari", go: "Hire ↗" },
 ];
 
-export function Hero({ profile, socials }: { profile: Profile; socials: Social[] }) {
+export function Hero({ profile, socials, mode }: { profile: Profile; socials: Social[]; mode: "3d" | "2d" }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const a1 = useRef<HTMLAnchorElement>(null);
   const a2 = useRef<HTMLAnchorElement>(null);
@@ -122,8 +122,8 @@ export function Hero({ profile, socials }: { profile: Profile; socials: Social[]
       gsap.fromTo("#heroContent",
         { opacity: 0, y: 15, filter: "blur(4px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, ease: "power2.out", delay: 0.9 });
-      // Pin sinematik ala preview (desktop): scroll = headline assemble → bg shift
-      if (window.innerWidth >= 900) {
+      // Pin sinematik ala preview — hanya mode 3D (2D = statis, native scroll)
+      if (mode === "3d" && window.innerWidth >= 900) {
         const tl = gsap.timeline({
           scrollTrigger: { trigger: "#hero", start: "top top", end: "+=150%", pin: true, scrub: 1 },
         });
@@ -132,7 +132,7 @@ export function Hero({ profile, socials }: { profile: Profile; socials: Social[]
       }
     }, contentRef);
     return () => ctx.revert();
-  }, []);
+  }, [mode]);
   const arts = [a1, a2, a3];
   const ids = ["a-ig", "a-gh", "a-in"];
   return (
@@ -147,7 +147,12 @@ export function Hero({ profile, socials }: { profile: Profile; socials: Social[]
           <span className="rim" />
           <div className="pad">
             <div className="hd"><span>{s.name}</span><span>{ART_META[i].tag}</span></div>
-            <div className="logo-big">{s.icon}</div>
+            <div className="logo-big">
+              {s.icon.startsWith("http") || s.icon.startsWith("/") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={s.icon} alt={s.name} style={{ width: 56, height: 56, objectFit: "contain" }} />
+              ) : (s.icon)}
+            </div>
             <div className="hd"><span>{i === 0 ? "personal + views" : i === 1 ? "Next • Supabase" : "freelance: open"}</span></div>
             <div className="ft"><span>{ART_META[i].foot}</span><span className="go">{ART_META[i].go}</span></div>
           </div>
@@ -172,12 +177,17 @@ export function Hero({ profile, socials }: { profile: Profile; socials: Social[]
 }
 
 // ---------------- MANIFESTO ----------------
-export function Manifesto() {
+export function Manifesto({ mode }: { mode: "3d" | "2d" }) {
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el || reduced()) return;
+    if (!el) return;
     el.innerHTML = el.textContent!.trim().split(" ").map((w) => `<span class="w">${w}</span>`).join(" ");
+    // Mode 2D = teks final terlihat penuh, tanpa scrub
+    if (reduced() || mode !== "3d") {
+      gsap.set("#maniText .w", { opacity: 1 });
+      return;
+    }
     const ctx = gsap.context(() => {
       gsap.to("#maniText .w", {
         opacity: 1, stagger: 0.06, ease: "none",
@@ -185,7 +195,7 @@ export function Manifesto() {
       });
     });
     return () => ctx.revert();
-  }, []);
+  }, [mode]);
   return (
     <>
       <div id="manifesto"><div className="mani" id="maniText" ref={ref}>
@@ -338,12 +348,31 @@ export function About({ profile, experiences, projectTitles }: {
 }
 
 // ---------------- SKILLS orbit (Shashank Skills.jsx) ----------------
-export function Skills({ skills }: { skills: SkillCoin[] }) {
+export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d" }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
-    if (reduced() || isMobile()) {
+    // Mode 2D / reduced = semua final state, tanpa pin & scrub
+    if (reduced() || mode !== "3d") {
       gsap.set("#portal", { display: "none" });
+      gsap.set("#orbitSys, #skillsHead, #orbitCenter", { opacity: 1, scale: 1, y: 0, rotation: 0 });
       return;
+    }
+    // HP: zoom ringan TANPA pin (pin 120% terlalu berat di touch)
+    if (isMobile()) {
+      const mctx = gsap.context(() => {
+        gsap.set("#portal", { display: "", scale: 0, xPercent: -50, yPercent: -50 });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".skills-container",
+            start: "top 75%", end: "bottom 35%", scrub: 1,
+          },
+        });
+        tl.fromTo("#orbitSys", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, ease: "none" }, 0)
+          .to("#orbitWrap", { scale: 2.4, ease: "none" }, 0.4)
+          .to("#orbitCenter, #skillsHead", { opacity: 0, ease: "none" }, 0.5)
+          .to("#portal", { scale: 1.4, ease: "none" }, 0.55);
+      }, wrapRef);
+      return () => mctx.revert();
     }
     const ctx = gsap.context(() => {
       gsap.set("#portal", { scale: 0, xPercent: -50, yPercent: -50 });
@@ -366,7 +395,7 @@ export function Skills({ skills }: { skills: SkillCoin[] }) {
         .to("#portal", { scale: 1.5, duration: 0.3, ease: "power2.in" }, 1.2);
     }, wrapRef);
     return () => ctx.revert();
-  }, []);
+  }, [mode]);
   const coins = skills.length ? skills : [{ name: "?", icon: "?" }];
   return (
     <div className="skills-container" id="skills" ref={wrapRef}>
