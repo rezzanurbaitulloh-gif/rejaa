@@ -56,6 +56,9 @@ html.dark .pm-dots i{background:#3a352d}
 html.dark .pm-action-btn.github{background:#f2ead9;color:#121110}
 html.dark .wbtn{background:#1e1b17;border-color:var(--foreground);color:var(--foreground)}
 html.dark .certificate-link{color:var(--gold)}
+html.dark .solution-icon{color:#7ee2a8}
+html.dark .status-deployed{color:#7ee2a8;border-color:#7ee2a8}
+html.dark .work-item-company{color:var(--text-muted)}
 html.dark .scrolldown,html.dark footer{color:var(--text-muted)}
 html.dark .vm-btn,html.dark .theme-btn{background:rgba(20,18,15,.92);border-color:#f2ead9;color:#f2ead9}
 html.dark .mode-overlay{background:#000}

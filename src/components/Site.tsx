@@ -3,6 +3,8 @@
 // Site.tsx — komposisi 8 blok + state global (loader, mode, modal)
 // ============================================================
 import { useCallback, useEffect, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   IntroLoader, ModeOverlay, PillNav, TargetCursor, Toggles,
   useLenis, type ViewMode,
@@ -19,6 +21,20 @@ export default function Site({ data }: { data: SiteData }) {
   const [mode, setMode] = useState<ViewMode>("3d");
   const [modal, setModal] = useState<ModalData | null>(null);
   useLenis(true);
+
+  // Zoom scrub ala preview (scale 0.92 → 1 ngikutin scroll)
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>("[data-zoom]").forEach((el) => {
+        gsap.fromTo(el, { scale: 0.92, opacity: 0.5 }, {
+          scale: 1, opacity: 1, ease: "none",
+          scrollTrigger: { trigger: el, start: "top 92%", end: "top 55%", scrub: true },
+        });
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   // Lock 2D di HP ala Davin (VIEW_MODE_CUTOFF 768)
   useEffect(() => {

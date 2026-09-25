@@ -262,7 +262,7 @@ export function Toggles({ mode, onMode }: { mode: ViewMode; onMode: (m: ViewMode
     if (lab) lab.textContent = "ENTERING " + target.toUpperCase() + " MODE";
     const done = () => { onMode(target); setBusy(false); };
     if (!ov || reduced()) { done(); return; }
-    gsap.timeline()
+    gsap.timeline({ onComplete: () => setBusy(false) })
       .set(ov, { pointerEvents: "auto" })
       .fromTo(ov, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 0.38, ease: "expo.inOut" })
       .add(() => {

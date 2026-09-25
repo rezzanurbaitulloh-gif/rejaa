@@ -3,11 +3,14 @@
 // more.tsx — Works/Experience carousel (Davin), Services,
 // GitHub, Certificates, Contact, ProjectModal.
 // ============================================================
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Certificate, Experience, Profile, Project, Social } from "@/lib/site";
 import { sendInquiry } from "@/lib/site";
 import { getLenis, reduced } from "./chrome";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // ---------------- Reveal (Shashank ScrollReveal) ----------------
 export function Reveal({ children, dir = "up", delay = 0, className = "", cur = false }: {
@@ -112,12 +115,26 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
 
 // ---------------- WORKS ----------------
 export function Works({ projects, onOpen }: { projects: Project[]; onOpen: (p: Project) => void }) {
+  const rootRef = useRef<HTMLElement>(null);
+  // Entrance kartu ala WorkCard Davin (stagger per index, sekali main)
+  useLayoutEffect(() => {
+    if (reduced()) return;
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".work-slide-card").forEach((c, i) => {
+        gsap.from(c, {
+          opacity: 0, x: 50, y: i % 2 ? 15 : -15, duration: 0.6, ease: "expo.out",
+          scrollTrigger: { trigger: c, start: "top 88%", once: true },
+        });
+      });
+    }, rootRef);
+    return () => ctx.revert();
+  }, [projects]);
   return (
-    <section className="block" id="works">
+    <section className="block" id="works" ref={rootRef}>
       <div className="whead">
         <div>
           <div className="kicker">04 — WORKS</div>
-          <h2 className="t">MY PROJECT — Creative Showcases</h2>
+          <h2 className="t" data-zoom>MY PROJECT — Creative Showcases</h2>
           <p className="d">Geser pake panah. Klik kartu → modal detail + link live.</p>
         </div>
       </div>
@@ -160,13 +177,26 @@ export function Works({ projects, onOpen }: { projects: Project[]; onOpen: (p: P
 
 // ---------------- EXPERIENCE ----------------
 export function Experience({ exps, onOpen }: { exps: Experience[]; onOpen: (e: Experience) => void }) {
+  const rootRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    if (reduced()) return;
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".experience-slide-card").forEach((c, i) => {
+        gsap.from(c, {
+          opacity: 0, x: 50, y: i % 2 ? 15 : -15, duration: 0.6, ease: "expo.out",
+          scrollTrigger: { trigger: c, start: "top 88%", once: true },
+        });
+      });
+    }, rootRef);
+    return () => ctx.revert();
+  }, [exps]);
   return (
-    <section id="exp" style={{ background: "#fff" }}>
+    <section id="exp" style={{ background: "#fff" }} ref={rootRef}>
       <div className="block" style={{ maxWidth: 1100 }}>
         <div className="whead">
           <div>
             <div className="kicker">05 — EXPERIENCE</div>
-            <h2 className="t">MY EXPERIENCE — Professional Journey</h2>
+            <h2 className="t" data-zoom>MY EXPERIENCE — Professional Journey</h2>
           </div>
         </div>
         <Carousel id="etrack">
@@ -360,7 +390,7 @@ export function Contact({ profile, socials, live }: { profile: Profile; socials:
           <div className="contact-left-col">
             <span className="contact-subtitle">[ LET&apos;S CONNECT ]</span>
             <div className="email-click-area">
-              <div className="contact-mail-link" data-cur role="button" tabIndex={0} onClick={copyEmail}
+              <div className="contact-mail-link" data-zoom data-cur role="button" tabIndex={0} onClick={copyEmail}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") copyEmail(); }}>
                 {profile.email}
               </div>

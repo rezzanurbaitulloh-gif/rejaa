@@ -40,7 +40,8 @@ function MatrixRain() {
       ctx.fillStyle = "rgba(0,0,0,.1)";
       ctx.fillRect(0, 0, cv.width, cv.height);
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "rgba(60,50,35,.55)";
+      const darkMode = document.documentElement.classList.contains("dark");
+      ctx.fillStyle = darkMode ? "rgba(216,201,168,.5)" : "rgba(60,50,35,.55)";
       ctx.font = FS + "px monospace";
       for (let i = 0; i < drops.length; i++) {
         if (act[i]) ctx.fillText(CH[(Math.random() * CH.length) | 0], i * FS, drops[i] * FS);
@@ -121,6 +122,14 @@ export function Hero({ profile, socials }: { profile: Profile; socials: Social[]
       gsap.fromTo("#heroContent",
         { opacity: 0, y: 15, filter: "blur(4px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, ease: "power2.out", delay: 0.9 });
+      // Pin sinematik ala preview (desktop): scroll = headline assemble → bg shift
+      if (window.innerWidth >= 900) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: "#hero", start: "top top", end: "+=150%", pin: true, scrub: 1 },
+        });
+        tl.to("#heroContent h1", { yPercent: -12, opacity: 0.25, ease: "none" }, 0)
+          .to("#heroContent p, #heroContent .tags", { yPercent: -20, opacity: 0, ease: "none" }, 0);
+      }
     }, contentRef);
     return () => ctx.revert();
   }, []);
