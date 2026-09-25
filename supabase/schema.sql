@@ -81,7 +81,7 @@ create table if not exists inquiries (
   created_at timestamptz not null default now()
 );
 
--- ---------- RLS ----------
+-- ---------- RLS (idempotent: aman di-run ulang) ----------
 alter table profiles enable row level security;
 alter table skills enable row level security;
 alter table projects enable row level security;
@@ -89,6 +89,21 @@ alter table experiences enable row level security;
 alter table certificates enable row level security;
 alter table socials enable row level security;
 alter table inquiries enable row level security;
+
+drop policy if exists "public read profiles"     on profiles;
+drop policy if exists "auth write profiles"      on profiles;
+drop policy if exists "public read skills"       on skills;
+drop policy if exists "auth write skills"        on skills;
+drop policy if exists "public read projects"     on projects;
+drop policy if exists "auth write projects"      on projects;
+drop policy if exists "public read experiences"  on experiences;
+drop policy if exists "auth write experiences"   on experiences;
+drop policy if exists "public read certificates" on certificates;
+drop policy if exists "auth write certificates"  on certificates;
+drop policy if exists "public read socials"      on socials;
+drop policy if exists "auth write socials"       on socials;
+drop policy if exists "public insert inquiries"  on inquiries;
+drop policy if exists "auth read inquiries"      on inquiries;
 
 -- Baca publik (web butuh tanpa login)
 create policy "public read profiles"      on profiles      for select using (true);
@@ -121,6 +136,16 @@ insert into storage.buckets (id, name, public)
 values ('covers','covers',true), ('avatar','avatar',true),
        ('icons','icons',true), ('docs','docs',true)
 on conflict (id) do nothing;
+
+drop policy if exists "public read covers" on storage.objects;
+drop policy if exists "public read avatar" on storage.objects;
+drop policy if exists "public read icons"  on storage.objects;
+drop policy if exists "public read docs"   on storage.objects;
+drop policy if exists "auth write covers" on storage.objects;
+drop policy if exists "auth write avatar" on storage.objects;
+drop policy if exists "auth write icons"  on storage.objects;
+drop policy if exists "auth write docs"   on storage.objects;
+drop policy if exists "auth del files" on storage.objects;
 
 create policy "public read covers" on storage.objects for select using (bucket_id = 'covers');
 create policy "public read avatar" on storage.objects for select using (bucket_id = 'avatar');
