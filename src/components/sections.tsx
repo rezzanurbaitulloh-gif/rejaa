@@ -92,6 +92,7 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
   useEffect(() => {
     if (!finePointer() || reduced()) return;
     const onMove = (e: MouseEvent) => {
+      if (document.body.classList.contains("no3d")) return; // 2D = diam
       const xp = (e.clientX / window.innerWidth - 0.5) * 2;
       const yp = (e.clientY / window.innerHeight - 0.5) * 2;
       const arts: [React.RefObject<HTMLAnchorElement | null>, number][] = [[a1, 30], [a2, 50], [a3, -25]];
@@ -103,7 +104,12 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
   useEffect(() => {
-    if (reduced()) return;
+    const els = [a1.current, a2.current, a3.current].filter(Boolean) as HTMLAnchorElement[];
+    // Mode 2D = kartu medsos statis total ( kayak Fallback2D Davin )
+    if (reduced() || mode !== "3d") {
+      gsap.set(els, { clearProps: "transform" });
+      return;
+    }
     const floats = [a1, a2, a3];
     const tweens = floats.map((r) => {
       if (!r.current) return null;
@@ -115,7 +121,7 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
       return loop();
     });
     return () => { tweens.forEach((t) => t?.kill()); };
-  }, []);
+  }, [mode]);
   useLayoutEffect(() => {
     if (reduced() || !contentRef.current) return;
     const ctx = gsap.context(() => {
