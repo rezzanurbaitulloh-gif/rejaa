@@ -343,7 +343,7 @@ body.no3d #matrix,body.no3d .spot{display:none}body.no3d .orbit-ring{animation-p
 .p2d-watermark{display:none}
 body.no3d .p2d-watermark{display:flex;position:fixed;inset:0;z-index:0;align-items:center;justify-content:center;
 font-size:24vw;font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1px var(--border-color);
-opacity:.55;pointer-events:none;font-family:var(--font-display);user-select:none}
+opacity:.32;pointer-events:none;font-family:var(--font-display);user-select:none}
 body.no3d .artifact{display:none}
 body.no3d .kicker[data-sec]::before{content:attr(data-sec) " / ";letter-spacing:.18em}
 .p2d-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:2.5rem;padding:7rem 1.5rem 3rem;overflow:hidden}
