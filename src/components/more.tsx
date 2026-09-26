@@ -77,6 +77,9 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [off, setOff] = useState(0);
   const [max, setMax] = useState(0);
+  // State drag (ref biar tidak re-render tiap pixel)
+  const drag = useRef<{ x: number; off: number } | null>(null);
+  const moved = useRef(false);
   const calc = () => {
     const v = viewRef.current, t = trackRef.current;
     if (!v || !t) return;
@@ -98,6 +101,49 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
   useEffect(() => {
     if (trackRef.current) trackRef.current.style.transform = `translateX(-${off}px)`;
   }, [off]);
+  // --- drag / swipe: pointerdown → gerak → lepas (snap ke kartu 400px) ---
+  const clampOff = (v: number) => {
+    const t = trackRef.current, vv = viewRef.current;
+    const m = t && vv ? Math.max(0, t.scrollWidth - vv.clientWidth + 10) : max;
+    return Math.min(Math.max(0, v), m);
+  };
+  const onDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    drag.current = { x: e.clientX, off };
+    moved.current = false;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    if (trackRef.current) trackRef.current.style.transition = "none";
+    viewRef.current?.classList.add("dragging");
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d || !trackRef.current) return;
+    const dx = e.clientX - d.x;
+    if (Math.abs(dx) > 6) moved.current = true;
+    const n = clampOff(d.off - dx);
+    trackRef.current.style.transform = `translateX(-${n}px)`;
+    (trackRef.current as HTMLElement).dataset.live = String(n);
+  };
+  const endDrag = () => {
+    const t = trackRef.current;
+    if (!drag.current || !t) return;
+    drag.current = null;
+    t.style.transition = "";
+    viewRef.current?.classList.remove("dragging");
+    const live = Number((t as HTMLElement).dataset.live ?? off);
+    // snap ke kelipatan 400px (lebar kartu + gap)
+    const snapped = clampOff(Math.round(live / 400) * 400);
+    delete (t as HTMLElement).dataset.live;
+    setOff(snapped);
+  };
+  // Klik kartu setelah drag = abaikan (anti modal nyasar)
+  const killClick = (e: React.SyntheticEvent) => {
+    if (moved.current) {
+      e.stopPropagation();
+      e.preventDefault();
+      moved.current = false;
+    }
+  };
   return (
     <>
       <div className="warrows">
@@ -106,7 +152,10 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
         <button data-cur aria-label="right" onClick={() => go(1)}
           className={"wbtn" + (off < max ? " visible" : "")} disabled={off >= max}>→</button>
       </div>
-      <div className="wview" ref={viewRef}>
+      <div className="wview" ref={viewRef}
+        onPointerDown={onDown} onPointerMove={onMove}
+        onPointerUp={endDrag} onPointerCancel={endDrag}
+        onClickCapture={killClick}>
         <div className="wtrack" id={id} ref={trackRef}>{children}</div>
       </div>
     </>

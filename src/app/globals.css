@@ -235,7 +235,9 @@ box-shadow:2px 2px 3px rgba(0,0,0,.5),inset 2px 1px 2px rgba(255,255,255,.08)}
 .warrows{display:flex;gap:8px}
 .wbtn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--char);background:#fff;font-size:18px;cursor:pointer;opacity:.35}
 .wbtn.visible{opacity:1}
-.wview{overflow:hidden;margin-top:20px}
+.wview{overflow:hidden;margin-top:20px;touch-action:pan-y;cursor:grab}
+.wview.dragging{cursor:grabbing;user-select:none}
+.wview.dragging img{pointer-events:none}
 .wtrack{display:flex;gap:30px;transition:transform .5s cubic-bezier(.25,1,.5,1);will-change:transform}
 .work-slide-card,.experience-slide-card{flex:0 0 370px;max-width:82vw;background:#fff;border:1px solid var(--stone);border-radius:16px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
 .work-card-header,.experience-card-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 0;font-family:var(--font-mono)}
