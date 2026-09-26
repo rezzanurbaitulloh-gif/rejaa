@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   IntroLoader, ModeOverlay, PillNav, TargetCursor, Toggles,
-  getLenis, useLenis, type ViewMode,
+  useLenis, type ViewMode,
 } from "./chrome";
 import { About, Hero, Manifesto, Skills } from "./sections";
 import {
@@ -20,9 +20,9 @@ export default function Site({ data }: { data: SiteData }) {
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<ViewMode>("3d");
   const [modal, setModal] = useState<ModalData | null>(null);
-  // Lenis HANYA hidup di 3D. Di 2D instance di-destroy agar scroll
-  // native tidak diblokir (stop() saja bikin halaman kekunci).
-  useLenis(mode === "3d");
+  // Lenis hidup TERUS di kedua mode (persis useLenisScroll Davin).
+  // stop() hanya dipakai saat modal terbuka (di ProjectModal).
+  useLenis(true);
 
   // Zoom scrub ala preview — hanya mode 3D (2D = final state)
   useEffect(() => {
@@ -65,6 +65,9 @@ export default function Site({ data }: { data: SiteData }) {
   return (
     <>
       <div className="noise" />
+      <div className="p2d-watermark" aria-hidden="true">
+        {data.profile.name.replace(/\.\s*$/, "").toUpperCase()}
+      </div>
       <TargetCursor />
       <IntroLoader done={() => setReady(true)} />
       <ModeOverlay />
@@ -85,11 +88,21 @@ export default function Site({ data }: { data: SiteData }) {
         <GitHub profile={data.profile} projects={data.projects} />
         <Certificates certs={data.certificates} />
         <Contact profile={data.profile} socials={data.socials} live={data.live} />
-        <footer>
-          {data.live ? "● LIVE Supabase" : "○ DUMMY (isi env Supabase buat live)"}
-          {" • "}cream editorial fusion{" • "}
-          <a data-cur href="/admin" style={{ color: "inherit" }}>admin</a>
-        </footer>
+        {mode === "2d" ? (
+          <footer className="p2d-footer">
+            <span>© 2026 {data.profile.name.replace(/\.\s*$/, "").toUpperCase()}</span>
+            <span className="p2d-footer-mid">[ NEXT.JS / SUPABASE / GSAP ]</span>
+            <button data-cur className="p2d-return" onClick={() => onMode("3d")}>
+              RETURN TO 3D MODE<span className="p2d-blink">▌</span>
+            </button>
+          </footer>
+        ) : (
+          <footer>
+            {data.live ? "● LIVE Supabase" : "○ DUMMY (isi env Supabase buat live)"}
+            {" • "}cream editorial fusion{" • "}
+            <a data-cur href="/admin" style={{ color: "inherit" }}>admin</a>
+          </footer>
+        )}
       </main>
       {modal && <ProjectModal data={modal} onClose={closeModal} />}
     </>

@@ -84,6 +84,44 @@ const ART_META = [
   { tag: "SECURED", foot: "respon < 2 hari", go: "Hire ↗" },
 ];
 
+// Hero versi 2D editorial ala Hero2D Davin: kicker nomor, serif raksasa,
+// spec-sheet, marquee. Render kondisional (tanpa canvas/parallax/pin).
+const TICKER2D = "NEXT.JS ✦ SUPABASE ✦ AI-ASSISTED ✦ CLEAN SHIPPING ✦ ";
+function Hero2DView({ profile }: { profile: Profile }) {
+  const first = profile.name.replace(/\.\s*$/, "");
+  const rows: [string, string][] = [
+    ["NAME", `${first} — Indonesia`],
+    ["ROLE", profile.role],
+    ["FOCUS", "AI-assisted building"],
+    ["BASE", profile.location],
+    ["STATUS", profile.status],
+  ];
+  return (
+    <header id="hero" className="p2d-hero">
+      <div className="p2d-hero-grid">
+        <div>
+          <span className="p2d-kicker">( 00 ) / INTRO — PERSONAL INDEX</span>
+          <h1 className="p2d-h1" style={{ animationDelay: ".35s" }}>Hi!</h1>
+          <h1 className="p2d-h1 p2d-italic" style={{ animationDelay: ".5s" }}>I&apos;m {first}</h1>
+          <p className="p2d-lede" style={{ animationDelay: ".65s" }}>{profile.bio}</p>
+        </div>
+        <div className="p2d-spec" style={{ animationDelay: ".7s" }}>
+          {rows.map(([k, v]) => (
+            <div key={k} className="p2d-spec-row">
+              <span className="p2d-spec-k">{k}</span>
+              <span className="p2d-spec-dots" />
+              <span className="p2d-spec-v">{v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="p2d-marquee" aria-hidden="true">
+        <div className="p2d-marquee-track"><span>{TICKER2D}{TICKER2D}</span><span>{TICKER2D}{TICKER2D}</span></div>
+      </div>
+    </header>
+  );
+}
+
 export function Hero({ profile, socials, mode }: { profile: Profile; socials: Social[]; mode: "3d" | "2d" }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const a1 = useRef<HTMLAnchorElement>(null);
@@ -143,6 +181,8 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
   }, [mode]);
   const arts = [a1, a2, a3];
   const ids = ["a-ig", "a-gh", "a-in"];
+  // Mode 2D = pohon editorial terpisah (ala Portfolio2D Davin)
+  if (mode === "2d") return <Hero2DView profile={profile} />;
   return (
     <header id="hero">
       <MatrixRain />
@@ -242,7 +282,7 @@ export function About({ profile, experiences, projectTitles }: {
   const [tab, setTab] = useState<(typeof TABS)[number]>("ABOUT");
   return (
     <section className="block" id="about">
-      <div className="kicker">02 — ABOUT</div>
+      <div className="kicker" data-sec="( 01 )">ABOUT</div>
       <h2 className="t">Kenalan, versi rapi.</h2>
       <div className="about-slide-layout">
         <div className="profile-column">

@@ -133,7 +133,7 @@ export function Works({ projects, onOpen, mode }: { projects: Project[]; onOpen:
     <section className="block" id="works" ref={rootRef}>
       <div className="whead">
         <div>
-          <div className="kicker">04 — WORKS</div>
+          <div className="kicker" data-sec="( 03 )">WORKS</div>
           <h2 className="t" data-zoom>MY PROJECT — Creative Showcases</h2>
           <p className="d">Geser pake panah. Klik kartu → modal detail + link live.</p>
         </div>
@@ -195,7 +195,7 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
       <div className="block" style={{ maxWidth: 1100 }}>
         <div className="whead">
           <div>
-            <div className="kicker">05 — EXPERIENCE</div>
+            <div className="kicker" data-sec="( 04 )">EXPERIENCE</div>
             <h2 className="t" data-zoom>MY EXPERIENCE — Professional Journey</h2>
           </div>
         </div>
@@ -276,7 +276,7 @@ export function GitHub({ profile, projects }: { profile: Profile; projects: Proj
   return (
     <section id="github">
       <div className="block">
-        <div className="kicker" style={{ color: "var(--gold)" }}>06 — GITHUB STATS / Open Source Telemetry</div>
+        <div className="kicker" data-sec="( 05 )" style={{ color: "var(--gold)" }}>GITHUB STATS / Open Source Telemetry</div>
         <h2 className="t" style={{ color: "#fff" }}>Code-nya hidup di sini.</h2>
         <div className="gh-layout">
           <Reveal dir="left">
@@ -318,7 +318,7 @@ export function GitHub({ profile, projects }: { profile: Profile; projects: Proj
 export function Certificates({ certs }: { certs: Certificate[] }) {
   return (
     <section className="block" id="certs">
-      <div className="kicker">07 — CERTIFICATES / Verified Credentials</div>
+      <div className="kicker" data-sec="( 06 )">CERTIFICATES / Verified Credentials</div>
       <h2 className="t">Sertifikat, bisa diverifikasi.</h2>
       <div className="cgrid">
         {certs.map((c, i) => (
