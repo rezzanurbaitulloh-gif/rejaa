@@ -20,7 +20,9 @@ export default function Site({ data }: { data: SiteData }) {
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<ViewMode>("3d");
   const [modal, setModal] = useState<ModalData | null>(null);
-  useLenis(true);
+  // Lenis HANYA hidup di 3D. Di 2D instance di-destroy agar scroll
+  // native tidak diblokir (stop() saja bikin halaman kekunci).
+  useLenis(mode === "3d");
 
   // Zoom scrub ala preview — hanya mode 3D (2D = final state)
   useEffect(() => {
@@ -50,9 +52,8 @@ export default function Site({ data }: { data: SiteData }) {
   const onMode = useCallback((m: ViewMode) => {
     setMode(m);
     document.body.classList.toggle("no3d", m === "2d");
-    const l = getLenis();
-    if (m === "2d") l?.stop();
-    else l?.start();
+    // Lenis di-destroy/dibuat ulang oleh useLenis — scroll native aman
+    window.scrollTo(0, 0);
     // trigger di-recreate oleh efek mode — refresh setelah layout settle
     setTimeout(() => ScrollTrigger.refresh(), 80);
   }, []);

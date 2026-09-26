@@ -464,7 +464,10 @@ export function ProjectModal({ data, onClose }: { data: ModalData | null; onClos
   useEffect(() => {
     setIdx(0);
     if (!data) return;
-    getLenis()?.stop();
+    // Kunci scroll belakang modal (Lenis kalau ada, overflow kalau 2D)
+    const l = getLenis();
+    if (l) l.stop();
+    else document.body.style.overflow = "hidden";
     const esc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", esc);
     if (!reduced()) {
@@ -474,7 +477,9 @@ export function ProjectModal({ data, onClose }: { data: ModalData | null; onClos
     }
     return () => {
       window.removeEventListener("keydown", esc);
-      getLenis()?.start();
+      const ll = getLenis();
+      if (ll) ll.start();
+      else document.body.style.overflow = "";
     };
   }, [data, onClose]);
   if (!data) return null;

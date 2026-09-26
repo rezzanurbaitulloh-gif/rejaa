@@ -268,7 +268,6 @@ export function Toggles({ mode, onMode }: { mode: ViewMode; onMode: (m: ViewMode
       .add(() => {
         onMode(target);
         window.scrollTo(0, 0);
-        getLenis()?.scrollTo(0, { immediate: true });
       })
       .to(ov, { clipPath: "inset(100% 0 0 0)", duration: 0.37, ease: "expo.inOut" }, "+=0.05")
       .set(ov, { pointerEvents: "none" });
