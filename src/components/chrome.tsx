@@ -317,7 +317,15 @@ export function IntroLoader({ done }: { done: () => void }) {
   if (gone) return null;
   return (
     <>
-      <div id="loader"><div className="big">HELLO</div><div className="pct">{pct}%</div></div>
+      <div id="loader">
+        <div className="ld-inner">
+          <div className="big">HELLO</div>
+          <div className="ld-count">
+            <div className="ld-bar" style={{ width: `${pct}%` }} />
+            <span className="pct">{pct}%</span>
+          </div>
+        </div>
+      </div>
       <div id="curtain" />
     </>
   );
