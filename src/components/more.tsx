@@ -131,9 +131,11 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
     t.style.transition = "";
     viewRef.current?.classList.remove("dragging");
     const live = Number((t as HTMLElement).dataset.live ?? off);
-    // snap ke kelipatan 400px (lebar kartu + gap)
+    // snap ke kelipatan 400px (lebar kartu + gap); tulis style langsung juga
+    // karena setOff ke nilai yang sama tidak memicu effect
     const snapped = clampOff(Math.round(live / 400) * 400);
     delete (t as HTMLElement).dataset.live;
+    t.style.transform = `translateX(-${snapped}px)`;
     setOff(snapped);
   };
   // Klik kartu setelah drag = abaikan (anti modal nyasar)
