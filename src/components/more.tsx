@@ -126,7 +126,7 @@ export function Works({ projects, onOpen, mode }: { projects: Project[]; onOpen:
           scrollTrigger: { trigger: c, start: "top 88%", once: true },
         });
       });
-    }, rootRef);
+    });
     return () => ctx.revert();
   }, [projects, mode]);
   return (
@@ -187,7 +187,7 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
           scrollTrigger: { trigger: c, start: "top 88%", once: true },
         });
       });
-    }, rootRef);
+    });
     return () => ctx.revert();
   }, [exps, mode]);
   return (

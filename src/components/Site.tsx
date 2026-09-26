@@ -41,13 +41,8 @@ export default function Site({ data }: { data: SiteData }) {
     return () => ctx.revert();
   }, [mode]);
 
-  // Lock 2D di HP ala Davin (VIEW_MODE_CUTOFF 768)
-  useEffect(() => {
-    if (window.innerWidth <= 768) {
-      setMode("2d");
-      document.body.classList.add("no3d");
-    }
-  }, []);
+  // Default 3D di semua ukuran (HP dapat 3D-lite: scrub tanpa pin).
+  // Toggle 2D selalu tersedia sebagai mode statis-cepat.
 
   const onMode = useCallback((m: ViewMode) => {
     setMode(m);

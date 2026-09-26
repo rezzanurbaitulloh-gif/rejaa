@@ -176,7 +176,7 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
         tl.to("#heroContent h1", { yPercent: -12, opacity: 0.25, ease: "none" }, 0)
           .to("#heroContent p, #heroContent .tags", { yPercent: -20, opacity: 0, ease: "none" }, 0);
       }
-    }, contentRef);
+    });
     return () => ctx.revert();
   }, [mode]);
   const arts = [a1, a2, a3];
@@ -399,7 +399,6 @@ export function About({ profile, experiences, projectTitles }: {
 export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d" }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
-    // Mode 2D / reduced = semua final state, tanpa pin & scrub
     if (reduced() || mode !== "3d") {
       gsap.set("#portal", { display: "none" });
       gsap.set("#orbitSys, #skillsHead, #orbitCenter", { opacity: 1, scale: 1, y: 0, rotation: 0 });
@@ -419,7 +418,7 @@ export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d
           .to("#orbitWrap", { scale: 2.4, ease: "none" }, 0.4)
           .to("#orbitCenter, #skillsHead", { opacity: 0, ease: "none" }, 0.5)
           .to("#portal", { scale: 1.4, ease: "none" }, 0.55);
-      }, wrapRef);
+      });
       return () => mctx.revert();
     }
     const ctx = gsap.context(() => {
@@ -441,7 +440,7 @@ export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d
         .to("#skillsHead", { y: -100, opacity: 0, duration: 0.5 }, 0.5)
         .to("#orbitSys", { opacity: 0, duration: 0.5 }, 1.5)
         .to("#portal", { scale: 1.5, duration: 0.3, ease: "power2.in" }, 1.2);
-    }, wrapRef);
+    });
     return () => ctx.revert();
   }, [mode]);
   const coins = skills.length ? skills : [{ name: "?", icon: "?" }];
