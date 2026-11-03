@@ -85,7 +85,7 @@ export default function Site({ data }: { data: SiteData }) {
         <Contact profile={data.profile} socials={data.socials} live={data.live} />
         {mode === "2d" ? (
           <footer className="p2d-footer">
-            <span>© 2026 {data.profile.name.replace(/\.\s*$/, "").toUpperCase()}</span>
+            <span>© 2026 PORTOJA</span>
             <span className="p2d-footer-mid">[ NEXT.JS / SUPABASE / GSAP ]</span>
             <button data-cur className="p2d-return" onClick={() => onMode("3d")}>
               RETURN TO 3D MODE<span className="p2d-blink">▌</span>
