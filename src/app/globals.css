@@ -383,5 +383,9 @@ body.no3d .kicker[data-sec]::before{content:attr(data-sec) " / ";letter-spacing:
 .adm-list{margin-top:10px;display:grid;gap:8px}
 .adm-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px dashed var(--stone);border-radius:10px;padding:8px 12px;font-size:.85rem}
 @media(max-width:960px){.about-slide-layout,.pm-body-grid,.contact-slide-layout{grid-template-columns:1fr}.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid{grid-template-columns:1fr 1fr}.adm-row{grid-template-columns:1fr}}
-@media(max-width:640px){.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid,.profile-mindset-row,.focus-cards-grid{grid-template-columns:1fr 1fr}.pillnav .in{font-size:.6rem}.pillnav a{padding:7px 8px}#a-in{display:none}}
+@media(max-width:640px){.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid,.profile-mindset-row,.focus-cards-grid{grid-template-columns:1fr 1fr}.pillnav .in{font-size:.6rem}.pillnav a{padding:7px 8px}#a-in{display:none}
+/* grid items keep their min-content by default – that expands the track past the
+   parent so the page scrolls wide on small viewports.  min-width:0 overrides
+   that so the track stays at 1fr and the items wrap/tidy inside it. */
+.gh-profile,.repogrid,.repocard,.scroll-reveal,.gh-layout{min-width:0;word-break:break-word}}
 @media(prefers-reduced-motion:reduce){.marquee span,.orbit-ring,.coin-content,.coin-glare,.spinCW,.spinCCW{animation:none!important}}
