@@ -51,10 +51,10 @@ export const FALLBACK: SiteData = {
     github: "#", instagram: "#",
   },
   skills: [
-    { name: "Next.js", icon: "N" }, { name: "Supabase", icon: "S" },
-    { name: "AI / ML", icon: "AI" }, { name: "JavaScript", icon: "JS" },
-    { name: "TypeScript", icon: "TS" }, { name: "Git", icon: "G" },
-    { name: "CSS", icon: "C" }, { name: "Vercel", icon: "V" },
+    { name: "Next.js", icon: "nextjs" }, { name: "Supabase", icon: "supabase" },
+    { name: "AI / ML", icon: "ai" }, { name: "JavaScript", icon: "javascript" },
+    { name: "TypeScript", icon: "typescript" }, { name: "Git", icon: "git" },
+    { name: "CSS", icon: "css" }, { name: "Vercel", icon: "vercel" },
   ],
   projects: [
     {
@@ -112,9 +112,9 @@ export const FALLBACK: SiteData = {
     { id: 3, title: "Database Design Basics", issuer: "Provider — via admin", year: "0770", category: "DATA", description: "RLS + relasi rapi.", credentialUrl: "#" },
   ],
   socials: [
-    { name: "INSTAGRAM", icon: "◈ IG", link: "#" },
-    { name: "GITHUB", icon: "⬢ GH", link: "#" },
-    { name: "LINKEDIN", icon: "✉ IN", link: "#" },
+    { name: "INSTAGRAM", icon: "instagram", link: "https://www.instagram.com/rejaa1995" },
+    { name: "GITHUB", icon: "github", link: "https://github.com/rezzanurbaitulloh-gif" },
+    { name: "LINKEDIN", icon: "linkedin", link: "https://www.linkedin.com/in/rejaa" },
   ],
 };
 

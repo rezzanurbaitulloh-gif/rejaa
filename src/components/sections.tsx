@@ -7,6 +7,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Profile, SkillCoin, Social, Experience } from "@/lib/site";
+import { BrandLogo } from "./BrandLogo";
 import { finePointer, isMobile, reduced } from "./chrome";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -196,10 +197,7 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
           <div className="pad">
             <div className="hd"><span>{s.name}</span><span>{ART_META[i].tag}</span></div>
             <div className="logo-big">
-              {s.icon.startsWith("http") || s.icon.startsWith("/") ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={s.icon} alt={s.name} style={{ width: 56, height: 56, objectFit: "contain" }} />
-              ) : (s.icon)}
+              <BrandLogo name={s.icon} size={56} />
             </div>
             <div className="hd"><span>{i === 0 ? "personal + views" : i === 1 ? "Next • Supabase" : "freelance: open"}</span></div>
             <div className="ft"><span>{ART_META[i].foot}</span><span className="go">{ART_META[i].go}</span></div>
@@ -467,7 +465,7 @@ export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d
                 <div className="coin-tilt"><div className="skill-coin">
                   <div className="coin-glare" />
                   <div className="coin-content">
-                    <div className="coin-icon">{s.icon}</div>
+                    <div className="coin-icon"><BrandLogo name={s.icon} size={32} /></div>
                     <span className="coin-name">{s.name}</span>
                   </div>
                 </div></div>

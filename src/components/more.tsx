@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Certificate, Experience, Profile, Project, Social } from "@/lib/site";
 import { sendInquiry } from "@/lib/site";
+import { BrandLogo } from "./BrandLogo";
 import { getLenis, reduced } from "./chrome";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -475,7 +476,11 @@ export function Contact({ profile, socials, live }: { profile: Profile; socials:
             <div className="networks-grid">
               {socials.map((s) => (
                 <a key={s.name} data-cur className="network-card" href={s.link} target="_blank" rel="noopener noreferrer">
-                  <span className="network-name">{s.name}</span><span className="network-arrow">↗</span>
+                  <div className="network-head">
+                    <BrandLogo name={s.icon} size={20} />
+                    <span className="network-name">{s.name}</span>
+                  </div>
+                  <span className="network-arrow">↗</span>
                 </a>
               ))}
             </div>
