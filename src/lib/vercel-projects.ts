@@ -1,61 +1,23 @@
 // ============================================================
 // vercel-projects.ts — Daftar lengkap project yang di-deploy
-// ke akun Vercel rezzamerjoyo25-7734s (9 project, dicek live).
+// ke akun Vercel rezzamerjoyo25-7734s (6 project, dicek live).
 // Single source of truth untuk carousel section #works.
+// Card rejaa (id 1), portoja (id 2), dan starbound-nomad (id 8)
+// dihapus soalnya tidak penting ditampilkan.
 // Verifikasi live: 2026-11-05 (semua 200 OK, kecuali:
 //   - satriacengkara -> 200 tapi TTFB ~29s (host lambat)
 // Catatan domain (terkonfirmasi via API /v9/projects/<slug>/domains):
 //   - project 'rejaa'    live di portoja.vercel.app (alias awal project)
 //   - project 'portoja'  live di rejaa-eight.vercel.app
 //   Keduanya deploy dari repo GitHub 'rejaa' yang sama.
-//   Project 'portoja' punya ssoProtection: all_except_custom_domains
-//   -> card-nya tetap diberi preview: "protected" (tile terkunci).
 // ============================================================
 import type { Project } from "./site";
 
 export const VERCEL_PROJECTS: Project[] = [
   {
     id: 1,
-    slug: "rejaa",
-    num: "01",
-    title: "Reja. — Portfolio",
-    category: "Personal Portfolio",
-    year: "2026",
-    status: "Deployed",
-    description: "Web personal Reja — profil, karya, sertifikat, dan kontak dalam satu situs.",
-    techStack: ["Next.js", "React", "TypeScript", "Supabase", "Tailwind", "GSAP"],
-    images: ["/previews/rejaa.jpg"],
-    preview: "ok",
-    linkGithub: "https://github.com/rezzanurbaitulloh-gif/rejaa",
-    linkDemo: "https://portoja.vercel.app/",
-    role: "Full-Stack Developer",
-    overview: "Situs portofolio Reja: profil, karya, sertifikat, dan kontak — dibangun dengan Next.js + Supabase, deploy otomatis dari branch main ke Vercel.",
-    challenges: ["Portfolio statis biasa susah berkembang jadi living site.", "Konten (profil, karya, sertifikat) harus bisa diubah tanpa ngoding ulang."],
-    solutions: ["Arsitektur Supabase-backed: profil, karya, sertifikat, dan socials dibaca live dari DB (graceful fallback).", "Design system penuh token (terra/gold/forest/char) + sistem kartu & modal reusable."],
-  },
-  {
-    id: 2,
-    slug: "portoja",
-    num: "02",
-    title: "Portoja — Portfolio Alt",
-    category: "Portfolio / Alternate",
-    year: "2026",
-    status: "Deployed",
-    description: "Deployment alternatif dari source portfolio yang sama — project Vercel terpisah.",
-    techStack: ["Next.js", "React", "TypeScript"],
-    images: [],
-    preview: "protected",
-    linkGithub: "https://github.com/rezzanurbaitulloh-gif/rejaa",
-    linkDemo: "https://rejaa-eight.vercel.app/",
-    role: "Full-Stack Developer",
-    overview: "Project Vercel kedua yang di-build dari repo yang sama dengan Reja. — dipakai untuk uji build & staging platform.",
-    challenges: ["Satu repo dipakai untuk dua project Vercel berbeda — harus jelas env & target deploy-nya."],
-    solutions: ["Vercel project terpisah dengan git integration berbeda, tanpa menyentuh source utama."],
-  },
-  {
-    id: 3,
     slug: "lkbbvoting",
-    num: "03",
+    num: "01",
     title: "LKBB JAVASOMA — Peleton Terfavorit 2026",
     category: "Voting Platform",
     year: "2026",
@@ -72,9 +34,9 @@ export const VERCEL_PROJECTS: Project[] = [
     solutions: ["Backend Supabase (RLS + RPC) untuk integritas suara, ditampilkan live di web.", "Tema visual emas/hitam + tipografi condensed sesuai identitas LKBB."],
   },
   {
-    id: 4,
+    id: 2,
     slug: "umrahqu-travel",
-    num: "04",
+    num: "02",
     title: "UmrahQu — Travel Ops Dashboard",
     category: "Travel Platform",
     year: "2026",
@@ -91,9 +53,9 @@ export const VERCEL_PROJECTS: Project[] = [
     solutions: ["Role-based access control via Supabase RLS + session auth.", "Separated route groups (/owner, /operation, /finance) dengan halaman data masing-masing."],
   },
   {
-    id: 5,
+    id: 3,
     slug: "every-bakery",
-    num: "05",
+    num: "03",
     title: "Every Bakery",
     category: "Brand Site / Bakery",
     year: "2026",
@@ -110,9 +72,9 @@ export const VERCEL_PROJECTS: Project[] = [
     solutions: ["next/image + responsive srcset dengan prioritas hero gambar.", "Palette hangat dekat tone roti/mentega, tipografi editorial lembut."],
   },
   {
-    id: 6,
+    id: 4,
     slug: "rumahfix",
-    num: "06",
+    num: "04",
     title: "RumahFix — Asisten Digital Perawatan Rumah",
     category: "Service Platform",
     year: "2026",
@@ -129,9 +91,9 @@ export const VERCEL_PROJECTS: Project[] = [
     solutions: ["AI Home Advisor memetakan deskripsi bebas ke layanan yang tepat (katalog barang/jasa).", "Profil teknisi + status verifikasi dan garansi pekerjaan ditampilkan jelas di UI."],
   },
   {
-    id: 7,
+    id: 5,
     slug: "low-doc",
-    num: "07",
+    num: "05",
     title: "LowDoc — Universal Document Converter",
     category: "Document Tool",
     year: "2026",
@@ -148,28 +110,9 @@ export const VERCEL_PROJECTS: Project[] = [
     solutions: ["WebAssembly pipeline untuk konversi in-browser, tanpa upload.", "Zero database — file hilang otomatis saat tab ditutup."],
   },
   {
-    id: 8,
-    slug: "starbound-nomad",
-    num: "08",
-    title: "STARBOUND NOMAD",
-    category: "Creative Web",
-    year: "2026",
-    status: "Deployed",
-    description: "Pengalaman eksplorasi antarmata interaktif — interactive starfield berbasis Three.js.",
-    techStack: ["Three.js", "JavaScript", "HTML", "CSS"],
-    images: ["/previews/starbound-nomad.jpg"],
-    preview: "ok",
-    linkGithub: "https://github.com/rezzanurbaitulloh-gif/starbound-nomad",
-    linkDemo: "https://starbound-nomad.vercel.app/",
-    role: "Creative Developer",
-    overview: "Situs pengalaman ruang angkasa interaktif: starfield dinamis, kamera mengikuti kursor, dan elemen antarmuka dieksplorasi dalam HTML/CSS/JS + Three.js murni (tanpa framework).",
-    challenges: ["WebGL interaktif di browser tanpa framework berat.", "Performa stabil di perangkat lemah — scene harus tetap ringan."],
-    solutions: ["Three.js vanilla — tanpa bundle framework, hanya core renderer.", "Optimasi pixel ratio, star count adaptif, dan texture minimal."],
-  },
-  {
-    id: 9,
+    id: 6,
     slug: "satriacengkara",
-    num: "09",
+    num: "06",
     title: "Satria Cengkara — Paskibra SMKN 1 Kertosono",
     category: "Organization Site",
     year: "2026",
