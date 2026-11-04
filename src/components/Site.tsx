@@ -11,7 +11,7 @@ import {
 } from "./chrome";
 import { About, Hero, Manifesto, Skills } from "./sections";
 import {
-  Certificates, Contact, Experience, GitHub, ProjectModal,
+  Certificates, Contact, Experience, ProjectModal,
   Services, Works, type ModalData,
 } from "./more";
 import type { Experience as Exp, Project, SiteData } from "@/lib/site";
@@ -92,10 +92,9 @@ export default function Site({ data }: { data: SiteData }) {
           projectTitles={data.projects.map((p) => p.title)}
         />
         <Skills skills={data.skills} mode={mode} />
-        <Works projects={data.projects.map(withLivePreview)} onOpen={openProject} mode={mode} />
+        <Works projects={data.projects.map(withLivePreview)} onOpen={openProject} mode={mode} profile={data.profile} />
         <Services />
         <Experience exps={data.experiences} onOpen={openExp} mode={mode} />
-        <GitHub profile={data.profile} />
         <Certificates certs={data.certificates} />
         <Contact profile={data.profile} socials={data.socials} live={data.live} />
         {mode === "2d" ? (
