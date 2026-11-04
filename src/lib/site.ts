@@ -166,22 +166,42 @@ export async function getSiteData(): Promise<SiteData> {
       name: String(s.name ?? `Skill ${i + 1}`),
       icon: String(s.icon ?? "?"),
     }));
-    const projectsMapped: Project[] = (projects ?? []).map((r, i) => ({
-      id: Number(r.id ?? i), slug: String(r.slug ?? `p-${i}`),
-      num: String(r.num ?? `0${i + 1}`), title: String(r.title ?? "Untitled"),
-      category: String(r.category ?? "Project"), year: String(r.year ?? "2025"),
-      status: (r.status === "Development" ? "Development" : "Deployed") as ProjectStatus,
-      description: String(r.description ?? ""), techStack: arr(r.tech_stack ?? r.techStack),
-      images: arr(r.images), linkGithub: String(r.link_github ?? r.linkGithub ?? "#"),
-      linkDemo: String(r.link_demo ?? r.linkDemo ?? "#"),
-      role: String(r.role ?? "Full-Stack Developer"),
-      overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
-      // Kolom preview belum ada di DB → warisi status dari daftar deploy Vercel.
-      preview:
-        r.preview === "protected" || r.preview === "down" || r.preview === "ok"
-          ? r.preview
-          : VERCEL_PROJECTS.find((v) => v.slug === String(r.slug ?? `p-${i}`))?.preview,
-    }));
+    // VERCEL_PROJECTS adalah single source of truth untuk mana saja project yang
+    // ditampilkan di carousel #works (6 card, tanpa rejaa/portoja/starbound-nomad).
+    // DB digunake sebagai override untuk overview/challenges/solutions supaya
+    // admin tetap bisa mengedit isi kartu lewat /admin dan otomatis terlihat di web.
+    const vcBySlug = new Map(VERCEL_PROJECTS.map((v) => [v.slug, v]));
+    const projectsMapped: Project[] = (projects ?? [])
+      .filter((r) => vcBySlug.has(String(r.slug)))
+      .map((r) => {
+        const slug = String(r.slug);
+        const vc = vcBySlug.get(slug)!;
+        return {
+          id: Number(r.id ?? vc.id),
+          slug,
+          num: String(r.num ?? vc.num),
+          title: String(r.title ?? vc.title),
+          category: String(r.category ?? vc.category),
+          year: String(r.year ?? vc.year),
+          status: (r.status === "Development" ? "Development" : vc.status === "Development" ? "Development" : "Deployed") as ProjectStatus,
+          description: String(r.description ?? vc.description),
+          techStack: arr(r.tech_stack ?? r.techStack).length ? arr(r.tech_stack ?? r.techStack) : vc.techStack,
+          images: arr(r.images).length ? arr(r.images) : vc.images,
+          linkGithub: String(r.link_github ?? r.linkGithub ?? vc.linkGithub ?? "#"),
+          linkDemo: String(r.link_demo ?? r.linkDemo ?? vc.linkDemo ?? "#"),
+          role: String(r.role ?? vc.role),
+          overview: String(r.overview ?? vc.overview),
+          challenges: arr(r.challenges).length ? arr(r.challenges) : vc.challenges,
+          solutions: arr(r.solutions).length ? arr(r.solutions) : vc.solutions,
+          preview: vc.preview,
+        };
+      })
+      // Urutkan sesuai urutan VERCEL_PROJECTS.
+      .sort((a, b) => {
+        const ia = [...vcBySlug.keys()].indexOf(a.slug);
+        const ib = [...vcBySlug.keys()].indexOf(b.slug);
+        return ia - ib;
+      });
     const experiencesMapped: Experience[] = (exps ?? []).map((r, i) => ({
       id: Number(r.id ?? i), num: String(r.num ?? `0${i + 1}`),
       title: String(r.title ?? "Untitled"), company: String(r.company ?? ""),
