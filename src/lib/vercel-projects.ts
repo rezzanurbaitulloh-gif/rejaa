@@ -1,11 +1,15 @@
 // ============================================================
 // vercel-projects.ts — Daftar lengkap project yang di-deploy
 // ke akun Vercel rezzamerjoyo25-7734s (9 project, dicek live).
-// Digunakan oleh section GitHub/Deployments di halaman utama.
-// Verifikasi live: 2026-11-04 (semua 200 OK, kecuali:
-//   - portoja  -> deploy diproteksi Vercel Authentication
+// Single source of truth untuk carousel section #works.
+// Verifikasi live: 2026-11-05 (semua 200 OK, kecuali:
 //   - satriacengkara -> 200 tapi TTFB ~29s (host lambat)
-//   - rejaa    -> deploy diproteksi Vercel Authentication
+// Catatan domain (terkonfirmasi via API /v9/projects/<slug>/domains):
+//   - project 'rejaa'    live di portoja.vercel.app (alias awal project)
+//   - project 'portoja'  live di rejaa-eight.vercel.app
+//   Keduanya deploy dari repo GitHub 'rejaa' yang sama.
+//   Project 'portoja' punya ssoProtection: all_except_custom_domains
+//   -> card-nya tetap diberi preview: "protected" (tile terkunci).
 // ============================================================
 import type { Project } from "./site";
 
@@ -23,7 +27,7 @@ export const VERCEL_PROJECTS: Project[] = [
     images: ["/previews/rejaa.jpg"],
     preview: "ok",
     linkGithub: "https://github.com/rezzanurbaitulloh-gif/rejaa",
-    linkDemo: "https://rejaa-rezzamerjoyo25-7734s-projects.vercel.app/",
+    linkDemo: "https://portoja.vercel.app/",
     role: "Full-Stack Developer",
     overview: "Situs portofolio Reja: profil, karya, sertifikat, dan kontak — dibangun dengan Next.js + Supabase, deploy otomatis dari branch main ke Vercel.",
     challenges: ["Portfolio statis biasa susah berkembang jadi living site.", "Konten (profil, karya, sertifikat) harus bisa diubah tanpa ngoding ulang."],
@@ -42,7 +46,7 @@ export const VERCEL_PROJECTS: Project[] = [
     images: [],
     preview: "protected",
     linkGithub: "https://github.com/rezzanurbaitulloh-gif/rejaa",
-    linkDemo: "https://portoja-rezzamerjoyo25-7734s-projects.vercel.app/",
+    linkDemo: "https://rejaa-eight.vercel.app/",
     role: "Full-Stack Developer",
     overview: "Project Vercel kedua yang di-build dari repo yang sama dengan Reja. — dipakai untuk uji build & staging platform.",
     challenges: ["Satu repo dipakai untuk dua project Vercel berbeda — harus jelas env & target deploy-nya."],

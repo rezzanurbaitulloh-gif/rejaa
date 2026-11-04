@@ -167,8 +167,8 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 // ---------------- WORKS ----------------
-export function Works({ projects, onOpen, mode, profile }: {
-  projects: Project[]; onOpen: (p: Project) => void; mode: "3d" | "2d"; profile: Profile;
+export function Works({ onOpen, mode }: {
+  onOpen: (p: Project) => void; mode: "3d" | "2d";
 }) {
   const rootRef = useRef<HTMLElement>(null);
   // Entrance kartu ala WorkCard Davin — hanya mode 3D (2D = statis)
@@ -183,23 +183,7 @@ export function Works({ projects, onOpen, mode, profile }: {
       });
     });
     return () => ctx.revert();
-  }, [projects, mode]);
-
-  // Derived stats untuk blok DEPLOYMENTS (dipindah dari section 05 ke dalam MY PROJECT)
-  const user = profile.github && profile.github !== "#"
-    ? profile.github.split("/").filter(Boolean).pop() ?? "rezzanurbaitulloh-gif"
-    : "rezzanurbaitulloh-gif";
-  const ghLink = profile.github && profile.github !== "#"
-    ? profile.github
-    : "https://github.com/rezzanurbaitulloh-gif";
-  const hasRepo = (p: Project) => !!p.linkGithub && p.linkGithub !== "#" && p.linkGithub !== "";
-  const total = VERCEL_PROJECTS.length;
-  const deployments = total;
-  const repos = VERCEL_PROJECTS.filter(hasRepo).length;
-  const has = (kw: string) => VERCEL_PROJECTS.filter((p) => p.techStack.some((t) => t.toLowerCase() === kw)).length;
-  const nextjs = has("next.js");
-  const threejs = has("three.js");
-  const staticCount = total - nextjs - threejs;
+  }, [mode]);
 
   return (
     <section className="block" id="works" ref={rootRef}>
@@ -210,120 +194,46 @@ export function Works({ projects, onOpen, mode, profile }: {
           <p className="d">Geser pake panah. Klik kartu → modal detail + link live.</p>
         </div>
       </div>
-      <Carousel id="wtrack">
-        {projects.map((w, i) => (
-          <div key={w.slug || w.id} className="work-slide-card" data-cur tabIndex={0}
-            role="button" onClick={() => onOpen(w)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(w); } }}>
-            <div className="work-card-header">
-              <span className="work-number">{w.num || `0${i + 1}`}</span>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span className={`work-status-badge status-${w.status.toLowerCase()}`}>{w.status}</span>
-                <span style={{ opacity: 0.3, fontSize: ".7rem" }}>|</span>
-                <span className="work-year">{w.year}</span>
-              </div>
-            </div>
-            <div className="work-card-visual">
-              {w.images[0] && isURL(w.images[0]) ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={w.images[0]} alt={w.title} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 5 }} />
-              ) : w.images[0] ? (
-                <div className={`gradcover ${w.images[0]}`}>{w.title}</div>
-              ) : (blueSVG())}
-            </div>
-            <div className="work-card-body">
-              <h3>{w.title}</h3>
-              <p className="work-category">{w.category}</p>
-              <p className="work-details">{w.description}</p>
-              <div className="work-tech-badges">{techBadges(w.techStack)}</div>
-            </div>
-            <div className="work-card-footer">
-              <span className="work-explore-link">VIEW DETAILED INFORMATION ↗</span>
-            </div>
-          </div>
-        ))}
-      </Carousel>
-
-      {/* ---- DEPLOYMENTS / Live on Vercel — sub-block dalam MY PROJECT (id tetap #github untuk nav) ---- */}
-      <div id="github" style={{ marginTop: 56 }}>
-        <div className="kicker" style={{ color: "var(--gold)" }}>
-          <BrandLogo name="vercel" size={13} fill="var(--gold)" /> DEPLOYMENTS / Live on Vercel — Semua Project Gue
-        </div>
-        <h3 className="t" style={{ color: "var(--cream)" }}>Semua yang gue deploy.</h3>
-        <div className="gh-layout">
-          <Reveal dir="left">
-            <div className="gh-profile">
-              <div className="gh-avatar">
-                <BrandLogo name="github" size={90} fill="var(--cream)" />
-              </div>
-              <b>{user}</b><br />
-              <small style={{ color: "var(--dim-dark)" }}>Semua project di-deploy ke Vercel</small>
-              <div className="langbar" aria-hidden="true">
-                <i style={{ width: "78%", background: "var(--gold)" }} />
-                <i style={{ width: "11%", background: "var(--terra)" }} />
-                <i style={{ width: "11%", background: "var(--ink-soft)" }} />
-              </div>
-              <small style={{ color: "var(--dim-dark)" }}>Next.js {nextjs}/{total} • Three.js {threejs}/{total} • Static {staticCount}/{total}</small>
-              <div className="gh-stats">
-                <span className="gh-stat"><b>{String(deployments).padStart(2, "0")}</b> deployments</span>
-                <span className="gh-stat"><b>{String(repos).padStart(2, "0")}</b> repos / link</span>
-              </div>
-              <small style={{ color: "var(--text-muted)", fontSize: ".62rem" }}>Preview porto — deploy diproteksi Vercel Authentication</small>
-            </div>
-          </Reveal>
-          <div className="projgrid">
-            {VERCEL_PROJECTS.map((p, i) => (
-              <Reveal key={p.slug} dir="up" delay={i * 60}>
-                <div className="project-card">
-                  <div className="project-cover">
-                    {p.preview === "protected" || p.preview === "down" ? (
-                      <div className="project-cover-protected" role="img" aria-label={`${p.title} — preview protected`}>
-                        <BrandLogo name="vercel" size={38} fill="var(--gold)" />
-                        <b>Preview terkunci</b>
-                        <small>Deployment ini dilindungi<br />Vercel Authentication</small>
-                      </div>
-                    ) : p.images[0] && isURL(p.images[0]) ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.images[0]} alt={`Screenshot live — ${p.title}`} className="project-cover-img" loading="lazy" />
-                    ) : (
-                      <div className="project-cover-grad c1">{p.title}</div>
-                    )}
-                    <span className={`project-status status-${p.status.toLowerCase()}`}>{p.status}</span>
-                  </div>
-                  <div className="project-body">
-                    <div className="project-head">
-                      <h3 className="project-title">{p.title}</h3>
-                      <span className="project-category">{p.category}</span>
-                    </div>
-                    <p className="project-desc">{p.description}</p>
-                    <div className="project-tech">
-                      {(p.techStack || []).slice(0, 3).map((t, i) => (
-                        <span key={i} className="tech-badge">{t}</span>
-                      ))}
-                    </div>
-                    <div className="project-actions">
-                      {p.linkDemo && isURL(p.linkDemo) && (
-                        <a data-cur href={p.linkDemo} target="_blank" rel="noopener noreferrer" className="project-link">
-                          LIVE PREVIEW ↗
-                        </a>
-                      )}
-                      {hasRepo(p) && (
-                        <a data-cur href={p.linkGithub} target="_blank" rel="noopener noreferrer" className="project-link">
-                          GITHUB CODE ↗
-                        </a>
-                      )}
-                    </div>
-                  </div>
+      <div id="github">
+        <Carousel id="wtrack">
+          {VERCEL_PROJECTS.map((w, i) => (
+            <div key={w.slug || w.id} className="work-slide-card" data-cur tabIndex={0}
+              role="button" onClick={() => onOpen(w)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(w); } }}>
+              <div className="work-card-header">
+                <span className="work-number">{w.num || `0${i + 1}`}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span className={`work-status-badge status-${w.status.toLowerCase()}`}>{w.status}</span>
+                  <span style={{ opacity: 0.3, fontSize: ".7rem" }}>|</span>
+                  <span className="work-year">{w.year}</span>
                 </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-        <p style={{ marginTop: 16 }}>
-          <a data-cur href={ghLink} target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold)", display: "inline-flex", alignItems: "center", gap: 8 }}>
-            <BrandLogo name="github" size={20} fill="var(--gold)" /> Lihat GitHub →
-          </a>
-        </p>
+              </div>
+              <div className="work-card-visual">
+                {w.preview === "protected" || w.preview === "down" ? (
+                  <div className="project-cover-protected" role="img" aria-label={`${w.title} — preview terkunci`}>
+                    <BrandLogo name="vercel" size={34} fill="var(--gold)" />
+                    <b>Preview terkunci</b>
+                    <small>Dilindungi Vercel Authentication</small>
+                  </div>
+                ) : w.images[0] && isURL(w.images[0]) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={w.images[0]} alt={w.title} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 5 }} />
+                ) : w.images[0] ? (
+                  <div className={`gradcover ${w.images[0]}`}>{w.title}</div>
+                ) : (blueSVG())}
+              </div>
+              <div className="work-card-body">
+                <h3>{w.title}</h3>
+                <p className="work-category">{w.category}</p>
+                <p className="work-details">{w.description}</p>
+                <div className="work-tech-badges">{techBadges(w.techStack)}</div>
+              </div>
+              <div className="work-card-footer">
+                <span className="work-explore-link">VIEW DETAILED INFORMATION ↗</span>
+              </div>
+            </div>
+          ))}
+        </Carousel>
       </div>
     </section>
   );
@@ -616,18 +526,25 @@ export function ProjectModal({ data, onClose }: { data: ModalData | null; onClos
                 <div className="pm-meta-box"><span className="pm-meta-lbl">TIMELINE</span><span className="pm-meta-val">{m.year}</span></div>
               </div>
               <div className="pm-actions-group">
-                <a className="pm-action-btn github" data-cur href={m.gh} target="_blank" rel="noopener noreferrer">
-                  VIEW GITHUB CODEBASE ↗
-                </a>
+                {isURL(m.gh) && (
+                  <a className="pm-action-btn github" data-cur href={m.gh} target="_blank" rel="noopener noreferrer">
+                    VIEW GITHUB CODEBASE ↗
+                  </a>
+                )}
                 {m.status === "Development" ? (
                   <button disabled className="pm-action-btn demo-disabled"
                     style={{ background: "var(--card-bg)", color: "var(--text-muted)", border: "1px dashed var(--border-color)", cursor: "not-allowed", opacity: 0.6, pointerEvents: "none", userSelect: "none" }}>
                     THE PROJECT IS UNDER DEVELOPMENT
                   </button>
-                ) : (
+                ) : isURL(m.demo) ? (
                   <a className="pm-action-btn demo" data-cur href={m.demo} target="_blank" rel="noopener noreferrer">
                     LAUNCH LIVE APPLICATION ↗
                   </a>
+                ) : (
+                  <button disabled className="pm-action-btn demo-disabled"
+                    style={{ background: "var(--card-bg)", color: "var(--text-muted)", border: "1px dashed var(--border-color)", cursor: "not-allowed", opacity: 0.6, pointerEvents: "none", userSelect: "none" }}>
+                    PREVIEW DILINDUNGI / BELUM TERSEDIA
+                  </button>
                 )}
               </div>
             </div>
