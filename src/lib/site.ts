@@ -4,6 +4,7 @@
 // Dinamis penuh: kalau env Supabase ada → live; kalau tidak → fallback.
 // ============================================================
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { VERCEL_PROJECTS } from "./vercel-projects";
 
 export type ProjectStatus = "Development" | "Deployed";
 
@@ -163,7 +164,7 @@ export async function getSiteData(): Promise<SiteData> {
       db && db.length ? db : fallback;
     const skillsMapped: SkillCoin[] = (skills ?? []).map((s, i) => ({
       name: String(s.name ?? `Skill ${i + 1}`),
-      icon: String(s.icon ?? String(s.name ?? "?").slice(0, 2).toUpperCase()),
+      icon: String(s.icon ?? "?"),
     }));
     const projectsMapped: Project[] = (projects ?? []).map((r, i) => ({
       id: Number(r.id ?? i), slug: String(r.slug ?? `p-${i}`),
@@ -175,6 +176,11 @@ export async function getSiteData(): Promise<SiteData> {
       linkDemo: String(r.link_demo ?? r.linkDemo ?? "#"),
       role: String(r.role ?? "Full-Stack Developer"),
       overview: String(r.overview ?? ""), challenges: arr(r.challenges), solutions: arr(r.solutions),
+      // Kolom preview belum ada di DB → warisi status dari daftar deploy Vercel.
+      preview:
+        r.preview === "protected" || r.preview === "down" || r.preview === "ok"
+          ? r.preview
+          : VERCEL_PROJECTS.find((v) => v.slug === String(r.slug ?? `p-${i}`))?.preview,
     }));
     const experiencesMapped: Experience[] = (exps ?? []).map((r, i) => ({
       id: Number(r.id ?? i), num: String(r.num ?? `0${i + 1}`),

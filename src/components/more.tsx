@@ -330,6 +330,13 @@ export function GitHub({ profile }: { profile: Profile }) {
     ? profile.github
     : "https://github.com/rezzanurbaitulloh-gif";
   const hasRepo = (p: Project) => !!p.linkGithub && p.linkGithub !== "#" && p.linkGithub !== "";
+  const total = VERCEL_PROJECTS.length;
+  const deployments = total;
+  const repos = VERCEL_PROJECTS.filter(hasRepo).length;
+  const has = (kw: string) => VERCEL_PROJECTS.filter((p) => p.techStack.some((t) => t.toLowerCase() === kw)).length;
+  const nextjs = has("next.js");
+  const threejs = has("three.js");
+  const staticCount = total - nextjs - threejs;
   return (
     <section id="github">
       <div className="block">
@@ -350,10 +357,10 @@ export function GitHub({ profile }: { profile: Profile }) {
                 <i style={{ width: "11%", background: "var(--terra)" }} />
                 <i style={{ width: "11%", background: "var(--ink-soft)" }} />
               </div>
-              <small style={{ color: "var(--dim-dark)" }}>Next.js 7/9 • Three.js 1/9 • Static 1/9</small>
+              <small style={{ color: "var(--dim-dark)" }}>Next.js {nextjs}/{total} • Three.js {threejs}/{total} • Static {staticCount}/{total}</small>
               <div className="gh-stats">
-                <span className="gh-stat"><b>09</b> deployments</span>
-                <span className="gh-stat"><b>07</b> repos / link</span>
+                <span className="gh-stat"><b>{String(deployments).padStart(2, "0")}</b> deployments</span>
+                <span className="gh-stat"><b>{String(repos).padStart(2, "0")}</b> repos / link</span>
               </div>
               <small style={{ color: "var(--text-muted)", fontSize: ".62rem" }}>Preview porto — deploy diproteksi Vercel Authentication</small>
             </div>
