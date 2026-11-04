@@ -11,10 +11,10 @@ import {
 } from "./chrome";
 import { About, Hero, Manifesto, Skills } from "./sections";
 import {
-  Certificates, Contact, Experience, ProjectModal,
+  Contact, ProjectModal,
   Services, Works, type ModalData,
 } from "./more";
-import type { Experience as Exp, Project, SiteData } from "@/lib/site";
+import type { Project, SiteData } from "@/lib/site";
 
 export default function Site({ data }: { data: SiteData }) {
   const [ready, setReady] = useState(false);
@@ -54,7 +54,6 @@ export default function Site({ data }: { data: SiteData }) {
   }, []);
 
   const openProject = useCallback((p: Project) => setModal({ kind: "p", item: p }), []);
-  const openExp = useCallback((e: Exp) => setModal({ kind: "e", item: e }), []);
   const closeModal = useCallback(() => setModal(null), []);
 
   return (
@@ -77,24 +76,16 @@ export default function Site({ data }: { data: SiteData }) {
           projectTitles={data.projects.map((p) => p.title)}
         />
         <Skills skills={data.skills} mode={mode} />
-        <Works onOpen={openProject} mode={mode} />
+        <Works projects={data.projects} onOpen={openProject} mode={mode} />
         <Services />
-        <Experience exps={data.experiences} onOpen={openExp} mode={mode} />
-        <Certificates certs={data.certificates} />
         <Contact profile={data.profile} socials={data.socials} live={data.live} />
         {mode === "2d" ? (
           <footer className="p2d-footer">
-            <span>© 2026 PORTOJA</span>
-            <span className="p2d-footer-mid">[ NEXT.JS / SUPABASE / GSAP ]</span>
-            <button data-cur className="p2d-return" onClick={() => onMode("3d")}>
-              RETURN TO 3D MODE<span className="p2d-blink">▌</span>
-            </button>
+            <span>© PORTOJA</span>
           </footer>
         ) : (
           <footer>
-            {data.live ? "● LIVE Supabase" : "○ DUMMY (isi env Supabase buat live)"}
-            {" • "}cream editorial fusion{" • "}
-            <a data-cur href="/admin" style={{ color: "inherit" }}>admin</a>
+            <span>© PORTOJA</span>
           </footer>
         )}
       </main>

@@ -191,8 +191,8 @@ export function TargetCursor() {
 // ---------------- Pill nav ----------------
 const NAV: [string, string][] = [
   ["#hero", "HOME"], ["#about", "ABOUT"], ["#skills", "SKILLS"],
-  ["#works", "WORKS"], ["#exp", "EXP"], ["#github", "GITHUB"],
-  ["#certs", "CERT"], ["#contact", "CONTACT"],
+  ["#works", "WORKS"], ["#github", "GITHUB"],
+  ["#contact", "CONTACT"],
 ];
 export function PillNav() {
   const [active, setActive] = useState("#hero");

@@ -49,7 +49,7 @@ export const FALLBACK: SiteData = {
     name: "Reja.", role: "Full-Stack Web Developer",
     bio: "Gue biasa bikin marketplace, web penjualan, dan konverter dokumen — dari ide mentah sampai deploy, dipercepat AI tapi hasilnya rapi dan bisa dipake.",
     photo: "", status: "Open freelance", location: "Indonesia • remote ok",
-    cv_url: "#", email: "HALO@REJA.DEV",
+    cv_url: "#", email: "rejaa6541@gmail.com",
     spin_text: "NEXT • SUPABASE • AI • CLEAN • RAPII •",
     github: "#", instagram: "#",
   },

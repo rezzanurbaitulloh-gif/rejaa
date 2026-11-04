@@ -167,8 +167,8 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 // ---------------- WORKS ----------------
-export function Works({ onOpen, mode }: {
-  onOpen: (p: Project) => void; mode: "3d" | "2d";
+export function Works({ projects, onOpen, mode }: {
+  projects: Project[]; onOpen: (p: Project) => void; mode: "3d" | "2d";
 }) {
   const rootRef = useRef<HTMLElement>(null);
   // Entrance kartu ala WorkCard Davin — hanya mode 3D (2D = statis)
@@ -305,12 +305,8 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
 
 // ---------------- SERVICES ----------------
 const SERVICES: [string, string, string, string[]][] = [
-  ["01", "MARKETPLACE & TOKO", "Etalase + checkout + dashboard.",
-    ["Katalog & order flow", "Supabase Auth + RLS", "Deploy + serah terima"]],
-  ["02", "AI-ASSISTED BUILD", "Ide mentah → prototype cepat.",
-    ["Struktur DB + API", "Automasi dokumen", "Rapi + dokumentasi"]],
-  ["03", "TOOLS & KONVERTER", "Tool sekali klik di browser.",
-    ["Convert pipeline", "Storage aman", "UI awam-friendly"]],
+  ["03", "MENYESUAIKAN KEINGINAN CLIENT", "Sesuai kebutuhan spesifik klien — dari ide mentah sampai deploy.",
+    ["Diskusi brief & prototype", "Build & serah terima", "Dokumentasi + dukungan"]],
 ];
 export function Services() {
   return (
@@ -325,35 +321,6 @@ export function Services() {
               <p style={{ color: "var(--text-muted)", fontSize: ".85rem" }}>{desc}</p>
               <ul>{dels.map((d) => <li key={d}>✦ {d}</li>)}</ul>
             </div>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ---------------- CERTIFICATES ----------------
-export function Certificates({ certs }: { certs: Certificate[] }) {
-  return (
-    <section className="block" id="certs">
-      <div className="kicker" data-sec="( 06 )">CERTIFICATES / Verified Credentials</div>
-      <h2 className="t">Sertifikat, bisa diverifikasi.</h2>
-      <div className="cgrid">
-        {certs.map((c, i) => (
-          <Reveal key={c.id} dir={i % 3 === 0 ? "left" : i % 3 === 2 ? "right" : "up"} cur>
-            <article className="certificate-card">
-              <div className="tech-corner tech-top-left" style={{ top: 6, left: 6 }} />
-              <div className="tech-corner tech-top-right" style={{ top: 6, right: 6 }} />
-              <div className="tech-corner tech-bottom-left" style={{ bottom: 6, left: 6 }} />
-              <div className="tech-corner tech-bottom-right" style={{ bottom: 6, right: 6 }} />
-              <div className="certificate-card-header"><span>[ {c.category} ]</span><span>{c.year}</span></div>
-              <h3 className="certificate-title">{c.title}</h3>
-              <span className="certificate-issuer">{c.issuer}</span>
-              <p className="certificate-description">{c.description}</p>
-              <a className="certificate-link" data-cur href={c.credentialUrl} target="_blank" rel="noopener noreferrer">
-                VERIFY CREDENTIAL ↗
-              </a>
-            </article>
           </Reveal>
         ))}
       </div>
