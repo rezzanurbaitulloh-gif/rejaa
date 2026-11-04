@@ -260,15 +260,12 @@ export function Toggles({ mode, onMode }: { mode: ViewMode; onMode: (m: ViewMode
     const ov = document.getElementById("modeOverlay");
     const lab = document.getElementById("modeLabel");
     if (lab) lab.textContent = "ENTERING " + target.toUpperCase() + " MODE";
-    const done = () => { onMode(target); setBusy(false); };
-    if (!ov || reduced()) { done(); return; }
+    const applyMode = () => { onMode(target); window.scrollTo(0, 0); };
+    if (!ov || reduced()) { applyMode(); setBusy(false); return; }
     gsap.timeline({ onComplete: () => setBusy(false) })
       .set(ov, { pointerEvents: "auto" })
       .fromTo(ov, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 0.38, ease: "expo.inOut" })
-      .add(() => {
-        onMode(target);
-        window.scrollTo(0, 0);
-      })
+      .add(() => { applyMode(); })
       .to(ov, { clipPath: "inset(100% 0 0 0)", duration: 0.37, ease: "expo.inOut" }, "+=0.05")
       .set(ov, { pointerEvents: "none" });
   };
