@@ -211,7 +211,7 @@ p.d{color:var(--color-ink-soft);max-width:62ch}
 /* ---------------- skills orbit ---------------- */
 .skills-container{position:relative;z-index:1;width:100%;min-height:130vh;display:flex;flex-direction:column;align-items:center;padding:7rem 2rem 8rem;overflow:hidden;background:var(--color-bg)}
 .cream-portal{position:absolute;top:50%;left:50%;width:150vmax;height:150vmax;background:var(--color-cream);border-radius:50%;z-index:20;pointer-events:none;will-change:transform}
-html.dark .cream-portal{background:#121110}
+html.dark .cream-portal{background:var(--color-bg)}
 .ambient{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:75vw;height:75vw;max-width:800px;max-height:800px;pointer-events:none;
 background:radial-gradient(circle,rgba(198,168,124,.14) 0%,rgba(198,93,58,.05) 40%,transparent 72%)}
 .glitch{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
@@ -306,8 +306,8 @@ border:1px solid var(--color-border-color)}
 .project-status{position:absolute;top:10px;right:10px;font-size:.68rem;font-weight:700;border:1px solid var(--color-gold);border-radius:999px;padding:2px 10px;background:rgba(22,25,24,.65);backdrop-filter:blur(2px)}
 .status-deployed{border-color:var(--color-forest);color:var(--color-forest)}
 .status-development{border-color:var(--color-gold);color:var(--color-gold)}
-html.dark .status-deployed{color:#7ee2a8;border-color:#7ee2a8}
-html.dark .status-development{color:#ffe9b8;border-color:#ffe9b8}
+html.dark .status-deployed{color:var(--status-deployed);border-color:var(--status-deployed)}
+html.dark .status-development{color:var(--status-dev);border-color:var(--status-dev)}
 .project-body{padding:14px 16px}
 .project-title{margin:0 0 4px;font-size:1.1rem;font-family:var(--font-display);color:var(--color-text-primary);font-weight:600}
 .project-category{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--color-gold);margin:0 0 8px}
