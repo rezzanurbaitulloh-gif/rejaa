@@ -13,6 +13,8 @@ export interface Project {
   description: string; techStack: string[]; images: string[];
   linkGithub: string; linkDemo: string; role: string;
   overview: string; challenges: string[]; solutions: string[];
+  /** Status preview live: ok = screenshot tersedia, protected/down = tile pengganti */
+  preview?: "ok" | "protected" | "down";
 }
 export interface Experience {
   id: number; num: string; title: string; company: string;

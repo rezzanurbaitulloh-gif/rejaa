@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Certificate, Experience, Profile, Project, Social } from "@/lib/site";
 import { sendInquiry } from "@/lib/site";
+import { VERCEL_PROJECTS } from "@/lib/vercel-projects";
 import { BrandLogo } from "./BrandLogo";
 import { getLenis, reduced } from "./chrome";
 
@@ -40,15 +41,15 @@ export function Reveal({ children, dir = "up", delay = 0, className = "", cur = 
 export function blueSVG() {
   return (
     <svg viewBox="0 0 200 120" fill="none" style={{ width: "100%", height: "100%", opacity: 0.8 }}>
-      <circle cx="100" cy="60" r="35" fill="rgba(198,93,58,.08)" />
-      <circle cx="100" cy="60" r="40" fill="none" stroke="#C65D3A" strokeOpacity=".25" strokeDasharray="3 3" />
-      <circle cx="100" cy="60" r="46" fill="none" stroke="#C6A87C" strokeOpacity=".3" />
+      <circle cx="100" cy="60" r="35" fill="var(--terra)" fillOpacity=".08" />
+      <circle cx="100" cy="60" r="40" fill="none" stroke="var(--terra)" strokeOpacity=".25" strokeDasharray="3 3" />
+      <circle cx="100" cy="60" r="46" fill="none" stroke="var(--gold)" strokeOpacity=".3" />
       <g transform="translate(100,60) rotate(45)">
-        <rect x="-2.5" y="0" width="5" height="32" rx="2" fill="#161918" fillOpacity=".45" />
-        <rect x="-10" y="-11" width="20" height="9" rx="1.5" fill="#161918" fillOpacity=".85" />
-        <rect x="10" y="-9.5" width="3" height="6" fill="#C65D3A" />
+        <rect x="-2.5" y="0" width="5" height="32" rx="2" fill="var(--char)" fillOpacity=".45" />
+        <rect x="-10" y="-11" width="20" height="9" rx="1.5" fill="var(--char)" fillOpacity=".85" />
+        <rect x="10" y="-9.5" width="3" height="6" fill="var(--terra)" />
       </g>
-      <line x1="0" y1="60" x2="200" y2="60" stroke="#161918" strokeOpacity=".08" />
+      <line x1="0" y1="60" x2="200" y2="60" stroke="var(--char)" strokeOpacity=".08" />
     </svg>
   );
 }
@@ -310,7 +311,7 @@ export function Services() {
           <Reveal key={n} dir={i === 0 ? "left" : i === 2 ? "right" : "up"} cur>
             <div className="scard">
               <span className="snum">{n}</span><h3>{name}</h3>
-              <p style={{ color: "#cfc8b8", fontSize: ".85rem" }}>{desc}</p>
+              <p style={{ color: "var(--text-muted)", fontSize: ".85rem" }}>{desc}</p>
               <ul>{dels.map((d) => <li key={d}>✦ {d}</li>)}</ul>
             </div>
           </Reveal>
@@ -320,46 +321,57 @@ export function Services() {
   );
 }
 
-// ---------------- GITHUB ----------------
-export function GitHub({ profile, projects }: { profile: Profile; projects: Project[] }) {
+// ---------------- GITHUB / VERCEL DEPLOYMENTS ----------------
+export function GitHub({ profile }: { profile: Profile }) {
   const user = profile.github && profile.github !== "#"
-    ? profile.github.split("/").filter(Boolean).pop() ?? "reja-dev"
-    : "reja-dev";
+    ? profile.github.split("/").filter(Boolean).pop() ?? "rezzanurbaitulloh-gif"
+    : "rezzanurbaitulloh-gif";
   const ghLink = profile.github && profile.github !== "#"
     ? profile.github
     : "https://github.com/rezzanurbaitulloh-gif";
-  const hasRepo = (p: Project) => p.linkGithub && p.linkGithub !== "#" && p.linkGithub !== "";
+  const hasRepo = (p: Project) => !!p.linkGithub && p.linkGithub !== "#" && p.linkGithub !== "";
   return (
     <section id="github">
       <div className="block">
-        <div className="kicker" data-sec="( 05 )" style={{ color: "var(--gold)" }}>GITHUB STATS / Open Source Telemetry</div>
-        <h2 className="t" style={{ color: "#fff" }}>Code-nya hidup di sini.</h2>
+        <div className="kicker" data-sec="( 05 )" style={{ color: "var(--gold)" }}>
+          <BrandLogo name="vercel" size={13} fill="var(--gold)" /> DEPLOYMENTS / Live on Vercel — Semua Project Gue
+        </div>
+        <h2 className="t" style={{ color: "var(--cream)" }}>Semua yang gue deploy.</h2>
         <div className="gh-layout">
           <Reveal dir="left">
             <div className="gh-profile">
               <div className="gh-avatar">
-                <BrandLogo name="github" size={90} fill="#fff" />
+                <BrandLogo name="github" size={90} fill="var(--cream)" />
               </div>
               <b>{user}</b><br />
-              <small style={{ color: "#bdb49f" }}>sambungkan token di admin buat live stats</small>
-              <div className="langbar">
-                <i style={{ width: "55%", background: "var(--gold)" }} />
-                <i style={{ width: "30%", background: "var(--terra)" }} />
-                <i style={{ width: "15%", background: "#555" }} />
+              <small style={{ color: "var(--dim-dark)" }}>Semua project di-deploy ke Vercel</small>
+              <div className="langbar" aria-hidden="true">
+                <i style={{ width: "78%", background: "var(--gold)" }} />
+                <i style={{ width: "11%", background: "var(--terra)" }} />
+                <i style={{ width: "11%", background: "var(--ink-soft)" }} />
               </div>
-              <small style={{ color: "#bdb49f" }}>TS 55% • SQL 30% • lain 15%</small>
+              <small style={{ color: "var(--dim-dark)" }}>Next.js 7/9 • Three.js 1/9 • Static 1/9</small>
+              <div className="gh-stats">
+                <span className="gh-stat"><b>09</b> deployments</span>
+                <span className="gh-stat"><b>07</b> repos / link</span>
+              </div>
+              <small style={{ color: "var(--text-muted)", fontSize: ".62rem" }}>Preview porto — deploy diproteksi Vercel Authentication</small>
             </div>
           </Reveal>
           <div className="projgrid">
-            {projects.map((p, i) => (
-              <Reveal key={p.slug || p.id} dir="up" delay={i * 80}>
+            {VERCEL_PROJECTS.map((p, i) => (
+              <Reveal key={p.slug} dir="up" delay={i * 60}>
                 <div className="project-card">
                   <div className="project-cover">
-                    {p.images[0] && isURL(p.images[0]) ? (
+                    {p.preview === "protected" || p.preview === "down" ? (
+                      <div className="project-cover-protected" role="img" aria-label={`${p.title} — preview protected`}>
+                        <BrandLogo name="vercel" size={38} fill="var(--gold)" />
+                        <b>Preview terkunci</b>
+                        <small>Deployment ini dilindungi<br />Vercel Authentication</small>
+                      </div>
+                    ) : p.images[0] && isURL(p.images[0]) ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.images[0]} alt={p.title} className="project-cover-img" loading="lazy" />
-                    ) : p.images[0] ? (
-                      <div className={`project-cover-grad ${p.images[0]}`}>{p.title}</div>
+                      <img src={p.images[0]} alt={`Screenshot live — ${p.title}`} className="project-cover-img" loading="lazy" />
                     ) : (
                       <div className="project-cover-grad c1">{p.title}</div>
                     )}
@@ -370,11 +382,7 @@ export function GitHub({ profile, projects }: { profile: Profile; projects: Proj
                       <h3 className="project-title">{p.title}</h3>
                       <span className="project-category">{p.category}</span>
                     </div>
-                    <p className="project-desc">
-                      {isURL(p.description) ? (
-                        <a href={p.description} target="_blank" rel="noopener noreferrer">{p.description}</a>
-                      ) : p.description}
-                    </p>
+                    <p className="project-desc">{p.description}</p>
                     <div className="project-tech">
                       {(p.techStack || []).slice(0, 3).map((t, i) => (
                         <span key={i} className="tech-badge">{t}</span>
@@ -399,7 +407,7 @@ export function GitHub({ profile, projects }: { profile: Profile; projects: Proj
           </div>
         </div>
         <p style={{ marginTop: 16 }}>
-          <a data-cur href={ghLink} target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold)" }}>
+          <a data-cur href={ghLink} target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold)", display: "inline-flex", alignItems: "center", gap: 8 }}>
             <BrandLogo name="github" size={20} fill="var(--gold)" /> Lihat GitHub →
           </a>
         </p>
@@ -501,7 +509,7 @@ export function Contact({ profile, socials, live }: { profile: Profile; socials:
                 onChange={(e) => setForm({ ...form, message: e.target.value })} />
               <button data-cur type="submit" className="btn btn-terra">Ajak Freelance →</button>
               {sent === "ok" && <span className="inq-ok">[ MASUK! Gue hubungin balik. ]</span>}
-              {sent === "fail" && <span className="inq-ok" style={{ color: "#e0655a" }}>[ GAGAL — coba email langsung. ]</span>}
+              {sent === "fail" && <span className="inq-ok" style={{ color: "var(--terra)" }}>[ GAGAL — coba email langsung. ]</span>}
             </form>
           </div>
           <div className="contact-right-col">

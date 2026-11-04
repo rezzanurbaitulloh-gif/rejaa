@@ -8,7 +8,7 @@
   --font-mono:"Inter",system-ui,sans-serif;
   --font-serif:"Instrument Serif",Georgia,serif;
   --cream:#FAF6F0; --paper:#fffdf9; --char:#161918; --stone:#E8E0D3;
-  --terra:#C65D3A; --forest:#1E3A34; --gold:#C6A87C; --ink-soft:#5c5c5c;
+  --terra:#C65D3A; --forest:#1E3A34; --gold:#C6A87C; --ink-soft:#5c5c5c; --dim-dark:#bdb49f;
   --orbit-radius:170px;
   --background:#FAF6F0; --foreground:#161918;
   --card-bg:rgba(255,255,255,.78); --border-color:#E8E0D3;
@@ -290,6 +290,13 @@ box-shadow:2px 2px 3px rgba(0,0,0,.5),inset 2px 1px 2px rgba(255,255,255,.08)}
 .project-cover-grad.c2{background:linear-gradient(135deg,#1E3A34,#0d1f1c)}
 .project-cover-grad.c3{background:linear-gradient(135deg,#C6A87C,#7c5f33)}
 .project-cover-grad.c4{background:linear-gradient(135deg,#3C3934,#1a1916)}
+.project-cover-protected{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--char);padding:12px;text-align:center}
+.project-cover-protected b{color:var(--gold);font-size:.8rem;font-weight:600;letter-spacing:.02em}
+.project-cover-protected small{color:#bdb49f;font-size:.68rem;line-height:1.5;font-weight:400}
+html.dark .project-cover-protected{background:var(--card-bg)}
+.gh-stats{display:flex;gap:10px;margin-top:14px;justify-content:center}
+.gh-stat{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:#bdb49f;border:1px solid #ffffff22;border-radius:999px;padding:3px 10px}
+.gh-stat b{color:var(--gold)}
 .project-status{position:absolute;top:10px;right:10px;font-size:.68rem;font-weight:700;border:1px solid var(--gold);border-radius:999px;padding:2px 10px;background:rgba(22,25,24,.65);backdrop-filter:blur(2px)}
 .status-deployed{border-color:var(--forest);color:var(--forest)}
 .status-development{border-color:var(--gold);color:var(--gold)}

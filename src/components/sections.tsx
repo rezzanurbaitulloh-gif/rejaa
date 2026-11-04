@@ -449,7 +449,7 @@ export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d
       <div className="glitch"><i /><i /><i /></div>
       <div className="skills-header" id="skillsHead">
         <h2 className="skills-title" data-text="Skills">Skills</h2>
-        <p style={{ color: "#8f887a", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: ".15em" }}>
+        <p style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: ".15em" }}>
           {coins.length} COIN • HOVER = FLIP • EDIT VIA /admin
         </p>
       </div>

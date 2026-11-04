@@ -15,6 +15,21 @@ import {
   Services, Works, type ModalData,
 } from "./more";
 import type { Experience as Exp, Project, SiteData } from "@/lib/site";
+import { VERCEL_PROJECTS } from "@/lib/vercel-projects";
+
+/** Overlay project Supabase: pakai data Vercel (link demo benar + screenshot live), drop gambar SSO-wall. */
+const VERCEL_BY_SLUG = new Map(VERCEL_PROJECTS.map((v) => [v.slug, v]));
+function withLivePreview(p: Project): Project {
+  const v = VERCEL_BY_SLUG.get(p.slug);
+  if (!v || v.preview === undefined) return p;
+  return {
+    ...p,
+    images: v.preview === "ok" && v.images.length ? v.images : [],
+    linkDemo: v.linkDemo,
+    linkGithub: v.linkGithub || p.linkGithub,
+    techStack: v.techStack.length ? v.techStack : p.techStack,
+  };
+}
 
 export default function Site({ data }: { data: SiteData }) {
   const [ready, setReady] = useState(false);
@@ -77,10 +92,10 @@ export default function Site({ data }: { data: SiteData }) {
           projectTitles={data.projects.map((p) => p.title)}
         />
         <Skills skills={data.skills} mode={mode} />
-        <Works projects={data.projects} onOpen={openProject} mode={mode} />
+        <Works projects={data.projects.map(withLivePreview)} onOpen={openProject} mode={mode} />
         <Services />
         <Experience exps={data.experiences} onOpen={openExp} mode={mode} />
-        <GitHub profile={data.profile} projects={data.projects} />
+        <GitHub profile={data.profile} />
         <Certificates certs={data.certificates} />
         <Contact profile={data.profile} socials={data.socials} live={data.live} />
         {mode === "2d" ? (
