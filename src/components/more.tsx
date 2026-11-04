@@ -194,7 +194,7 @@ export function Works({ projects, onOpen, mode }: {
           <p className="d">Geser pake panah. Klik kartu → modal detail + link live.</p>
         </div>
       </div>
-      <div id="github">
+      <div className="works-carousel-wrap">
         <Carousel id="wtrack">
           {VERCEL_PROJECTS.map((w, i) => (
             <div key={w.slug || w.id} className="work-slide-card" data-cur tabIndex={0}
@@ -211,7 +211,7 @@ export function Works({ projects, onOpen, mode }: {
               <div className="work-card-visual">
                 {w.preview === "protected" || w.preview === "down" ? (
                   <div className="project-cover-protected" role="img" aria-label={`${w.title} — preview terkunci`}>
-                    <BrandLogo name="vercel" size={34} fill="var(--gold)" />
+                    <BrandLogo name="vercel" size={34} fill="var(--inv-accent)" />
                     <b>Preview terkunci</b>
                     <small>Dilindungi Vercel Authentication</small>
                   </div>
@@ -318,7 +318,7 @@ export function Services() {
           <Reveal key={n} dir={i === 0 ? "left" : i === 2 ? "right" : "up"} cur>
             <div className="scard">
               <span className="snum">{n}</span><h3>{name}</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: ".85rem" }}>{desc}</p>
+              <p style={{ color: "var(--inv-ink-2)", fontSize: ".85rem", margin: "8px 0 0" }}>{desc}</p>
               <ul>{dels.map((d) => <li key={d}>✦ {d}</li>)}</ul>
             </div>
           </Reveal>
@@ -392,7 +392,7 @@ export function Contact({ profile, socials, live }: { profile: Profile; socials:
                 onChange={(e) => setForm({ ...form, message: e.target.value })} />
               <button data-cur type="submit" className="btn btn-terra">Ajak Freelance →</button>
               {sent === "ok" && <span className="inq-ok">[ MASUK! Gue hubungin balik. ]</span>}
-              {sent === "fail" && <span className="inq-ok" style={{ color: "var(--terra)" }}>[ GAGAL — coba email langsung. ]</span>}
+              {sent === "fail" && <span className="inq-ok" style={{ color: "var(--inv-terra)" }}>[ GAGAL — coba email langsung. ]</span>}
             </form>
           </div>
           <div className="contact-right-col">
