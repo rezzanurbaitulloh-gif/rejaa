@@ -1,6 +1,8 @@
 "use client";
 // ============================================================
 // Site.tsx — komposisi 8 blok + state global (loader, mode, modal)
+// 3D dan 2D adalah dua pohon React terpisah: 3D tidak disentuh,
+// 2D punya nav/section/footer sendiri (editorial.tsx).
 // ============================================================
 import { useCallback, useEffect, useState } from "react";
 import gsap from "gsap";
@@ -14,6 +16,10 @@ import {
   Contact, ProjectModal,
   Services, Works, type ModalData,
 } from "./more";
+import {
+  About2D, Contact2D, EditorialNav, Footer2D, GitHub2D,
+  Hero2D, Skills2D, Works2D,
+} from "./editorial";
 import type { Project, SiteData } from "@/lib/site";
 
 export default function Site({ data }: { data: SiteData }) {
@@ -63,36 +69,46 @@ export default function Site({ data }: { data: SiteData }) {
   return (
     <>
       <div className="noise" />
-      <div className="p2d-watermark" aria-hidden="true">
-        {data.profile.name.replace(/\.\s*$/, "").toUpperCase()}
-      </div>
-      <TargetCursor />
       <IntroLoader done={() => setReady(true)} />
       <ModeOverlay />
-      <PillNav />
-      <Toggles mode={mode} onMode={onMode} />
-      <main style={{ visibility: ready ? "visible" : "hidden" }}>
-        <Hero profile={data.profile} socials={data.socials} mode={mode} />
-        <Manifesto mode={mode} />
-        <About
-          profile={data.profile}
-          experiences={data.experiences}
-          projectTitles={data.projects.map((p) => p.title)}
-        />
-        <Skills skills={data.skills} mode={mode} />
-        <Works projects={data.projects} onOpen={openProject} mode={mode} />
-        <Services />
-        <Contact profile={data.profile} socials={data.socials} live={data.live} />
-        {mode === "2d" ? (
-          <footer className="p2d-footer">
-            <span>© PORTOJA</span>
-          </footer>
-        ) : (
-          <footer>
-            <span>© PORTOJA</span>
-          </footer>
-        )}
-      </main>
+
+      {mode === "3d" ? (
+        <>
+          <TargetCursor />
+          <PillNav />
+          <Toggles mode={mode} onMode={onMode} />
+          <main style={{ visibility: ready ? "visible" : "hidden" }}>
+            <Hero profile={data.profile} socials={data.socials} mode={mode} />
+            <Manifesto mode={mode} />
+            <About
+              profile={data.profile}
+              experiences={data.experiences}
+              projectTitles={data.projects.map((p) => p.title)}
+            />
+            <Skills skills={data.skills} mode={mode} />
+            <Works projects={data.projects} onOpen={openProject} mode={mode} />
+            <Services />
+            <Contact profile={data.profile} socials={data.socials} live={data.live} />
+            <footer>
+              <span>© PORTOJA</span>
+            </footer>
+          </main>
+        </>
+      ) : (
+        <>
+          <EditorialNav onMode={onMode} />
+          <main className="ed-main" style={{ visibility: ready ? "visible" : "hidden" }}>
+            <Hero2D profile={data.profile} />
+            <About2D profile={data.profile} projectCount={data.projects.length} />
+            <Skills2D skills={data.skills} />
+            <Works2D projects={data.projects} onOpen={openProject} />
+            <GitHub2D />
+            <Contact2D profile={data.profile} socials={data.socials} />
+            <Footer2D onMode={onMode} />
+          </main>
+        </>
+      )}
+
       {modal && <ProjectModal data={modal} onClose={closeModal} />}
     </>
   );
