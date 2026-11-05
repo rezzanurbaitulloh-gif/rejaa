@@ -201,7 +201,7 @@ export function Hero2D({ profile, texts }: { profile: Profile; texts?: Record<st
           </h1>
           <p className="ed-lede">{profile.bio}</p>
         </div>
-        <aside className="ed-spec" aria-label="Quick facts">
+        <aside className="ed-spec" aria-label={T(texts, "quick_facts", "Quick facts")}>
           {spec.map(([k, v]) => (
             <div key={k} className="ed-spec-row">
               <span className="ed-k">{k}</span>
@@ -241,7 +241,7 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
               <span className="ed-tick ed-tick-bl" />
               <span className="ed-tick ed-tick-br" />
               <div className="ed-portrait-cap">
-                <span>Portrait / 2026</span>
+                <span>{T(texts, "ed_portrait_cap", "Portrait / 2026")}</span>
                 <b>{profile.name}</b>
               </div>
             </div>
@@ -256,9 +256,11 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
               </div>
             </div>
             <div className="ed-chiprow">
-              <span className="ed-chip">Software<br />Engineering</span>
-              <span className="ed-chip">AI<br />Orchestration</span>
-              <span className="ed-chip">Full-Stack<br />Development</span>
+              {(texts?.ed_chips ? texts.ed_chips : "Software Engineering\nAI Orchestration\nFull-Stack Development")
+                .split("\n").map((c) => c.trim()).filter(Boolean)
+                .map((c, i) => (
+                  <span className="ed-chip" key={i}>{c.split(" ").map((w, j) => (<Fragment key={j}>{j > 0 && <br />}{w}</Fragment>))}</span>
+                ))}
             </div>
           </div>
 
@@ -292,19 +294,17 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
             <div className="ed-prose">
               <p>{profile.bio}</p>
               <p>
-                Fokus: arsitektur yang masuk akal, database yang aman (RLS), dan UI
-                yang orang awam ngerti. Dikerjain end-to-end — dari brief, struktur
-                data, antarmuka, sampai deploy dan serah terima.
+                <span>{T(texts, "ed_prose", "Fokus: arsitektur yang masuk akal, database yang aman (RLS), dan UI yang orang awam ngerti. Dikerjain end-to-end — dari brief, struktur data, antarmuka, sampai deploy dan serah terima.")}</span>
               </p>
             </div>
 
             <div className="ed-logs">
-              <span className="ed-eyebrow">Activity logs</span>
+              <span className="ed-eyebrow">{T(texts, "ed_logs_title", "Activity logs")}</span>
               <div className="ed-loggrid">
-                <div className="ed-logbox"><b>{String(projectCount).padStart(2, "0")}</b><span>Projects shipped</span></div>
-                <div className="ed-logbox"><b>100%</b><span>Deployed &amp; live</span></div>
-                <div className="ed-logbox"><b>02+</b><span>Years building</span></div>
-                <div className="ed-logbox"><b>&lt;24H</b><span>Response time</span></div>
+                <div className="ed-logbox"><b>{String(projectCount).padStart(2, "0")}</b><span>{T(texts, "ed_logs_projects", "Projects shipped")}</span></div>
+                <div className="ed-logbox"><b>100%</b><span>{T(texts, "ed_logs_deployed", "Deployed & live")}</span></div>
+                <div className="ed-logbox"><b>02+</b><span>{T(texts, "ed_logs_years", "Years building")}</span></div>
+                <div className="ed-logbox"><b>&lt;24H</b><span>{T(texts, "ed_logs_resp", "Response time")}</span></div>
               </div>
             </div>
           </div>
@@ -326,7 +326,7 @@ export function Skills2D({ skills, texts }: { skills: SkillCoin[]; texts?: Recor
   return (
     <section className="ed-sec" id="skills">
       <div className="ed-wrap">
-        <Head n="02" label="Capability index" title="Skills" />
+        <Head n="02" label={T(texts, "capability_index", "Capability index")} title={T(texts, "skill_title", "Skills")} />
         <div className="ed-skill-list">
           {rows.map((s, i) => {
             const lvl = LEVELS[s.name.toLowerCase()] ?? 80;
@@ -364,7 +364,7 @@ export function Works2D({ projects, onOpen, texts }: {
   return (
     <section className="ed-sec" id="works">
       <div className="ed-wrap">
-        <Head n="03" label="Project archive" title="Selected Works" />
+        <Head n="03" label={T(texts, "works_label", "Project archive")} title={T(texts, "selected_works", "Selected Works")} />
         <div className="ed-work-list">
           {list.map((w, i) => (
             <button key={w.slug || w.id} type="button" className="ed-work"
@@ -388,15 +388,12 @@ export function Works2D({ projects, onOpen, texts }: {
         <div className="ed-engage">
           <div>
             <span className="ed-eyebrow">&mdash; Engagement</span>
-            <h3>Menyesuaikan keinginan client</h3>
-            <p>
-              Sesuai kebutuhan spesifik klien — dari ide mentah sampai deploy,
-              tanpa template yang dipaksain.
-            </p>
+            <h3>{T(texts, "ed_engage_title", "Menyesuaikan keinginan client")}</h3>
+            <p>{T(texts, "ed_engage_copy", "Sesuai kebutuhan spesifik klien — dari ide mentah sampai deploy, tanpa template yang dipaksain.")}</p>
           </div>
           <ul>
-            {ENGAGE.map((d, i) => (
-              <li key={d}><span className="ed-k">{String(i + 1).padStart(2, "0")}</span>{d}</li>
+            {(texts?.ed_engage ? texts.ed_engage : ENGAGE.join("\n")).split("\n").map((d) => d.trim()).filter(Boolean).map((d, i) => (
+              <li key={i}><span className="ed-k">{String(i + 1).padStart(2, "0")}</span>{d}</li>
             ))}
           </ul>
         </div>
@@ -516,13 +513,13 @@ export function GitHub2D({ texts }: { texts?: Record<string, string> }) {
             </div>
             <p className="ed-gh-bio">{data.bio}</p>
             <div className="ed-gh-stats">
-              <div className="ed-gh-stat"><span>Public repos</span><span className="ed-dots" /><b>{show(data.public_repos)}</b></div>
-              <div className="ed-gh-stat"><span>Followers</span><span className="ed-dots" /><b>{show(data.followers)}</b></div>
-              <div className="ed-gh-stat"><span>Total stars</span><span className="ed-dots" /><b>{data.offline ? "—" : show(stars)}</b></div>
-              <div className="ed-gh-stat"><span>Last push</span><span className="ed-dots" /><b>{lastPush}</b></div>
+              <div className="ed-gh-stat"><span>{T(texts, "ed_gh_public", "Public repos")}</span><span className="ed-dots" /><b>{show(data.public_repos)}</b></div>
+              <div className="ed-gh-stat"><span>{T(texts, "ed_gh_followers", "Followers")}</span><span className="ed-dots" /><b>{show(data.followers)}</b></div>
+              <div className="ed-gh-stat"><span>{T(texts, "ed_gh_stars", "Total stars")}</span><span className="ed-dots" /><b>{data.offline ? "—" : show(stars)}</b></div>
+              <div className="ed-gh-stat"><span>{T(texts, "ed_gh_lastpush", "Last push")}</span><span className="ed-dots" /><b>{lastPush}</b></div>
             </div>
             <div className="ed-dist">
-              <span className="ed-eyebrow">Code distribution</span>
+              <span className="ed-eyebrow">{T(texts, "ed_gh_dist", "Code distribution")}</span>
               {dist.length ? dist.map((d) => (
                 <div key={d.name} className="ed-dist-row">
                   <span>{d.name}</span><span>{d.pct}%</span>
@@ -530,7 +527,7 @@ export function GitHub2D({ texts }: { texts?: Record<string, string> }) {
                 </div>
               )) : (
                 <div className="ed-dist-row">
-                  <span>{syncing ? "Syncing" : "No public repo"}</span><span>—</span>
+                  <span>{syncing ? T(texts, "ed_gh_sync", "Syncing") : T(texts, "ed_gh_norepo", "No public repo")}</span><span>—</span>
                   <span className="ed-dist-bar"><i style={{ width: 0 }} /></span>
                 </div>
               )}
@@ -544,7 +541,7 @@ export function GitHub2D({ texts }: { texts?: Record<string, string> }) {
                 <span className="ed-work-idx">{String(i + 1).padStart(2, "0")}</span>
                 <span className="ed-repo-main">
                   <span className="ed-repo-name">{r.name}</span>
-                  <span className="ed-repo-desc">{r.description || "No description."}</span>
+                  <span className="ed-repo-desc">{r.description || T(texts, "ed_repo_nod", "No description.")}</span>
                 </span>
                 <span className="ed-repo-meta">
                   <span>{r.language || "—"}</span>
@@ -589,7 +586,7 @@ export function Contact2D({ profile, socials, texts }: { profile: Profile; socia
   return (
     <section className="ed-sec" id="contact">
       <div className="ed-wrap">
-        <Head n="05" label="Establish link" title="Contact" />
+        <Head n="05" label={T(texts, "establish_link", "Establish link")} title={T(texts, "contact_title", "Contact")} />
         <div className="ed-contact">
           <div className="ed-contact-main">
             <button type="button" className="ed-mail" onClick={copy}
@@ -622,14 +619,13 @@ export function Contact2D({ profile, socials, texts }: { profile: Profile; socia
             </div>
             <div className="ed-k ed-tz">Jakarta, Indonesia (GMT+7)</div>
             <div className="ed-avail">
-              <span className="ed-eyebrow">Availability</span>
+              <span className="ed-eyebrow">{T(texts, "ed_avail", "Availability")}</span>
               <div className="ed-avail-line">
                 <span className="ed-live" aria-hidden="true" />
                 <span>{profile.status}</span>
               </div>
               <p className="ed-avail-copy">
-                Terbuka untuk project freelance — diskusi brief dulu, lalu build.
-                Respon biasanya di bawah 24 jam.
+                {T(texts, "ed_avail_copy", "Terbuka untuk project freelance — diskusi brief dulu, lalu build. Respon biasanya di bawah 24 jam.")}
               </p>
             </div>
           </div>
