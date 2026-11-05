@@ -78,14 +78,15 @@ export default function Site({ data }: { data: SiteData }) {
           <PillNav texts={data.texts} />
           <Toggles mode={mode} onMode={onMode} texts={data.texts} />
           <main style={{ visibility: ready ? "visible" : "hidden" }}>
-            <Hero profile={data.profile} socials={data.socials} mode={mode} />
-            <Manifesto mode={mode} />
+            <Hero profile={data.profile} socials={data.socials} mode={mode} texts={data.texts} />
+            <Manifesto mode={mode} texts={data.texts} />
             <About
               profile={data.profile}
               experiences={data.experiences}
               projectTitles={data.projects.map((p) => p.title)}
+              texts={data.texts}
             />
-            <Skills skills={data.skills} mode={mode} />
+            <Skills skills={data.skills} mode={mode} texts={data.texts} />
             <Works projects={data.projects} onOpen={openProject} mode={mode} />
             <Services />
             <Contact profile={data.profile} socials={data.socials} live={data.live} />

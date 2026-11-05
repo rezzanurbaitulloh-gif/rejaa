@@ -12,6 +12,9 @@ import { finePointer, isMobile, reduced } from "./chrome";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const T = (texts: Record<string, string> | undefined, key: string, fallback: string) =>
+  texts && texts[key] ? texts[key] : fallback;
+
 // ---------------- HERO ----------------
 const POOL = "⠁⠂⠃⠆⠇⠉⠊⠋⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯";
 
@@ -79,29 +82,29 @@ function Scramble({ text }: { text: string }) {
   return <span className="name" ref={ref} onMouseEnter={fire}>{text}</span>;
 }
 
-const ART_META = [
-  { tag: "LIVE", foot: "● Active", go: "Follow ↗" },
-  { tag: "OPTIMIZED", foot: "repos: live", go: "Open ↗" },
-  { tag: "SECURED", foot: "respon < 2 hari", go: "Hire ↗" },
+const ART_META = (texts?: Record<string, string>) => [
+  { tag: T(texts, "art_ig_tag", "LIVE"), foot: T(texts, "art_ig_foot", "● Active"), go: T(texts, "art_ig_go", "Follow ↗"), sub: T(texts, "art_ig_sub", "personal + views") },
+  { tag: T(texts, "art_gh_tag", "OPTIMIZED"), foot: T(texts, "art_gh_foot", "repos: live"), go: T(texts, "art_gh_go", "Open ↗"), sub: T(texts, "art_gh_sub", "Next • Supabase") },
+  { tag: T(texts, "art_in_tag", "SECURED"), foot: T(texts, "art_in_foot", "respon < 2 hari"), go: T(texts, "art_in_go", "Hire ↗"), sub: T(texts, "art_in_sub", "freelance: open") },
 ];
 
 // Hero versi 2D editorial ala Hero2D Davin: kicker nomor, serif raksasa,
 // spec-sheet, marquee. Render kondisional (tanpa canvas/parallax/pin).
-const TICKER2D = "NEXT.JS ✦ SUPABASE ✦ AI-ASSISTED ✦ CLEAN SHIPPING ✦ ";
-function Hero2DView({ profile }: { profile: Profile }) {
+function Hero2DView({ profile, texts }: { profile: Profile; texts?: Record<string, string> }) {
   const first = profile.name.replace(/\.\s*$/, "");
   const rows: [string, string][] = [
     ["NAME", `${first} — Indonesia`],
     ["ROLE", profile.role],
-    ["FOCUS", "AI-assisted building"],
+    ["FOCUS", T(texts, "ai_assisted_building", "AI-assisted building")],
     ["BASE", profile.location],
     ["STATUS", profile.status],
   ];
+  const ticker = T(texts, "ticker2d", "NEXT.JS ✦ SUPABASE ✦ AI-ASSISTED ✦ CLEAN SHIPPING ✦ ");
   return (
     <header id="hero" className="p2d-hero">
       <div className="p2d-hero-grid">
         <div>
-          <span className="p2d-kicker">( 00 ) / INTRO — PERSONAL INDEX</span>
+          <span className="p2d-kicker">{T(texts, "p2d_kicker", "( 00 ) / INTRO — PERSONAL INDEX")}</span>
           <h1 className="p2d-h1" style={{ animationDelay: ".35s" }}>Hi!</h1>
           <h1 className="p2d-h1 p2d-italic" style={{ animationDelay: ".5s" }}>I&apos;m {first}</h1>
           <p className="p2d-lede" style={{ animationDelay: ".65s" }}>{profile.bio}</p>
@@ -117,13 +120,15 @@ function Hero2DView({ profile }: { profile: Profile }) {
         </div>
       </div>
       <div className="p2d-marquee" aria-hidden="true">
-        <div className="p2d-marquee-track"><span>{TICKER2D}{TICKER2D}</span><span>{TICKER2D}{TICKER2D}</span></div>
+        <div className="p2d-marquee-track"><span>{ticker}{ticker}</span><span>{ticker}{ticker}</span></div>
       </div>
     </header>
   );
 }
 
-export function Hero({ profile, socials, mode }: { profile: Profile; socials: Social[]; mode: "3d" | "2d" }) {
+export function Hero({ profile, socials, mode, texts }: {
+  profile: Profile; socials: Social[]; mode: "3d" | "2d"; texts?: Record<string, string>;
+}) {
   const contentRef = useRef<HTMLDivElement>(null);
   const a1 = useRef<HTMLAnchorElement>(null);
   const a2 = useRef<HTMLAnchorElement>(null);
@@ -182,6 +187,7 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
   }, [mode]);
   const arts = [a1, a2, a3];
   const ids = ["a-ig", "a-gh", "a-in"];
+  const metas = ART_META(texts);
   // Mode 2D = pohon editorial terpisah (ala Portfolio2D Davin)
   if (mode === "2d") return <Hero2DView profile={profile} />;
   return (
@@ -195,40 +201,41 @@ export function Hero({ profile, socials, mode }: { profile: Profile; socials: So
           ref={arts[i] as React.Ref<HTMLAnchorElement>}>
           <span className="rim" />
           <div className="pad">
-            <div className="hd"><span>{s.name}</span><span>{ART_META[i].tag}</span></div>
+            <div className="hd"><span>{s.name}</span><span>{metas[i].tag}</span></div>
             <div className="logo-big">
               <BrandLogo name={s.icon} size={56} />
             </div>
-            <div className="hd"><span>{i === 0 ? "personal + views" : i === 1 ? "Next • Supabase" : "freelance: open"}</span></div>
-            <div className="ft"><span>{ART_META[i].foot}</span><span className="go">{ART_META[i].go}</span></div>
+            <div className="hd"><span>{metas[i].sub}</span></div>
+            <div className="ft"><span>{metas[i].foot}</span><span className="go">{metas[i].go}</span></div>
           </div>
         </a>
       ))}
       <div className="hero-content" id="heroContent" ref={contentRef}>
-        <p className="kicker">ABOUTME — NEXT + SUPABASE</p>
+        <p className="kicker">{T(texts, "hero_kicker", "ABOUTME — NEXT + SUPABASE")}</p>
         <h1 className="greet">
           <span className="hi">Hi, I&apos;m</span>
           <Scramble text={profile.name} />
         </h1>
         <p className="hero-desc">{profile.bio}</p>
         <div className="tags">
-          <span className="tag"><i />Full-Stack</span>
-          <span className="tag"><i />Next + Supabase</span>
-          <span className="tag"><i />AI-assisted</span>
+          <span className="tag"><i />{T(texts, "tag_fullstack", "Full-Stack")}</span>
+          <span className="tag"><i />{T(texts, "tag_nxt", "Next + Supabase")}</span>
+          <span className="tag"><i />{T(texts, "tag_ai", "AI-assisted")}</span>
         </div>
       </div>
-      <div className="scrolldown">DESCEND ↓</div>
+      <div className="scrolldown">{T(texts, "hero_scroll", "DESCEND ↓")}</div>
     </header>
   );
 }
 
 // ---------------- MANIFESTO ----------------
-export function Manifesto({ mode }: { mode: "3d" | "2d" }) {
+export function Manifesto({ mode, texts }: { mode: "3d" | "2d"; texts?: Record<string, string> }) {
+  const manifesto = T(texts, "manifesto", "Ide bagus sayang kalo cuma jadi obrolan. Mending jadiin produk yang bisa dibuka dan dipake.");
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    el.innerHTML = el.textContent!.trim().split(" ").map((w) => `<span class="w">${w}</span>`).join(" ");
+    el.innerHTML = manifesto.trim().split(" ").map((w) => `<span class="w">${w}</span>`).join(" ");
     // Mode 2D = teks final terlihat penuh, tanpa scrub
     if (reduced() || mode !== "3d") {
       gsap.set("#maniText .w", { opacity: 1 });
@@ -245,7 +252,7 @@ export function Manifesto({ mode }: { mode: "3d" | "2d" }) {
   return (
     <>
       <div id="manifesto"><div className="mani" id="maniText" ref={ref}>
-        Ide bagus sayang kalo cuma jadi obrolan. Mending jadiin produk yang bisa dibuka dan dipake.
+        {manifesto}
       </div></div>
       <div className="marquee"><span>MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •&nbsp;</span><span>MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •&nbsp;</span></div>
     </>
@@ -274,14 +281,14 @@ const LOGS: [string, string][] = [
 ];
 const TABS = ["ABOUT", "SKILLS", "STACK", "STATS", "WORK", "LOGS"] as const;
 
-export function About({ profile, experiences, projectTitles }: {
-  profile: Profile; experiences: Experience[]; projectTitles: string[];
+export function About({ profile, experiences, projectTitles, texts }: {
+  profile: Profile; experiences: Experience[]; projectTitles: string[]; texts?: Record<string, string>;
 }) {
   const [tab, setTab] = useState<(typeof TABS)[number]>("ABOUT");
   return (
     <section className="block" id="about">
-      <div className="kicker" data-sec="( 01 )">ABOUT</div>
-      <h2 className="t">Kenalan, versi rapi.</h2>
+      <div className="kicker" data-sec="( 01 )">{T(texts, "about_kicker", "ABOUT")}</div>
+      <h2 className="t">{T(texts, "about_h2", "Kenalan, versi rapi.")}</h2>
       <div className="about-slide-layout">
         <div className="profile-column">
           <div className="profile-photo-container" data-cur>
@@ -295,34 +302,34 @@ export function About({ profile, experiences, projectTitles }: {
           </div>
           <div className="profile-details-grid">
             <div className="detail-box">
-              <span className="detail-label">FOKUS</span>
-              <span className="detail-value"><span className="university-logo">N</span><span className="university-name">Next + Supabase</span></span>
+              <span className="detail-label">{T(texts, "about_focus_label", "FOKUS")}</span>
+              <span className="detail-value"><span className="university-logo">N</span><span className="university-name">{T(texts, "about_focus_val", "Next + Supabase")}</span></span>
             </div>
             <div className="detail-box">
-              <span className="detail-label">STATUS</span>
+              <span className="detail-label">{T(texts, "about_status", "STATUS")}</span>
               <span className="detail-value">{profile.status}</span>
             </div>
           </div>
           <div className="profile-mindset-row">
-            <div className="mindset-card"><span className="mindset-title">SOFTWARE</span><span className="mindset-subtitle">ENGINEERING</span></div>
-            <div className="mindset-card"><span className="mindset-title">AI</span><span className="mindset-subtitle">ORCHESTRATION</span></div>
-            <div className="mindset-card"><span className="mindset-title">FULL-STACK</span><span className="mindset-subtitle">DEVELOPMENT</span></div>
+            <div className="mindset-card"><span className="mindset-title">{T(texts, "m_sw_title", "SOFTWARE")}</span><span className="mindset-subtitle">{T(texts, "m_sw_sub", "ENGINEERING")}</span></div>
+            <div className="mindset-card"><span className="mindset-title">{T(texts, "m_ai_title", "AI")}</span><span className="mindset-subtitle">{T(texts, "m_ai_sub", "ORCHESTRATION")}</span></div>
+            <div className="mindset-card"><span className="mindset-title">{T(texts, "m_fs_title", "FULL-STACK")}</span><span className="mindset-subtitle">{T(texts, "m_fs_sub", "DEVELOPMENT")}</span></div>
           </div>
         </div>
         <div className="about-right-content-area">
           <div className="atabs">
             {TABS.map((t) => (
               <button key={t} data-cur onClick={() => setTab(t)}
-                className={"atab" + (tab === t ? " on" : "")}>{t}</button>
+                className={"atab" + (tab === t ? " on" : "")}>{T(texts, "tab_" + t.toLowerCase(), t)}</button>
             ))}
           </div>
           {tab === "ABOUT" && (
             <div className="apanel on">
               <h2 className="about-title">{profile.role}</h2>
-              <h4 className="about-subtitle-text">ngubah ide mentah jadi produk AI yang kepake</h4>
+              <h4 className="about-subtitle-text">{T(texts, "about_subtitle", "ngubah ide mentah jadi produk AI yang kepake")}</h4>
               <div className="about-tags-row"><span>NEXT + SUPABASE</span><span className="separator">/</span><span>AI-ASSISTED BUILDING</span><span className="separator">/</span><span>CLEAN SHIPPING</span></div>
               <div className="about-description"><p>{profile.bio}</p>
-                <p>Fokus: arsitektur yang masuk akal, database yang aman (RLS), dan UI yang orang awam ngerti.</p></div>
+                <p>{T(texts, "ed_prose", "Fokus: arsitektur yang masuk akal, database yang aman (RLS), dan UI yang orang awam ngerti.")}</p></div>
               <div className="about-focus-section"><span className="focus-label">ACTIVITY LOGS</span>
                 <div className="focus-cards-grid">
                   {projectTitles.slice(0, 3).map((t) => <div key={t} className="focus-card">{t.toUpperCase().slice(0, 12)}</div>)}
@@ -332,7 +339,7 @@ export function About({ profile, experiences, projectTitles }: {
             </div>
           )}
           {tab === "SKILLS" && (
-            <div className="apanel on"><h3 className="tab-title">Technical Skill Indices</h3>
+            <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_skills", "Technical Skill Indices")}</h3>
               {METERS.map(([n, v]) => (
                 <div key={n} className="skill-meter-row">
                   <div className="skill-meter-header"><span>{n}</span><span className="skill-meter-percent">{v}%</span></div>
@@ -342,7 +349,7 @@ export function About({ profile, experiences, projectTitles }: {
             </div>
           )}
           {tab === "STACK" && (
-            <div className="apanel on"><h3 className="tab-title">Technical Stacks & Tools</h3>
+            <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_stack", "Technical Stacks & Tools")}</h3>
               <div className="stacks-grid">
                 {STACKS.map(([c, items]) => (
                   <div key={c} className="stack-category-card">
@@ -354,7 +361,7 @@ export function About({ profile, experiences, projectTitles }: {
             </div>
           )}
           {tab === "STATS" && (
-            <div className="apanel on"><h3 className="tab-title">Production Telemetry Stats</h3>
+            <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_stats", "Production Telemetry Stats")}</h3>
               <div className="stats-grid-row">
                 {STATS.map(([v, l]) => (
                   <div key={l} className="stat-telemetry-box">
@@ -365,7 +372,7 @@ export function About({ profile, experiences, projectTitles }: {
             </div>
           )}
           {tab === "WORK" && (
-            <div className="apanel on"><h3 className="tab-title">Professional Work Experience</h3>
+            <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_work", "Professional Work Experience")}</h3>
               {experiences.map((e) => (
                 <div key={e.id} className="work-timeline-item">
                   <div className="work-item-header"><h4 className="work-item-role">{e.title}</h4><span className="work-item-period">{e.date}</span></div>
@@ -376,7 +383,7 @@ export function About({ profile, experiences, projectTitles }: {
             </div>
           )}
           {tab === "LOGS" && (
-            <div className="apanel on"><h3 className="tab-title">System Activity Logs</h3>
+            <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_logs", "System Activity Logs")}</h3>
               <div className="terminal-logs-container">
                 <div className="terminal-header"><span className="terminal-dot red" /><span className="terminal-dot yellow" /><span className="terminal-dot green" /><span className="terminal-title">system_activity.log</span></div>
                 <div className="terminal-body">
@@ -394,7 +401,7 @@ export function About({ profile, experiences, projectTitles }: {
 }
 
 // ---------------- SKILLS orbit (Shashank Skills.jsx) ----------------
-export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d" }) {
+export function Skills({ skills, mode, texts }: { skills: SkillCoin[]; mode: "3d" | "2d"; texts?: Record<string, string> }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     if (reduced() || mode !== "3d") {
@@ -448,15 +455,15 @@ export function Skills({ skills, mode }: { skills: SkillCoin[]; mode: "3d" | "2d
       <div className="ambient" />
       <div className="glitch"><i /><i /><i /></div>
       <div className="skills-header" id="skillsHead">
-        <h2 className="skills-title" data-text="Skills">Skills</h2>
+        <h2 className="skills-title" data-text="Skills">{T(texts, "skill_title", "Skills")}</h2>
         <p style={{ color: "var(--text-muted)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: ".15em" }}>
-          {coins.length} COIN • HOVER = FLIP • EDIT VIA /admin
+          {coins.length} {T(texts, "skills_sub", "COIN • HOVER = FLIP • EDIT VIA /admin")}
         </p>
       </div>
       <div className="skills-orbit-wrap" id="orbitWrap">
         <div className="orbit-system" id="orbitSys">
           <div className="orbit-center" id="orbitCenter">
-            <p>Bridging ide dan eksekusi lewat Next, Supabase, dan AI — shipping sistem end-to-end yang beneran kepake.</p>
+            <p>{T(texts, "skills_center", "Bridging ide dan eksekusi lewat Next, Supabase, dan AI — shipping sistem end-to-end yang beneran kepake.")}</p>
           </div>
           <div className="orbit-ring" id="orbitRing">
             {coins.map((s, i) => (
