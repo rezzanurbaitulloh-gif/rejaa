@@ -14,6 +14,9 @@ import { getLenis, reduced } from "./chrome";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const T = (texts: Record<string, string> | undefined, key: string, fallback: string) =>
+  texts && texts[key] ? texts[key] : fallback;
+
 // ---------------- Reveal (Shashank ScrollReveal) ----------------
 export function Reveal({ children, dir = "up", delay = 0, className = "", cur = false }: {
   children: React.ReactNode; dir?: "up" | "left" | "right"; delay?: number;
@@ -167,8 +170,8 @@ function Carousel({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 // ---------------- WORKS ----------------
-export function Works({ projects, onOpen, mode }: {
-  projects: Project[]; onOpen: (p: Project) => void; mode: "3d" | "2d";
+export function Works({ projects, onOpen, mode, texts }: {
+  projects: Project[]; onOpen: (p: Project) => void; mode: "3d" | "2d"; texts?: Record<string, string>;
 }) {
   const rootRef = useRef<HTMLElement>(null);
   // Entrance kartu ala WorkCard Davin — hanya mode 3D (2D = statis)
@@ -189,9 +192,9 @@ export function Works({ projects, onOpen, mode }: {
     <section className="block" id="works" ref={rootRef}>
       <div className="whead">
         <div>
-          <div className="kicker" data-sec="( 03 )">WORKS</div>
-          <h2 className="t" data-zoom>MY PROJECT — Creative Showcases</h2>
-          <p className="d">Geser pake panah. Klik kartu → modal detail + link live.</p>
+          <div className="kicker" data-sec="( 03 )">{T(texts, "works_kicker", "WORKS")}</div>
+          <h2 className="t" data-zoom>{T(texts, "works_h2", "MY PROJECT — Creative Showcases")}</h2>
+          <p className="d">{T(texts, "works_copy", "Geser pake panah. Klik kartu → modal detail + link live.")}</p>
         </div>
       </div>
       <div className="works-carousel-wrap">
@@ -229,7 +232,7 @@ export function Works({ projects, onOpen, mode }: {
                 <div className="work-tech-badges">{techBadges(w.techStack)}</div>
               </div>
               <div className="work-card-footer">
-                <span className="work-explore-link">VIEW DETAILED INFORMATION ↗</span>
+                <span className="work-explore-link">{T(texts, "view_project_link", "VIEW DETAILED INFORMATION ↗")}</span>
               </div>
             </div>
           ))}
@@ -240,7 +243,7 @@ export function Works({ projects, onOpen, mode }: {
 }
 
 // ---------------- EXPERIENCE ----------------
-export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen: (e: Experience) => void; mode: "3d" | "2d" }) {
+export function Experience({ exps, onOpen, mode, texts }: { exps: Experience[]; onOpen: (e: Experience) => void; mode: "3d" | "2d"; texts?: Record<string, string> }) {
   const rootRef = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     if (reduced() || mode !== "3d") return;
@@ -259,8 +262,8 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
       <div className="block" style={{ maxWidth: 1100 }}>
         <div className="whead">
           <div>
-            <div className="kicker" data-sec="( 04 )">EXPERIENCE</div>
-            <h2 className="t" data-zoom>MY EXPERIENCE — Professional Journey</h2>
+            <div className="kicker" data-sec="( 04 )">{T(texts, "exp_kicker", "EXPERIENCE")}</div>
+            <h2 className="t" data-zoom>{T(texts, "exp_h2", "MY EXPERIENCE — Professional Journey")}</h2>
           </div>
         </div>
         <Carousel id="etrack">
@@ -293,7 +296,7 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
                 </div>
               </div>
               <div className="experience-card-footer">
-                <span className="experience-explore-link">VIEW DETAILED INFORMATION ↗</span>
+                <span className="experience-explore-link">{T(texts, "view_project_link", "VIEW DETAILED INFORMATION ↗")}</span>
               </div>
             </div>
           ))}
@@ -304,25 +307,24 @@ export function Experience({ exps, onOpen, mode }: { exps: Experience[]; onOpen:
 }
 
 // ---------------- SERVICES ----------------
-const SERVICES: [string, string, string, string[]][] = [
-  ["03", "MENYESUAIKAN KEINGINAN CLIENT", "Sesuai kebutuhan spesifik klien — dari ide mentah sampai deploy.",
-    ["Diskusi brief & prototype", "Build & serah terima", "Dokumentasi + dukungan"]],
-];
-export function Services() {
+export function Services({ texts }: { texts?: Record<string, string> }) {
+  const svcName = T(texts, "services_name", "MENYESUAIKAN KEINGINAN CLIENT");
+  const svcDesc = T(texts, "services_desc", "Sesuai kebutuhan spesifik klien — dari ide mentah sampai deploy.");
+  const svcDels = (texts && texts.services_del ? texts.services_del.split("\n") : [
+    "Diskusi brief & prototype", "Build & serah terima", "Dokumentasi + dukungan",
+  ]).map((s) => s.trim()).filter(Boolean);
   return (
     <section className="block" id="services" style={{ paddingTop: 0 }}>
-      <div className="kicker">DISCIPLINES — Services & Frameworks</div>
-      <h2 className="t">Yang bisa gue kerjain.</h2>
+      <div className="kicker">{T(texts, "services_kicker", "DISCIPLINES — Services & Frameworks")}</div>
+      <h2 className="t">{T(texts, "services_h2", "Yang bisa gue kerjain.")}</h2>
       <div className="sgrid">
-        {SERVICES.map(([n, name, desc, dels], i) => (
-          <Reveal key={n} dir={i === 0 ? "left" : i === 2 ? "right" : "up"} cur>
-            <div className="scard">
-              <span className="snum">{n}</span><h3>{name}</h3>
-              <p style={{ color: "var(--inv-ink-2)", fontSize: ".85rem", margin: "8px 0 0" }}>{desc}</p>
-              <ul>{dels.map((d) => <li key={d}>✦ {d}</li>)}</ul>
-            </div>
-          </Reveal>
-        ))}
+        <Reveal dir="left" cur>
+          <div className="scard">
+            <span className="snum">03</span><h3>{svcName}</h3>
+            <p style={{ color: "var(--inv-ink-2)", fontSize: ".85rem", margin: "8px 0 0" }}>{svcDesc}</p>
+            <ul>{svcDels.map((d) => <li key={d}>✦ {d}</li>)}</ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -348,7 +350,7 @@ function useJakartaTime() {
   return t;
 }
 
-export function Contact({ profile, socials, live }: { profile: Profile; socials: Social[]; live: boolean }) {
+export function Contact({ profile, socials, live, texts }: { profile: Profile; socials: Social[]; live: boolean; texts?: Record<string, string> }) {
   const [copied, setCopied] = useState(false);
   const [form, setForm] = useState({ name: "", contact: "", message: "" });
   const [sent, setSent] = useState<"idle" | "ok" | "fail">("idle");
@@ -373,39 +375,39 @@ export function Contact({ profile, socials, live }: { profile: Profile; socials:
       <section className="block">
         <div className="contact-slide-layout">
           <div className="contact-left-col">
-            <span className="contact-subtitle">[ LET&apos;S CONNECT ]</span>
+            <span className="contact-subtitle">{T(texts, "contact_sub_let", "[ LET'S CONNECT ]")}</span>
             <div className="email-click-area">
               <div className="contact-mail-link" data-zoom data-cur role="button" tabIndex={0} onClick={copyEmail}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") copyEmail(); }}>
                 {profile.email}
               </div>
               <div className="copy-status-indicator">
-                <span>{copied ? "[ COPIED TO CLIPBOARD! ]" : "[ CLICK EMAIL TO COPY ]"}</span>
+                <span>{copied ? T(texts, "contact_copy_ok", "[ COPIED TO CLIPBOARD! ]") : T(texts, "contact_copy_hint", "[ CLICK EMAIL TO COPY ]")}</span>
               </div>
             </div>
             <form className="inq-form" onSubmit={submit}>
-              <input data-cur placeholder="Nama lu" value={form.name}
+              <input data-cur placeholder={T(texts, "contact_ph_name", "Nama lu")} value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              <input data-cur placeholder="Kontak (WA/email)" value={form.contact}
+              <input data-cur placeholder={T(texts, "contact_ph_contact", "Kontak (WA/email)")} value={form.contact}
                 onChange={(e) => setForm({ ...form, contact: e.target.value })} />
-              <textarea data-cur placeholder="Ide mentahnya apa?" rows={3} value={form.message}
+              <textarea data-cur placeholder={T(texts, "contact_ph_idea", "Ide mentahnya apa?")} rows={3} value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })} />
-              <button data-cur type="submit" className="btn btn-terra">Ajak Freelance →</button>
-              {sent === "ok" && <span className="inq-ok">[ MASUK! Gue hubungin balik. ]</span>}
-              {sent === "fail" && <span className="inq-ok" style={{ color: "var(--inv-terra)" }}>[ GAGAL — coba email langsung. ]</span>}
+              <button data-cur type="submit" className="btn btn-terra">{T(texts, "contact_btn", "Ajak Freelance →")}</button>
+              {sent === "ok" && <span className="inq-ok">{T(texts, "contact_ok", "[ MASUK! Gue hubungin balik. ]")}</span>}
+              {sent === "fail" && <span className="inq-ok" style={{ color: "var(--inv-terra)" }}>{T(texts, "contact_fail", "[ GAGAL — coba email langsung. ]")}</span>}
             </form>
           </div>
           <div className="contact-right-col">
-            <span className="contact-subtitle">[ LOCAL TIME / WIB ]</span>
+            <span className="contact-subtitle">{T(texts, "contact_localtime", "[ LOCAL TIME / WIB ]")}</span>
             <div className="local-time-card">
               <div className="time-row">
                 <span className="status-pulse-dot" />
                 <span className="time-display">{h24}</span>
                 <span className="global-time-display">{h12}</span>
               </div>
-              <span className="timezone-label">JAKARTA, INDONESIA (GMT+7)</span>
+              <span className="timezone-label">{T(texts, "contact_tz", "JAKARTA, INDONESIA (GMT+7)")}</span>
             </div>
-            <span className="contact-subtitle" style={{ display: "block", marginTop: 24 }}>[ CONNECT DIRECTLY ]</span>
+            <span className="contact-subtitle" style={{ display: "block", marginTop: 24 }}>{T(texts, "contact_connect", "[ CONNECT DIRECTLY ]")}</span>
             <div className="networks-grid">
               {socials.map((s) => (
                 <a key={s.name} data-cur className="network-card" href={s.link} target="_blank" rel="noopener noreferrer">
@@ -448,7 +450,7 @@ function toModal(d: ModalData) {
   };
 }
 
-export function ProjectModal({ data, onClose }: { data: ModalData | null; onClose: () => void }) {
+export function ProjectModal({ data, onClose, texts }: { data: ModalData | null; onClose: () => void; texts?: Record<string, string> }) {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     setIdx(0);
@@ -489,28 +491,28 @@ export function ProjectModal({ data, onClose }: { data: ModalData | null; onClos
             </div>
             <div className="pm-header-meta-actions">
               <div className="pm-meta-grid">
-                <div className="pm-meta-box"><span className="pm-meta-lbl">ROLE</span><span className="pm-meta-val">{m.role}</span></div>
-                <div className="pm-meta-box"><span className="pm-meta-lbl">TIMELINE</span><span className="pm-meta-val">{m.year}</span></div>
+                <div className="pm-meta-box"><span className="pm-meta-lbl">{T(texts, "pm_role", "ROLE")}</span><span className="pm-meta-val">{m.role}</span></div>
+                <div className="pm-meta-box"><span className="pm-meta-lbl">{T(texts, "pm_timeline", "TIMELINE")}</span><span className="pm-meta-val">{m.year}</span></div>
               </div>
               <div className="pm-actions-group">
                 {isURL(m.gh) && (
                   <a className="pm-action-btn github" data-cur href={m.gh} target="_blank" rel="noopener noreferrer">
-                    VIEW GITHUB CODEBASE ↗
+                    {T(texts, "pm_view_github", "VIEW GITHUB CODEBASE ↗")}
                   </a>
                 )}
                 {m.status === "Development" ? (
                   <button disabled className="pm-action-btn demo-disabled"
                     style={{ background: "var(--card-bg)", color: "var(--text-muted)", border: "1px dashed var(--border-color)", cursor: "not-allowed", opacity: 0.6, pointerEvents: "none", userSelect: "none" }}>
-                    THE PROJECT IS UNDER DEVELOPMENT
+                    {T(texts, "pm_under_dev", "THE PROJECT IS UNDER DEVELOPMENT")}
                   </button>
                 ) : isURL(m.demo) ? (
                   <a className="pm-action-btn demo" data-cur href={m.demo} target="_blank" rel="noopener noreferrer">
-                    LAUNCH LIVE APPLICATION ↗
+                    {T(texts, "pm_launch", "LAUNCH LIVE APPLICATION ↗")}
                   </a>
                 ) : (
                   <button disabled className="pm-action-btn demo-disabled"
                     style={{ background: "var(--card-bg)", color: "var(--text-muted)", border: "1px dashed var(--border-color)", cursor: "not-allowed", opacity: 0.6, pointerEvents: "none", userSelect: "none" }}>
-                    PREVIEW DILINDUNGI / BELUM TERSEDIA
+                    {T(texts, "pm_preview_locked", "PREVIEW DILINDUNGI / BELUM TERSEDIA")}
                   </button>
                 )}
               </div>
@@ -536,22 +538,22 @@ export function ProjectModal({ data, onClose }: { data: ModalData | null; onClos
           </div>
           <div className="pm-body-grid">
             <div className="pm-body-col">
-              <h3>PROJECT OVERVIEW</h3>
+              <h3>{T(texts, "pm_overview", "PROJECT OVERVIEW")}</h3>
               <p className="pm-overview-text">{m.overview || "—"}</p>
-              <h3>TECHNOLOGY INDEX</h3>
+              <h3>{T(texts, "pm_tech", "TECHNOLOGY INDEX")}</h3>
               <div className="pm-tech-grid">
                 {m.tech.map((t) => <span key={t} className="pm-tech-badge">{t}</span>)}
               </div>
             </div>
             <div className="pm-body-col">
-              <h3>CHALLENGES & ARCHITECTURE</h3>
-              {m.chal.length === 0 ? (<p>No challenge logs recorded.</p>) : m.chal.map((c, i) => (
+              <h3>{T(texts, "pm_chal", "CHALLENGES & ARCHITECTURE")}</h3>
+              {m.chal.length === 0 ? (<p>{T(texts, "pm_no_chal", "No challenge logs recorded.")}</p>) : m.chal.map((c, i) => (
                 <div key={i} className="pm-challenge-card">
-                  <div className="pm-challenge-header"><span className="pm-icon-tag challenge-icon">▲</span><h4>CHALLENGE 0{i + 1}</h4></div>
+                  <div className="pm-challenge-header"><span className="pm-icon-tag challenge-icon">▲</span><h4>{T(texts, "pm_chal_label", "CHALLENGE")} {String(i + 1).padStart(2, "0")}</h4></div>
                   <p className="pm-challenge-desc">{c}</p>
                   {m.sol[i] && (
                     <div className="pm-solution-block">
-                      <div className="pm-solution-header"><span className="pm-icon-tag solution-icon">◆</span><h5>SOLUTION</h5></div>
+                      <div className="pm-solution-header"><span className="pm-icon-tag solution-icon">◆</span><h5>{T(texts, "pm_sol", "SOLUTION")}</h5></div>
                       <p className="pm-solution-desc">{m.sol[i]}</p>
                     </div>
                   )}

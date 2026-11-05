@@ -87,11 +87,11 @@ export default function Site({ data }: { data: SiteData }) {
               texts={data.texts}
             />
             <Skills skills={data.skills} mode={mode} texts={data.texts} />
-            <Works projects={data.projects} onOpen={openProject} mode={mode} />
-            <Services />
-            <Contact profile={data.profile} socials={data.socials} live={data.live} />
+            <Works projects={data.projects} onOpen={openProject} mode={mode} texts={data.texts} />
+            <Services texts={data.texts} />
+            <Contact profile={data.profile} socials={data.socials} live={data.live} texts={data.texts} />
             <footer>
-              <span>© PORTOJA</span>
+              <span>{data.texts.footer_copy || "© PORTOJA"}</span>
             </footer>
           </main>
         </>
@@ -110,7 +110,7 @@ export default function Site({ data }: { data: SiteData }) {
         </>
       )}
 
-      {modal && <ProjectModal data={modal} onClose={closeModal} />}
+      {modal && <ProjectModal data={modal} onClose={closeModal} texts={data.texts} />}
     </>
   );
 }
