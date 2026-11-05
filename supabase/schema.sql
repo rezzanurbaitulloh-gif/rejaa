@@ -81,6 +81,15 @@ create table if not exists inquiries (
   created_at timestamptz not null default now()
 );
 
+-- Copy dinamis halaman utama: 1 baris = 1 key override
+-- (merge dengan FALLBACK.texts di kode; kosong → pakai default kode)
+create table if not exists statics (
+  id bigint generated always as identity primary key,
+  key text unique not null,
+  value text not null default '',
+  created_at timestamptz not null default now()
+);
+
 -- ---------- RLS (idempotent: aman di-run ulang) ----------
 alter table profiles enable row level security;
 alter table skills enable row level security;
@@ -89,6 +98,7 @@ alter table experiences enable row level security;
 alter table certificates enable row level security;
 alter table socials enable row level security;
 alter table inquiries enable row level security;
+alter table statics enable row level security;
 
 drop policy if exists "public read profiles"     on profiles;
 drop policy if exists "auth write profiles"      on profiles;
@@ -104,6 +114,8 @@ drop policy if exists "public read socials"      on socials;
 drop policy if exists "auth write socials"       on socials;
 drop policy if exists "public insert inquiries"  on inquiries;
 drop policy if exists "auth read inquiries"      on inquiries;
+drop policy if exists "public read statics"      on statics;
+drop policy if exists "auth write statics"       on statics;
 
 -- Baca publik (web butuh tanpa login)
 create policy "public read profiles"      on profiles      for select using (true);
@@ -116,6 +128,10 @@ create policy "public read socials"       on socials       for select using (tru
 -- Tulis + baca inquiries: publik boleh INSERT (form freelance), baca hanya login
 create policy "public insert inquiries"   on inquiries     for insert with check (true);
 create policy "auth read inquiries"       on inquiries     for select to authenticated using (true);
+
+-- statics: baca publik (halaman utama anon), tulis hanya login (admin)
+create policy "public read statics"       on statics       for select using (true);
+create policy "auth write statics"        on statics       for all to authenticated using (true) with check (true);
 
 -- Tulis konten: hanya user login (admin /admin)
 create policy "auth write profiles"
