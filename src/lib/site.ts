@@ -141,6 +141,7 @@ export const FALLBACK: SiteData = {
     ed_connect: "Connect directly",
     ed_localtime: "Local time / WIB",
     ed_role: "Full-Stack Web Developer",
+    ed_role_head: "Full-Stack Web Developer",
     ed_subline: "ngubah ide mentah jadi produk yang kepake.",
     ed_tags: "Next.js / Supabase / AI-Assisted / Clean Shipping",
     ed_focus: "Next + Supabase",

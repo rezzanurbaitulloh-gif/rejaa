@@ -4,7 +4,7 @@
 // Dipisah total dari pohon 3D: nav sendiri, section sendiri,
 // footer sendiri. Semua warna via --ed-* (di-scope body.no3d).
 // ============================================================
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import type { Profile, Project, SkillCoin, Social } from "@/lib/site";
 import { VERCEL_PROJECTS } from "@/lib/vercel-projects";
 import { getLenis } from "./chrome";
@@ -248,11 +248,11 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
             <div className="ed-statgrid">
               <div className="ed-statcell">
                 <span className="ed-k">Role</span>
-                <b>Full-Stack</b>
+                <b>{T(texts, "ed_role_short", "Full-Stack")}</b>
               </div>
               <div className="ed-statcell">
                 <span className="ed-k">Since</span>
-                <b>2024</b>
+                <b>{T(texts, "ed_since", "2024")}</b>
               </div>
             </div>
             <div className="ed-chiprow">
@@ -264,9 +264,15 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
 
           <div className="ed-about-body">
             <span className="ed-eyebrow">&mdash; 01 / Profile</span>
-            <h3 className="ed-role">Full-Stack<br />Web Developer</h3>
-            <p className="ed-subline">ngubah ide mentah jadi produk yang kepake.</p>
-            <p className="ed-tags">Next.js / Supabase / AI-Assisted / Clean Shipping</p>
+            <h3 className="ed-role">
+              {T(texts, "ed_role_head", "Full-Stack Web Developer")
+                .split(" ")
+                .map((w, i, arr) => (
+                  <Fragment key={i}>{i > 0 && <br />}{w}</Fragment>
+                ))}
+            </h3>
+            <p className="ed-subline">{T(texts, "ed_subline", "ngubah ide mentah jadi produk yang kepake.")}</p>
+            <p className="ed-tags">{T(texts, "ed_tags", "Next.js / Supabase / AI-Assisted / Clean Shipping")}</p>
 
             <div className="ed-metarow">
               <div className="ed-metacell">
@@ -279,7 +285,7 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
               </div>
               <div className="ed-metacell">
                 <span className="ed-k">Focus</span>
-                <span>Next + Supabase</span>
+                <span>{T(texts, "ed_focus", "Next + Supabase")}</span>
               </div>
             </div>
 
