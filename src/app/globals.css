@@ -866,13 +866,6 @@ body.no3d footer{margin:0;padding:0}
   transition:opacity .18s ease}
 .ed-repo:hover .ed-repo-go,.ed-repo:focus-visible .ed-repo-go{opacity:1}
 .ed-repo:hover .ed-repo-arrow,.ed-repo:focus-visible .ed-repo-arrow{opacity:0}
-.ed-repo-div{display:flex;align-items:baseline;justify-content:space-between;
-  gap:16px;padding:14px 2px 6px;margin-top:6px;
-  font-family:var(--ed-mono);font-size:7.6px;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ed-ink-2);
-  border-bottom:0}
-.ed-repo-div span:first-child{color:var(--ed-ink)}
-.ed-repo-div+.ed-repo{border-top:1px solid var(--ed-rule)}
 
 /* ---------------- contact ---------------- */
 .ed-contact{display:grid;grid-template-columns:minmax(0,1fr) 407px;

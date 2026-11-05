@@ -416,14 +416,6 @@ function fallbackGH(): GHData {
   };
 }
 
-// build fallback: proyek kurasi (repo privat) — ditandai terpisah, bukan repo GitHub
-const BUILD_ROWS = VERCEL_PROJECTS.slice(0, 5).map((p) => ({
-  name: p.title,
-  description: p.description,
-  href: p.linkDemo,
-  tech: p.techStack[0] ?? "—",
-  year: p.year,
-}));
 
 export function GitHub2D() {
   const [data, setData] = useState<GHData>(fallbackGH);
@@ -544,29 +536,6 @@ export function GitHub2D() {
                   <span>{r.language || "—"}</span>
                   <span>{r.pushed_at ? new Date(r.pushed_at).getFullYear() : "—"}</span>
                   {!data.offline && <span>&#9733; {r.stargazers_count}</span>}
-                </span>
-                <span className="ed-repo-arrow" aria-hidden="true">&#8599;</span>
-                <span className="ed-repo-go">Visit &#8599;</span>
-              </a>
-            ))}
-
-            <div className="ed-repo-div">
-              <span>Selected builds</span>
-              <span>Private / client work</span>
-            </div>
-
-            {BUILD_ROWS.map((r, i) => (
-              <a key={r.name + i} className="ed-repo" href={r.href}
-                target="_blank" rel="noopener noreferrer">
-                <span className="ed-work-idx">{String(repos.length + i + 1).padStart(2, "0")}</span>
-                <span className="ed-repo-main">
-                  <span className="ed-repo-name">{r.name}</span>
-                  <span className="ed-repo-desc">{r.description}</span>
-                </span>
-                <span className="ed-repo-meta">
-                  <span>{r.tech}</span>
-                  <span>{r.year}</span>
-                  <span>private</span>
                 </span>
                 <span className="ed-repo-arrow" aria-hidden="true">&#8599;</span>
                 <span className="ed-repo-go">Visit &#8599;</span>
