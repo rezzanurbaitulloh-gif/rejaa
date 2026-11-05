@@ -193,7 +193,14 @@ const NAV: [string, string][] = [
   ["#hero", "HOME"], ["#about", "ABOUT"], ["#skills", "SKILLS"],
   ["#works", "WORKS"], ["#contact", "CONTACT"],
 ];
-export function PillNav() {
+const NAV_KEY: Record<string, string> = {
+  "#hero": "nav_home", "#about": "nav_about", "#skills": "nav_skills",
+  "#works": "nav_works", "#contact": "nav_contact",
+};
+const T = (texts: Record<string, string> | undefined, key: string, fallback: string) =>
+  texts && texts[key] ? texts[key] : fallback;
+
+export function PillNav({ texts }: { texts?: Record<string, string> }) {
   const [active, setActive] = useState("#hero");
   useEffect(() => {
     const spy = new IntersectionObserver(
@@ -211,15 +218,18 @@ export function PillNav() {
   return (
     <nav className="pillnav">
       <div className="in">
-        {NAV.map(([id, label]) => (
-          <a
-            key={id} href={id} data-cur
-            className={active === id ? "active" : ""}
-            onClick={(e) => { e.preventDefault(); setActive(id); scrollToId(id); }}
-          >
-            {label}
-          </a>
-        ))}
+        {NAV.map(([id, label]) => {
+          const l = T(texts, NAV_KEY[id] ?? "", label);
+          return (
+            <a
+              key={id} href={id} data-cur
+              className={active === id ? "active" : ""}
+              onClick={(e) => { e.preventDefault(); setActive(id); scrollToId(id); }}
+            >
+              {l}
+            </a>
+          );
+        })}
       </div>
     </nav>
   );
@@ -240,7 +250,7 @@ const ICO_SUN = (
 );
 
 export type ViewMode = "3d" | "2d";
-export function Toggles({ mode, onMode }: { mode: ViewMode; onMode: (m: ViewMode) => void }) {
+export function Toggles({ mode, onMode, texts }: { mode: ViewMode; onMode: (m: ViewMode) => void; texts?: Record<string, string> }) {
   const [busy, setBusy] = useState(false);
   const [dark, setDark] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -258,7 +268,7 @@ export function Toggles({ mode, onMode }: { mode: ViewMode; onMode: (m: ViewMode
       gsap.fromTo(icoRef.current, { rotateY: 90, opacity: 0 }, { rotateY: 0, opacity: 1, duration: 0.35, ease: "easeOut" });
     const ov = document.getElementById("modeOverlay");
     const lab = document.getElementById("modeLabel");
-    if (lab) lab.textContent = "ENTERING " + target.toUpperCase() + " MODE";
+    if (lab) lab.textContent = `${T(texts, "mode_enter", "ENTERING ")}${target.toUpperCase()} MODE`;
     const applyMode = () => { onMode(target); window.scrollTo(0, 0); };
     if (!ov || reduced()) { applyMode(); setBusy(false); return; }
     gsap.timeline({ onComplete: () => setBusy(false) })
@@ -326,11 +336,11 @@ export function IntroLoader({ done }: { done: () => void }) {
   );
 }
 
-export function ModeOverlay() {
+export function ModeOverlay({ texts }: { texts?: Record<string, string> }) {
   return (
     <div className="mode-overlay" id="modeOverlay">
       <span className="mo-big" id="modeLabel">ENTERING 2D MODE</span>
-      <span className="mo-sub">CREAM EDITORIAL FUSION</span>
+      <span className="mo-sub">{T(texts, "mode_sub", "CREAM EDITORIAL FUSION")}</span>
     </div>
   );
 }

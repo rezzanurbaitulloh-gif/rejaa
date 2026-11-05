@@ -40,6 +40,9 @@ export interface SiteData {
   profile: Profile; skills: SkillCoin[]; projects: Project[];
   experiences: Experience[]; certificates: Certificate[];
   socials: Social[]; live: boolean;
+  /** Static copy (label UI) — diisikan dari tabel `statics` Supabase;
+    FALLBACK siap pakai kalau admin belum mengatur / env belum ada. */
+  texts: Record<string, string>;
 }
 
 // ------------------------- FALLBACK (dummy siap-ganti) -------------------------
@@ -119,6 +122,37 @@ export const FALLBACK: SiteData = {
     { name: "GITHUB", icon: "github", link: "https://github.com/rezzanurbaitulloh-gif" },
     { name: "LINKEDIN", icon: "linkedin", link: "https://www.linkedin.com/in/rejaa" },
   ],
+  // Static copy (label UI) — dari tabel `statics` Supabase; fallback siap pakai
+  // kalau admin belum mengisi atau env Supabase belum ada.
+  texts: {
+    nav_home: "HOME", nav_about: "ABOUT", nav_skills: "SKILLS",
+    nav_works: "WORKS", nav_github: "GITHUB", nav_contact: "CONTACT",
+    mode_enter: "ENTERING ", mode_toggle: "TOGGLE THEME", mode_sub: "CREAM EDITORIAL FUSION",
+    mode_2d: "Switch to 2D mode", mode_3d: "Switch to 3D mode",
+    mode_theme_dark: "Switch to dark theme", mode_theme_light: "Switch to light theme",
+    ai_orch: "AI orchestration",
+    quick_facts: "Quick facts",
+    capability_index: "Capability index",
+    engage: "Build & serah terima",
+    selected_works: "Selected Works",
+    oss_telemetry: "Open source telemetry",
+    gh_title: "GitHub",
+    establish_link: "Establish link",
+    ed_connect: "Connect directly",
+    ed_localtime: "Local time / WIB",
+    ed_role: "Full-Stack Web Developer",
+    ed_subline: "ngubah ide mentah jadi produk yang kepake.",
+    ed_tags: "Next.js / Supabase / AI-Assisted / Clean Shipping",
+    ed_focus: "Next + Supabase",
+    ed_since: "2024",
+    ed_role_short: "Full-Stack",
+    hero_eyebrow: "( 00 ) Intro — personal index",
+    marquee: "FULL-STACK DEVELOPMENT + SOFTWARE ENGINEERING + AI ORCHESTRATION + NEXT.JS + SUPABASE + ",
+    footer_copy: "© PORTOJA",
+    footer_stack: "[ Next.js / Supabase / AI-Assisted ]",
+    copied: "[ COPIED TO CLIPBOARD ]", copy_click: "[ CLICK EMAIL TO COPY ]",
+    ed_return: "Return to 3D mode",
+  },
 };
 
 // ------------------------- SUPABASE -------------------------
@@ -147,14 +181,22 @@ export async function getSiteData(): Promise<SiteData> {
   const sb = supa();
   if (!sb) return FALLBACK;
   try {
-    const [prof, skills, projects, exps, certs, socials] = await Promise.all([
+    const [prof, skills, projects, exps, certs, socials, statics] = await Promise.all([
       table<Record<string, unknown>>(sb, "profiles"),
       table<Record<string, unknown>>(sb, "skills"),
       table<Record<string, unknown>>(sb, "projects"),
       table<Record<string, unknown>>(sb, "experiences"),
       table<Record<string, unknown>>(sb, "certificates"),
       table<Record<string, unknown>>(sb, "socials"),
+      table<Record<string, unknown>>(sb, "statics"),
     ]);
+    const texts: Record<string, string> = { ...FALLBACK.texts };
+    for (const row of statics ?? []) {
+      const r = row as Record<string, unknown>;
+      const k = String(r.key ?? r.id ?? "");
+      const v = String(r.value ?? r.copy ?? r.label ?? "");
+      if (k && v) texts[k] = v;
+    }
     if (!prof || !prof.length) return { ...FALLBACK, live: true };
     const p = prof[0];
     const fb = FALLBACK;
@@ -221,6 +263,7 @@ export async function getSiteData(): Promise<SiteData> {
     }));
     return {
       live: true,
+      texts,
       profile: {
         name: String(p.name ?? fb.profile.name),
         role: String(p.role ?? fb.profile.role),

@@ -13,6 +13,12 @@ const NAV: [string, string][] = [
   ["#hero", "HOME"], ["#about", "ABOUT"], ["#skills", "SKILLS"],
   ["#works", "WORKS"], ["#github", "GITHUB"], ["#contact", "CONTACT"],
 ];
+const NAV_KEY: Record<string, string> = {
+  "#hero": "nav_home", "#about": "nav_about", "#skills": "nav_skills",
+  "#works": "nav_works", "#github": "nav_github", "#contact": "nav_contact",
+};
+const T = (texts: Record<string, string> | undefined, key: string, fallback: string) =>
+  texts && texts[key] ? texts[key] : fallback;
 
 // ---------------- helpers ----------------
 function jumpTo(id: string) {
@@ -80,7 +86,7 @@ const ICO_GLOBE = (
 );
 
 // ---------------- nav ----------------
-export function EditorialNav({ onMode }: { onMode: (m: "3d" | "2d") => void }) {
+export function EditorialNav({ onMode, texts }: { onMode: (m: "3d" | "2d") => void; texts?: Record<string, string> }) {
   const [active, setActive] = useState("#hero");
   const [dark, setDark] = useState(false);
 
@@ -123,7 +129,7 @@ export function EditorialNav({ onMode }: { onMode: (m: "3d" | "2d") => void }) {
   };
 
   const idx = Math.max(0, NAV.findIndex(([id]) => id === active));
-  const railLabel = NAV[idx]?.[1] ?? "HOME";
+  const railLabel = idx >= 0 ? T(texts, NAV_KEY[NAV[idx][0]] ?? "", NAV[idx][1]) : "HOME";
 
   return (
     <>
@@ -137,21 +143,21 @@ export function EditorialNav({ onMode }: { onMode: (m: "3d" | "2d") => void }) {
             {NAV.map(([id, label]) => (
               <a key={id} href={id} className={active === id ? "active" : ""}
                 onClick={(e) => { e.preventDefault(); setActive(id); jumpTo(id); }}>
-                {label}
+                {T(texts, NAV_KEY[id] ?? "", label)}
               </a>
             ))}
           </div>
           <div className="ed-nav-actions">
-            <a className="ed-round" href="#contact" aria-label="Jump to contact"
+            <a className="ed-round" href="#contact" aria-label={T(texts, "nav_contact", "CONTACT")}
               onClick={(e) => { e.preventDefault(); setActive("#contact"); jumpTo("#contact"); }}>
               {ICO_GLOBE}
             </a>
             <button className="ed-round" type="button" onClick={toggleTheme}
-              aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}>
+              aria-label={dark ? T(texts, "mode_theme_light", "Switch to light theme") : T(texts, "mode_theme_dark", "Switch to dark theme")}>
               {dark ? ICO_SUN : ICO_MOON}
             </button>
             <button className="ed-round ed-round-3d" type="button" onClick={() => onMode("3d")}
-              aria-label="Switch to 3D mode" title="Switch to 3D mode">3D</button>
+              aria-label={T(texts, "mode_3d", "Switch to 3D mode")} title={T(texts, "mode_3d", "Switch to 3D mode")}>3D</button>
           </div>
         </div>
       </nav>
@@ -168,12 +174,13 @@ export function EditorialNav({ onMode }: { onMode: (m: "3d" | "2d") => void }) {
 const MARQUEE =
   "FULL-STACK DEVELOPMENT + SOFTWARE ENGINEERING + AI ORCHESTRATION + NEXT.JS + SUPABASE + ";
 
-export function Hero2D({ profile }: { profile: Profile }) {
+export function Hero2D({ profile, texts }: { profile: Profile; texts?: Record<string, string> }) {
   const first = profile.name.replace(/\.\s*$/, "");
+  const marquee = T(texts, "marquee", MARQUEE);
   const spec: [string, string][] = [
     ["Name", profile.name],
     ["Role", profile.role],
-    ["Focus", "AI orchestration"],
+    ["Focus", T(texts, "ai_orch", "AI orchestration")],
     ["Base", profile.location],
     ["Status", profile.status],
   ];
@@ -182,7 +189,8 @@ export function Hero2D({ profile }: { profile: Profile }) {
       <div className="ed-wrap ed-hero-grid">
         <div className="ed-hero-left">
           <div className="ed-hero-eyebrow">
-            ( 00 ) <span className="ed-eyebrow-sep">/</span> Intro &mdash; personal index
+            {T(texts, "hero_eyebrow", "( 00 ) Intro \u2014 personal index")}{" "}
+            <span className="ed-eyebrow-sep">/</span>
           </div>
           <h1 className="ed-display">Hi<span className="ed-display-mark">!</span></h1>
           <div className="ed-dotgrid" aria-hidden="true">
@@ -205,8 +213,8 @@ export function Hero2D({ profile }: { profile: Profile }) {
       </div>
       <div className="ed-marquee" aria-hidden="true">
         <div className="ed-marquee-track">
-          <span>{MARQUEE}{MARQUEE}</span>
-          <span>{MARQUEE}{MARQUEE}</span>
+          <span>{marquee}{marquee}</span>
+          <span>{marquee}{marquee}</span>
         </div>
       </div>
     </header>
@@ -214,7 +222,7 @@ export function Hero2D({ profile }: { profile: Profile }) {
 }
 
 // ---------------- about ----------------
-export function About2D({ profile, projectCount }: { profile: Profile; projectCount: number }) {
+export function About2D({ profile, projectCount, texts }: { profile: Profile; projectCount: number; texts?: Record<string, string> }) {
   const first = profile.name.replace(/\.\s*$/, "");
   return (
     <section className="ed-sec ed-sec-bare" id="about">
@@ -307,7 +315,7 @@ const LEVELS: Record<string, number> = {
   "vercel": 90, "git": 84, "css": 90, "ai / ml": 86, "ai": 86,
 };
 
-export function Skills2D({ skills }: { skills: SkillCoin[] }) {
+export function Skills2D({ skills, texts }: { skills: SkillCoin[]; texts?: Record<string, string> }) {
   const rows = skills.length ? skills : [{ name: "Next.js", icon: "nextjs" }];
   return (
     <section className="ed-sec" id="skills">
@@ -341,8 +349,8 @@ const ENGAGE = [
   "Dokumentasi + dukungan",
 ];
 
-export function Works2D({ projects, onOpen }: {
-  projects: Project[]; onOpen: (p: Project) => void;
+export function Works2D({ projects, onOpen, texts }: {
+  projects: Project[]; onOpen: (p: Project) => void; texts?: Record<string, string>;
 }) {
   const list = VERCEL_PROJECTS.map(
     (v) => projects.find((p) => p.slug === v.slug) ?? v
@@ -417,7 +425,7 @@ function fallbackGH(): GHData {
 }
 
 
-export function GitHub2D() {
+export function GitHub2D({ texts }: { texts?: Record<string, string> }) {
   const [data, setData] = useState<GHData>(fallbackGH);
   const [syncing, setSyncing] = useState(true);
 
@@ -489,7 +497,7 @@ export function GitHub2D() {
   return (
     <section className="ed-sec" id="github">
       <div className="ed-wrap">
-        <Head n="04" label="Open source telemetry" title="GitHub" />
+        <Head n="04" label={T(texts, "oss_telemetry", "Open source telemetry")} title={T(texts, "gh_title", "GitHub")} />
         <div className="ed-gh">
           <div className="ed-gh-rail">
             <div className="ed-gh-id">
@@ -549,9 +557,10 @@ export function GitHub2D() {
 }
 
 // ---------------- contact ----------------
-export function Contact2D({ profile, socials }: { profile: Profile; socials: Social[] }) {
+export function Contact2D({ profile, socials, texts }: { profile: Profile; socials: Social[]; texts?: Record<string, string> }) {
   const { hms, ampm } = useClock();
   const [copied, setCopied] = useState(false);
+  const copyHint = copied ? T(texts, "copied", "[ COPIED TO CLIPBOARD ]") : T(texts, "copy_click", "[ CLICK EMAIL TO COPY ]");
 
   const copy = useCallback(async () => {
     try {
@@ -582,9 +591,9 @@ export function Contact2D({ profile, socials }: { profile: Profile; socials: Soc
               {profile.email}
             </button>
             <div className="ed-copyhint" role="status" aria-live="polite">
-              {copied ? "[ COPIED TO CLIPBOARD ]" : "[ CLICK EMAIL TO COPY ]"}
+              {copyHint}
             </div>
-            <div className="ed-connectlabel">Connect directly</div>
+            <div className="ed-connectlabel">{T(texts, "ed_connect", "Connect directly")}</div>
             <div className="ed-connect">
               <a className="ed-btn ed-btn-ghost" href={`mailto:${profile.email}`}>
                 Email <span aria-hidden="true">&#8599;</span>
@@ -599,7 +608,7 @@ export function Contact2D({ profile, socials }: { profile: Profile; socials: Soc
           </div>
 
           <div className="ed-contact-side">
-            <span className="ed-eyebrow">Local time / WIB</span>
+            <span className="ed-eyebrow">{T(texts, "ed_localtime", "Local time / WIB")}</span>
             <div className="ed-clockrow">
               <span className="ed-live" aria-hidden="true" />
               <span className="ed-clock">{hms}</span>
@@ -625,14 +634,14 @@ export function Contact2D({ profile, socials }: { profile: Profile; socials: Soc
 }
 
 // ---------------- footer ----------------
-export function Footer2D({ onMode }: { onMode: (m: "3d" | "2d") => void }) {
+export function Footer2D({ onMode, texts }: { onMode: (m: "3d" | "2d") => void; texts?: Record<string, string> }) {
   return (
     <footer className="ed-footer">
       <div className="ed-wrap ed-footer-in">
-        <span>&copy; PORTOJA</span>
-        <span className="ed-footer-mid">[ Next.js / Supabase / AI-Assisted ]</span>
+        <span>{T(texts, "footer_copy", "\u00A9 PORTOJA")}</span>
+        <span className="ed-footer-mid">{T(texts, "footer_stack", "[ Next.js / Supabase / AI-Assisted ]")}</span>
         <button type="button" onClick={() => onMode("3d")}>
-          Return to 3D mode <span className="ed-blink" aria-hidden="true">&#9612;</span>
+          {T(texts, "ed_return", "Return to 3D mode")} <span className="ed-blink" aria-hidden="true">&#8612;</span>
         </button>
       </div>
     </footer>

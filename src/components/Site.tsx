@@ -70,13 +70,13 @@ export default function Site({ data }: { data: SiteData }) {
     <>
       <div className="noise" />
       <IntroLoader done={() => setReady(true)} />
-      <ModeOverlay />
+      <ModeOverlay texts={data.texts} />
 
       {mode === "3d" ? (
         <>
           <TargetCursor />
-          <PillNav />
-          <Toggles mode={mode} onMode={onMode} />
+          <PillNav texts={data.texts} />
+          <Toggles mode={mode} onMode={onMode} texts={data.texts} />
           <main style={{ visibility: ready ? "visible" : "hidden" }}>
             <Hero profile={data.profile} socials={data.socials} mode={mode} />
             <Manifesto mode={mode} />
@@ -96,15 +96,15 @@ export default function Site({ data }: { data: SiteData }) {
         </>
       ) : (
         <>
-          <EditorialNav onMode={onMode} />
+          <EditorialNav onMode={onMode} texts={data.texts} />
           <main className="ed-main" style={{ visibility: ready ? "visible" : "hidden" }}>
-            <Hero2D profile={data.profile} />
-            <About2D profile={data.profile} projectCount={data.projects.length} />
-            <Skills2D skills={data.skills} />
-            <Works2D projects={data.projects} onOpen={openProject} />
-            <GitHub2D />
-            <Contact2D profile={data.profile} socials={data.socials} />
-            <Footer2D onMode={onMode} />
+            <Hero2D profile={data.profile} texts={data.texts} />
+            <About2D profile={data.profile} projectCount={data.projects.length} texts={data.texts} />
+            <Skills2D skills={data.skills} texts={data.texts} />
+            <Works2D projects={data.projects} onOpen={openProject} texts={data.texts} />
+            <GitHub2D texts={data.texts} />
+            <Contact2D profile={data.profile} socials={data.socials} texts={data.texts} />
+            <Footer2D onMode={onMode} texts={data.texts} />
           </main>
         </>
       )}
