@@ -82,6 +82,13 @@ const TABLES: Record<string, TableCfg> = {
       { k: "link", label: "Link", kind: "text" }, { k: "sort", label: "Urutan", kind: "text" },
     ],
   },
+  statics: {
+    label: "Texts (copy dinamis)",
+    fields: [
+      { k: "key", label: "Key (mis. nav_home)", kind: "text" },
+      { k: "value", label: "Value", kind: "area" },
+    ],
+  },
   inquiries: {
     label: "Inquiries (form freelance — read only)", readonly: true,
     fields: [
@@ -275,7 +282,7 @@ export default function Admin() {
       <div className="adm-list">
         {rows.map((r) => (
           <div key={String(r.id)} className="adm-item">
-            <span>#{String(r.id)} — {String(r.title ?? r.name ?? r.slug ?? "")}</span>
+            <span>#{String(r.id)} — {String(r.title ?? r.name ?? r.slug ?? r.key ?? r.value ?? "")}</span>
             <span style={{ display: "flex", gap: 6 }}>
               {!cfg.readonly && (
                 <button className="adm-btn ghost" onClick={() => { setForm(r); setEditId(Number(r.id)); window.scrollTo(0, 0); }}>
