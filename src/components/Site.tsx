@@ -45,12 +45,16 @@ export default function Site({ data }: { data: SiteData }) {
   // Toggle 2D selalu tersedia sebagai mode statis-cepat.
 
   const onMode = useCallback((m: ViewMode) => {
+    // Bersihkan semua ScrollTrigger lama SEBELUM ganti mode — kalau Hero
+    // beralih 3D↔2D, subtree-nya di-unmount/di-ganti React. Pin-spacer yang
+    // masih melekat ke DOM lama akan bikin React removeChild gagal
+    // ("node is not a child of this node") → crash halaman.
+    ScrollTrigger.getAll().forEach((t) => t.kill());
     setMode(m);
     document.body.classList.toggle("no3d", m === "2d");
-    // Lenis di-destroy/dibuat ulang oleh useLenis — scroll native aman
     window.scrollTo(0, 0);
-    // trigger di-recreate oleh efek mode — refresh setelah layout settle
-    setTimeout(() => ScrollTrigger.refresh(), 80);
+    // Biarkan useLayoutEffect tiap komponen yang re-create ScrollTrigger
+    // sesuai mode setelah layout settle. Jangan refresh() agresif di sini.
   }, []);
 
   const openProject = useCallback((p: Project) => setModal({ kind: "p", item: p }), []);
