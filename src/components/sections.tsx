@@ -3,7 +3,7 @@
 // sections.tsx — Hero (Shashank), Manifesto, About (Davin),
 // Skills orbit + portal zoom (Shashank Skills.jsx).
 // ============================================================
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Profile, SkillCoin, Social, Experience } from "@/lib/site";
@@ -93,11 +93,11 @@ const ART_META = (texts?: Record<string, string>) => [
 function Hero2DView({ profile, texts }: { profile: Profile; texts?: Record<string, string> }) {
   const first = profile.name.replace(/\.\s*$/, "");
   const rows: [string, string][] = [
-    ["NAME", `${first} — Indonesia`],
-    ["ROLE", profile.role],
-    ["FOCUS", T(texts, "ai_assisted_building", "AI-assisted building")],
-    ["BASE", profile.location],
-    ["STATUS", profile.status],
+    [T(texts, "spec_name", "NAME"), `${first} — Indonesia`],
+    [T(texts, "spec_role", "ROLE"), profile.role],
+    [T(texts, "spec_focus", "FOCUS"), T(texts, "ai_assisted_building", "AI-assisted building")],
+    [T(texts, "spec_base", "BASE"), profile.location],
+    [T(texts, "spec_status", "STATUS"), profile.status],
   ];
   const ticker = T(texts, "ticker2d", "NEXT.JS ✦ SUPABASE ✦ AI-ASSISTED ✦ CLEAN SHIPPING ✦ ");
   return (
@@ -249,12 +249,13 @@ export function Manifesto({ mode, texts }: { mode: "3d" | "2d"; texts?: Record<s
     });
     return () => ctx.revert();
   }, [mode]);
+  const mq = T(texts, "marquee3d", "MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •") + "\u00A0";
   return (
     <>
       <div id="manifesto"><div className="mani" id="maniText" ref={ref}>
         {manifesto}
       </div></div>
-      <div className="marquee"><span>MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •&nbsp;</span><span>MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •&nbsp;</span></div>
+      <div className="marquee"><span>{mq}</span><span>{mq}</span></div>
     </>
   );
 }
@@ -279,12 +280,23 @@ const LOGS: [string, string][] = [
   ["2025-08-20", "SHIPPED MARKETPLACE MINI"],
   ["2025-06-01", "MULAI FREELANCE FULL-STACK"],
 ];
+// Multi-value: 1 key = beberapa baris (newline). Kosong/absen → default.
+const lines = (v: string | undefined, fb: string[]) =>
+  v ? v.split("\n").map((s) => s.trim()).filter(Boolean) : fb;
 const TABS = ["ABOUT", "SKILLS", "STACK", "STATS", "WORK", "LOGS"] as const;
 
 export function About({ profile, experiences, projectTitles, texts }: {
   profile: Profile; experiences: Experience[]; projectTitles: string[]; texts?: Record<string, string>;
 }) {
   const [tab, setTab] = useState<(typeof TABS)[number]>("ABOUT");
+  const stacks = [1, 2, 3].map((i) => ({
+    name: T(texts, "stack" + i + "_name", STACKS[i - 1]?.[0] ?? ""),
+    items: lines(texts?.["stack" + i + "_items"], STACKS[i - 1]?.[1] ?? []),
+  })).filter((s) => s.name);
+  const statVals = lines(texts?.stats_vals, STATS.map((s) => s[0]));
+  const statLabels = lines(texts?.stats_labels, STATS.map((s) => s[1]));
+  const logDates = lines(texts?.logs_dates, LOGS.map((l) => l[0]));
+  const logTexts = lines(texts?.logs_texts, LOGS.map((l) => l[1]));
   return (
     <section className="block" id="about">
       <div className="kicker" data-sec="( 01 )">{T(texts, "about_kicker", "ABOUT")}</div>
@@ -327,23 +339,27 @@ export function About({ profile, experiences, projectTitles, texts }: {
             <div className="apanel on">
               <h2 className="about-title">{profile.role}</h2>
               <h4 className="about-subtitle-text">{T(texts, "about_subtitle", "ngubah ide mentah jadi produk AI yang kepake")}</h4>
-              <div className="about-tags-row"><span>NEXT + SUPABASE</span><span className="separator">/</span><span>AI-ASSISTED BUILDING</span><span className="separator">/</span><span>CLEAN SHIPPING</span></div>
+              <div className="about-tags-row">
+                {lines(texts?.about_tags, ["NEXT + SUPABASE", "AI-ASSISTED BUILDING", "CLEAN SHIPPING"]).map((t, i) => (
+                  <Fragment key={i}>{i > 0 && <span className="separator">/</span>}<span>{t}</span></Fragment>
+                ))}
+              </div>
               <div className="about-description"><p>{profile.bio}</p>
                 <p>{T(texts, "ed_prose", "Fokus: arsitektur yang masuk akal, database yang aman (RLS), dan UI yang orang awam ngerti.")}</p></div>
-              <div className="about-focus-section"><span className="focus-label">ACTIVITY LOGS</span>
+              <div className="about-focus-section"><span className="focus-label">{T(texts, "activity_logs", "ACTIVITY LOGS")}</span>
                 <div className="focus-cards-grid">
                   {projectTitles.slice(0, 3).map((t) => <div key={t} className="focus-card">{t.toUpperCase().slice(0, 12)}</div>)}
-                  <div className="focus-card more-card">+N</div>
+                  <div className="focus-card more-card">{T(texts, "more_card", "+N")}</div>
                 </div>
               </div>
             </div>
           )}
           {tab === "SKILLS" && (
             <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_skills", "Technical Skill Indices")}</h3>
-              {METERS.map(([n, v]) => (
+              {lines(texts?.meters_labels, METERS.map((m) => m[0])).map((n, i) => (
                 <div key={n} className="skill-meter-row">
-                  <div className="skill-meter-header"><span>{n}</span><span className="skill-meter-percent">{v}%</span></div>
-                  <div className="skill-meter-track"><div className="skill-meter-fill" style={{ width: `${v}%` }} /></div>
+                  <div className="skill-meter-header"><span>{n}</span><span className="skill-meter-percent">{METERS[i]?.[1] ?? 70}%</span></div>
+                  <div className="skill-meter-track"><div className="skill-meter-fill" style={{ width: `${METERS[i]?.[1] ?? 70}%` }} /></div>
                 </div>
               ))}
             </div>
@@ -351,10 +367,10 @@ export function About({ profile, experiences, projectTitles, texts }: {
           {tab === "STACK" && (
             <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_stack", "Technical Stacks & Tools")}</h3>
               <div className="stacks-grid">
-                {STACKS.map(([c, items]) => (
-                  <div key={c} className="stack-category-card">
-                    <span className="stack-category-title">{c}</span>
-                    <div>{items.map((i) => <span key={i} className="stack-item-tag">{i}</span>)}</div>
+                {stacks.map(({ name, items }, i) => (
+                  <div key={name + i} className="stack-category-card">
+                    <span className="stack-category-title">{name}</span>
+                    <div>{items.map((it) => <span key={it} className="stack-item-tag">{it}</span>)}</div>
                   </div>
                 ))}
               </div>
@@ -363,9 +379,9 @@ export function About({ profile, experiences, projectTitles, texts }: {
           {tab === "STATS" && (
             <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_stats", "Production Telemetry Stats")}</h3>
               <div className="stats-grid-row">
-                {STATS.map(([v, l]) => (
-                  <div key={l} className="stat-telemetry-box">
-                    <span className="stat-value-hud">{v}</span><span className="stat-label-hud">{l}</span>
+                {statVals.map((v, i) => (
+                  <div key={v + i} className="stat-telemetry-box">
+                    <span className="stat-value-hud">{v}</span><span className="stat-label-hud">{statLabels[i] ?? ""}</span>
                   </div>
                 ))}
               </div>
@@ -385,10 +401,10 @@ export function About({ profile, experiences, projectTitles, texts }: {
           {tab === "LOGS" && (
             <div className="apanel on"><h3 className="tab-title">{T(texts, "about_panel_logs", "System Activity Logs")}</h3>
               <div className="terminal-logs-container">
-                <div className="terminal-header"><span className="terminal-dot red" /><span className="terminal-dot yellow" /><span className="terminal-dot green" /><span className="terminal-title">system_activity.log</span></div>
+                <div className="terminal-header"><span className="terminal-dot red" /><span className="terminal-dot yellow" /><span className="terminal-dot green" /><span className="terminal-title">{T(texts, "logs_file", "system_activity.log")}</span></div>
                 <div className="terminal-body">
-                  {LOGS.map(([t, ev]) => (
-                    <div key={t + ev} className="terminal-line"><span className="log-timestamp">[{t}]</span><span className="log-action"> {ev}</span></div>
+                  {logDates.map((t, i) => (
+                    <div key={t + i} className="terminal-line"><span className="log-timestamp">[{t}]</span><span className="log-action"> {logTexts[i] ?? ""}</span></div>
                   ))}
                 </div>
               </div>

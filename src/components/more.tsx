@@ -215,8 +215,8 @@ export function Works({ projects, onOpen, mode, texts }: {
                 {w.preview === "protected" || w.preview === "down" ? (
                   <div className="project-cover-protected" role="img" aria-label={`${w.title} — preview terkunci`}>
                     <BrandLogo name="vercel" size={34} fill="var(--inv-accent)" />
-                    <b>Preview terkunci</b>
-                    <small>Dilindungi Vercel Authentication</small>
+                    <b>{T(texts, "works_preview_locked", "Preview terkunci")}</b>
+                    <small>{T(texts, "works_preview_sub", "Dilindungi Vercel Authentication")}</small>
                   </div>
                 ) : w.images[0] && isURL(w.images[0]) ? (
                   // eslint-disable-next-line @next/next/no-img-element

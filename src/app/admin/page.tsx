@@ -7,6 +7,7 @@
 // ============================================================
 import { useEffect, useState } from "react";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { FALLBACK } from "@/lib/site";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
@@ -83,7 +84,7 @@ const TABLES: Record<string, TableCfg> = {
     ],
   },
   statics: {
-    label: "Texts (copy dinamis)",
+    label: "Texts (semua copy situs)",
     fields: [
       { k: "key", label: "Key (mis. nav_home)", kind: "text" },
       { k: "value", label: "Value", kind: "area" },
@@ -123,6 +124,118 @@ function Upload({ sb, bucket, onUrl }: {
       {busy ? "Mengupload…" : `⬆ Upload ke ${bucket}`}
       <input type="file" hidden onChange={(e) => pick(e.target.files?.[0])} />
     </label>
+  );
+}
+
+// ================= Texts editor — semua copy halaman utama =================
+// Merge nilai default dari kode (FALLBACK.texts) + override tabel `statics`.
+// Simpan = tulis override; Reset = hapus override → balik ke default kode.
+function TextsEditor({ sb }: { sb: SupabaseClient | null }) {
+  const [overrides, setOverrides] = useState<Record<string, { id: number; value: string }>>({});
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
+  const [q, setQ] = useState("");
+  const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState<string | null>(null);
+
+  const load = async () => {
+    if (!sb) return;
+    const r = await sb.from("statics").select("id,key,value").limit(500);
+    if (r.error) { setMsg("Load gagal: " + r.error.message); return; }
+    const map: Record<string, { id: number; value: string }> = {};
+    (r.data ?? []).forEach((row) => {
+      const k = String((row as Row).key ?? "").trim();
+      if (k) map[k] = { id: Number((row as Row).id), value: str((row as Row).value) };
+    });
+    setOverrides(map);
+    setDrafts({});
+  };
+  useEffect(() => { load(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sb]);
+
+  const defaults = FALLBACK.texts;
+  const allKeys = Array.from(new Set([...Object.keys(defaults), ...Object.keys(overrides)])).sort();
+  const eff = (k: string) => overrides[k]?.value ?? defaults[k] ?? "";
+  const dirty = (k: string) => (drafts[k] ?? eff(k)) !== eff(k);
+
+  const save = async (k: string) => {
+    if (!sb) return;
+    setBusy(k);
+    const v = drafts[k] ?? eff(k);
+    const r = overrides[k]
+      ? await sb.from("statics").update({ value: v }).eq("id", overrides[k].id)
+      : await sb.from("statics").insert({ key: k, value: v });
+    setBusy(null);
+    if (r.error) setMsg(`Simpan "${k}" gagal: ` + r.error.message);
+    else { setMsg(`"${k}" tersimpan — tampil di situs ±1 menit (revalidate).`); load(); }
+  };
+
+  const reset = async (k: string) => {
+    if (!sb || !overrides[k] || !confirm(`Reset "${k}" ke nilai default?`)) return;
+    setBusy(k);
+    const r = await sb.from("statics").delete().eq("id", overrides[k].id);
+    setBusy(null);
+    if (r.error) setMsg(`Reset "${k}" gagal: ` + r.error.message);
+    else { setMsg(`"${k}" balik ke nilai default.`); load(); }
+  };
+
+  const needle = q.trim().toLowerCase();
+  const shown = allKeys.filter((k) =>
+    !needle || k.toLowerCase().includes(needle) || eff(k).toLowerCase().includes(needle));
+
+  return (
+    <div className="adm-card">
+      <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+        <h3 style={{ margin: 0 }}>Semua teks halaman utama</h3>
+        <span style={{ fontSize: 12, opacity: 0.75 }}>
+          {allKeys.length} teks · {Object.keys(overrides).length} dioverride
+        </span>
+      </div>
+      <p style={{ fontSize: 12, opacity: 0.7 }}>
+        Semua teks yang tampil di situs ada di sini — edit lalu Simpan.
+        "Reset" menghapus override → balik ke nilai bawaan kode.
+      </p>
+      <input className="adm-input" placeholder="Cari key atau isi teks…" value={q}
+        onChange={(e) => setQ(e.target.value)} style={{ marginBottom: 12 }} />
+      {msg && <p style={{ fontSize: 13 }}>{msg}</p>}
+      <div style={{ display: "grid", gap: 10 }}>
+        {shown.map((k) => {
+          const isOver = !!overrides[k];
+          const isCustom = isOver && !(k in defaults);
+          const val = drafts[k] ?? eff(k);
+          const rows = Math.min(6, Math.max(2, val.split("\n").length));
+          return (
+            <div key={k} style={{
+              border: "1px solid var(--color-stone)", borderRadius: 10,
+              padding: "10px 12px", display: "grid", gap: 6,
+            }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                <code style={{ fontSize: 12 }}>{k}</code>
+                <span style={{
+                  fontSize: 10, padding: "2px 8px", borderRadius: 999,
+                  border: "1px solid currentColor", opacity: 0.75,
+                }}>
+                  {isCustom ? "kustom" : isOver ? "diubah" : "default"}
+                </span>
+                <span style={{ flex: 1 }} />
+                {dirty(k) && (
+                  <button className="adm-btn" type="button" disabled={busy === k} onClick={() => save(k)}>
+                    {busy === k ? "Menyimpan…" : "Simpan"}
+                  </button>
+                )}
+                {isOver && (
+                  <button className="adm-btn ghost" type="button" disabled={busy === k} onClick={() => reset(k)}>
+                    Reset
+                  </button>
+                )}
+              </div>
+              <textarea className="adm-input" rows={rows} value={val}
+                onChange={(e) => setDrafts({ ...drafts, [k]: e.target.value })} />
+            </div>
+          );
+        })}
+        {shown.length === 0 && <p style={{ fontSize: 13 }}>Tidak ada yang cocok dengan pencarian.</p>}
+      </div>
+    </div>
   );
 }
 
@@ -229,6 +342,10 @@ export default function Admin() {
         ))}
       </div>
       {msg && <p style={{ fontSize: 13 }}>{msg}</p>}
+      {tab === "statics" ? (
+        <TextsEditor sb={sb} />
+      ) : (
+        <>
       {!cfg.readonly && (
         <form className="adm-card" onSubmit={save}>
           <h3>{editId ? `Edit #${editId}` : "Tambah baru"}</h3>
@@ -295,6 +412,8 @@ export default function Admin() {
         ))}
         {rows.length === 0 && <p style={{ fontSize: 13 }}>Kosong — tambah di atas.</p>}
       </div>
+        </>
+      )}
     </div>
   );
 }
