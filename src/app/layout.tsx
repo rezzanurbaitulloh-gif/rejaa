@@ -25,9 +25,9 @@ const fontSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Reja — Ngubah Ide Mentah Jadi Produk AI",
+  title: "Reja —",
   description:
-    "Aboutme: marketplace, web penjualan, dan konverter dokumen. Next + Supabase, dipercepat AI.",
+    "Aboutme: marketplace, web penjualan, dan lainnya.",
 };
 
 const THEME_INIT = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`;

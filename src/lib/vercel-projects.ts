@@ -25,7 +25,7 @@ export const VERCEL_PROJECTS: Project[] = [
     description: "Platform resmi voting Peleton Terfavorit LKBB JAVASOMA THE IMPRESSION.",
     techStack: ["Next.js", "Supabase", "Tailwind", "Postgres"],
     images: ["/previews/lkbbvoting.jpg"],
-    preview: "ok",
+    preview: "ok",marketplace
     linkGithub: "https://github.com/rezzanurbaitulloh-gif/lkbbvoting",
     linkDemo: "https://lkbbvoting.my.id/",
     role: "Full-Stack Developer",
