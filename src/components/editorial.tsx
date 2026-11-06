@@ -172,7 +172,7 @@ export function EditorialNav({ onMode, texts }: { onMode: (m: "3d" | "2d") => vo
 
 // ---------------- hero ----------------
 const MARQUEE =
-  "FULL-STACK DEVELOPMENT + SOFTWARE ENGINEERING + AI ORCHESTRATION + NEXT.JS + SUPABASE + ";
+  "FULL-STACK DEVELOPMENT + SOFTWARE ENGINEERING + SOFTWARE DEVELOPMENT + NEXT.JS + SUPABASE + ";
 
 export function Hero2D({ profile, texts }: { profile: Profile; texts?: Record<string, string> }) {
   const first = profile.name.replace(/\.\s*$/, "");
@@ -180,7 +180,7 @@ export function Hero2D({ profile, texts }: { profile: Profile; texts?: Record<st
   const spec: [string, string][] = [
     ["Name", profile.name],
     ["Role", profile.role],
-    ["Focus", T(texts, "ai_orch", "AI orchestration")],
+    ["Focus", T(texts, "ai_orch", "Software development")],
     ["Base", profile.location],
     ["Status", profile.status],
   ];
@@ -256,7 +256,7 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
               </div>
             </div>
             <div className="ed-chiprow">
-              {(texts?.ed_chips ? texts.ed_chips : "Software Engineering\nAI Orchestration\nFull-Stack Development")
+              {(texts?.ed_chips ? texts.ed_chips : "Web Development\nUI/UX Implementation\nFull-Stack Development")
                 .split("\n").map((c) => c.trim()).filter(Boolean)
                 .map((c, i) => (
                   <span className="ed-chip" key={i}>{c.split(" ").map((w, j) => (<Fragment key={j}>{j > 0 && <br />}{w}</Fragment>))}</span>
@@ -274,7 +274,7 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
                 ))}
             </h3>
             <p className="ed-subline">{T(texts, "ed_subline", "ngubah ide mentah jadi produk yang kepake.")}</p>
-            <p className="ed-tags">{T(texts, "ed_tags", "Next.js / Supabase / AI-Assisted / Clean Shipping")}</p>
+            <p className="ed-tags">{T(texts, "ed_tags", "Next.js / Supabase / TypeScript / Clean Shipping")}</p>
 
             <div className="ed-metarow">
               <div className="ed-metacell">
@@ -318,7 +318,7 @@ export function About2D({ profile, projectCount, texts }: { profile: Profile; pr
 const LEVELS: Record<string, number> = {
   "next.js": 94, "react": 90, "typescript": 88, "javascript": 90,
   "tailwind css": 92, "supabase": 90, "postgresql": 86, "gsap / lenis": 82,
-  "vercel": 90, "git": 84, "css": 90, "ai / ml": 86, "ai": 86,
+  "vercel": 90, "git": 84, "css": 90, "node.js": 86, "nodejs": 86,
 };
 
 export function Skills2D({ skills, texts }: { skills: SkillCoin[]; texts?: Record<string, string> }) {
@@ -420,7 +420,7 @@ type GHData = {
 function fallbackGH(): GHData {
   return {
     name: "Reja", login: GH_USER,
-    bio: "Full-stack web developer — Next.js, Supabase, AI-assisted building.",
+    bio: "Full-stack web developer — Next.js, Supabase, TypeScript.",
     avatar_url: `https://github.com/${GH_USER}.png?size=240`,
     public_repos: 1, followers: -1, following: -1,
     offline: true, repos: [],
@@ -641,7 +641,7 @@ export function Footer2D({ onMode, texts }: { onMode: (m: "3d" | "2d") => void; 
     <footer className="ed-footer">
       <div className="ed-wrap ed-footer-in">
         <span>{T(texts, "footer_copy", "\u00A9 PORTOJA")}</span>
-        <span className="ed-footer-mid">{T(texts, "footer_stack", "[ Next.js / Supabase / AI-Assisted ]")}</span>
+        <span className="ed-footer-mid">{T(texts, "footer_stack", "[ Next.js / Supabase / TypeScript ]")}</span>
         <button type="button" onClick={() => onMode("3d")}>
           {T(texts, "ed_return", "Return to 3D mode")} <span className="ed-blink" aria-hidden="true">&#8612;</span>
         </button>

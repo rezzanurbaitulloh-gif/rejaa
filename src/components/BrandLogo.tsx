@@ -32,7 +32,7 @@ const GLYPHS: Record<string, string> = {
 // dari geometri resmi "in": titik kecil + batang + lengkung u.
 const LINKEDIN_PATH = "M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM4.5 9h.96v11H4.5zM9 9h.92v1.6h.06c.13-.48.62-1.6 2.02-1.6 2.17 0 2.56 1.42 2.56 3.27V20h-.93v-6.55c0-1.6-.03-3.65-2.22-3.65-2.23 0-2.57 1.74-2.57 3.54V20H9z";
 
-// AI — glyph dekoratif (node + orbit), bukan merek dagang, tanpa huruf.
+// AiGlyph — glyph dekoratif (node + orbit), bukan merek dagang, tanpa huruf.
 function AiGlyph({ size, fill }: { size: number; fill: string }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none">

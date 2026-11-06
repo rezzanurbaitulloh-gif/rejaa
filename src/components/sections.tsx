@@ -95,11 +95,11 @@ function Hero2DView({ profile, texts }: { profile: Profile; texts?: Record<strin
   const rows: [string, string][] = [
     [T(texts, "spec_name", "NAME"), `${first} — Indonesia`],
     [T(texts, "spec_role", "ROLE"), profile.role],
-    [T(texts, "spec_focus", "FOCUS"), T(texts, "ai_assisted_building", "AI-assisted building")],
+    [T(texts, "spec_focus", "FOCUS"), T(texts, "ai_assisted_building", "Product development")],
     [T(texts, "spec_base", "BASE"), profile.location],
     [T(texts, "spec_status", "STATUS"), profile.status],
   ];
-  const ticker = T(texts, "ticker2d", "NEXT.JS ✦ SUPABASE ✦ AI-ASSISTED ✦ CLEAN SHIPPING ✦ ");
+  const ticker = T(texts, "ticker2d", "NEXT.JS ✦ SUPABASE ✦ TYPESCRIPT ✦ CLEAN SHIPPING ✦ ");
   return (
     <header id="hero" className="p2d-hero">
       <div className="p2d-hero-grid">
@@ -220,7 +220,7 @@ export function Hero({ profile, socials, mode, texts }: {
         <div className="tags">
           <span className="tag"><i />{T(texts, "tag_fullstack", "Full-Stack")}</span>
           <span className="tag"><i />{T(texts, "tag_nxt", "Next + Supabase")}</span>
-          <span className="tag"><i />{T(texts, "tag_ai", "AI-assisted")}</span>
+          <span className="tag"><i />{T(texts, "tag_ai", "Product-minded")}</span>
         </div>
       </div>
       <div className="scrolldown">{T(texts, "hero_scroll", "DESCEND ↓")}</div>
@@ -249,7 +249,7 @@ export function Manifesto({ mode, texts }: { mode: "3d" | "2d"; texts?: Record<s
     });
     return () => ctx.revert();
   }, [mode]);
-  const mq = T(texts, "marquee3d", "MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • AI •") + "\u00A0";
+  const mq = T(texts, "marquee3d", "MARKETPLACE • PENJUALAN • KONVERTER • NEXT • SUPABASE • TYPESCRIPT •") + "\u00A0";
   return (
     <>
       <div id="manifesto"><div className="mani" id="maniText" ref={ref}>
@@ -262,13 +262,13 @@ export function Manifesto({ mode, texts }: { mode: "3d" | "2d"; texts?: Record<s
 
 // ---------------- ABOUT (Davin) ----------------
 const METERS: [string, number][] = [
-  ["NEXT.JS & SUPABASE", 90], ["AI-ASSISTED BUILDING", 88],
+  ["NEXT.JS & SUPABASE", 90], ["BACKEND & DATABASE", 88],
   ["API & DATABASE DESIGN", 85], ["UI & MOTION", 78],
 ];
 const STACKS: [string, string[]][] = [
   ["FRONTEND & WEB", ["Next.js", "React 19", "TypeScript", "Tailwind CSS", "GSAP / Lenis"]],
   ["BACKEND & DATA", ["Supabase", "PostgreSQL", "Auth + RLS", "Storage", "REST API"]],
-  ["AI & TOOLS", ["Prompt-to-prototype", "RAG basics", "Automasi dokumen", "Vercel deploy"]],
+  ["WORKFLOW & DEPLOYMENT", ["Git & version control", "Vercel deployment", "REST API integration", "Dokumentasi"]],
 ];
 const STATS: [string, string][] = [
   ["3+", "PRODUK JALAN"], ["100%", "DEPLOYED & LIVE"],
@@ -324,7 +324,7 @@ export function About({ profile, experiences, projectTitles, texts }: {
           </div>
           <div className="profile-mindset-row">
             <div className="mindset-card"><span className="mindset-title">{T(texts, "m_sw_title", "SOFTWARE")}</span><span className="mindset-subtitle">{T(texts, "m_sw_sub", "ENGINEERING")}</span></div>
-            <div className="mindset-card"><span className="mindset-title">{T(texts, "m_ai_title", "AI")}</span><span className="mindset-subtitle">{T(texts, "m_ai_sub", "ORCHESTRATION")}</span></div>
+            <div className="mindset-card"><span className="mindset-title">{T(texts, "m_ai_title", "PRODUCT")}</span><span className="mindset-subtitle">{T(texts, "m_ai_sub", "DEVELOPMENT")}</span></div>
             <div className="mindset-card"><span className="mindset-title">{T(texts, "m_fs_title", "FULL-STACK")}</span><span className="mindset-subtitle">{T(texts, "m_fs_sub", "DEVELOPMENT")}</span></div>
           </div>
         </div>
@@ -338,9 +338,9 @@ export function About({ profile, experiences, projectTitles, texts }: {
           {tab === "ABOUT" && (
             <div className="apanel on">
               <h2 className="about-title">{profile.role}</h2>
-              <h4 className="about-subtitle-text">{T(texts, "about_subtitle", "ngubah ide mentah jadi produk AI yang kepake")}</h4>
+              <h4 className="about-subtitle-text">{T(texts, "about_subtitle", "ngubah ide jadi produk digital yang kepake")}</h4>
               <div className="about-tags-row">
-                {lines(texts?.about_tags, ["NEXT + SUPABASE", "AI-ASSISTED BUILDING", "CLEAN SHIPPING"]).map((t, i) => (
+                {lines(texts?.about_tags, ["NEXT + SUPABASE", "PRODUCT DEVELOPMENT", "CLEAN SHIPPING"]).map((t, i) => (
                   <Fragment key={i}>{i > 0 && <span className="separator">/</span>}<span>{t}</span></Fragment>
                 ))}
               </div>
@@ -479,7 +479,7 @@ export function Skills({ skills, mode, texts }: { skills: SkillCoin[]; mode: "3d
       <div className="skills-orbit-wrap" id="orbitWrap">
         <div className="orbit-system" id="orbitSys">
           <div className="orbit-center" id="orbitCenter">
-            <p>{T(texts, "skills_center", "Bridging ide dan eksekusi lewat Next, Supabase, dan AI — shipping sistem end-to-end yang beneran kepake.")}</p>
+            <p>{T(texts, "skills_center", "Merancang dan membangun solusi digital — dari ide sampai sistem end-to-end yang beneran kepake.")}</p>
           </div>
           <div className="orbit-ring" id="orbitRing">
             {coins.map((s, i) => (
