@@ -195,7 +195,7 @@ border-radius:9999px;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);user-select:no
 .mode-overlay{position:fixed;inset:0;z-index:190;background:var(--inv-bg);display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center;clip-path:inset(0 0 100% 0);pointer-events:none}
 .mo-big{font-family:var(--font-serif);font-size:clamp(28px,5vw,54px);color:var(--inv-ink)}
 .mo-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:var(--inv-accent)}
-@media(max-width:768px){.vm-label{display:none}}
+@media(max-width:768px){.vm-label{display:none}.pillnav{top:3.5rem}#vmWrap{top:3.5rem;right:8px}.vm-btn,.theme-btn{width:44px;height:44px}}
 #loader{position:fixed;inset:0;z-index:200;background:var(--inv-bg);color:var(--inv-ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px}
 #loader .ld-inner{width:90%;max-width:450px;display:flex;flex-direction:column;align-items:center}
 #loader .big{font-family:var(--font-serif);font-size:64px;letter-spacing:4px;margin-bottom:30px;text-transform:uppercase}
@@ -1007,6 +1007,6 @@ body.no3d footer{margin:0;padding:0}
 .adm-list{margin-top:10px;display:grid;gap:8px}
 .adm-item{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px dashed var(--color-border-color);border-radius:10px;padding:8px 12px;font-size:.85rem}
 @media(max-width:960px){.about-slide-layout,.pm-body-grid,.contact-slide-layout{grid-template-columns:1fr}.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid{grid-template-columns:1fr 1fr}.adm-row{grid-template-columns:1fr}}
-@media(max-width:640px){.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid,.profile-mindset-row,.focus-cards-grid{grid-template-columns:1fr 1fr}.pillnav .in{font-size:.6rem}.pillnav a{padding:7px 8px}#a-in{display:none}}
+@media(max-width:640px){.stacks-grid,.stats-grid-row,.sgrid,.cgrid,.gh-layout,.repogrid,.profile-mindset-row,.focus-cards-grid{grid-template-columns:1fr 1fr}.pillnav .in{font-size:.6rem}.pillnav a{padding:11px 14px;min-height:44px}.atab{padding:11px 14px;min-height:44px}#a-ig,#a-gh,#a-in{display:none}.block{padding:60px 20px}.inq-form input,.inq-form textarea{padding:13px 13px}.network-card{min-height:44px}.contact-mail-link{min-height:44px;display:flex;align-items:center;margin-top:2px}}
 .gh-profile,.repogrid,.repocard,.scroll-reveal,.gh-layout{min-width:0;word-break:break-word}
 @media(prefers-reduced-motion:reduce){.marquee span,.orbit-ring,.coin-content,.coin-glare,.spinCW,.spinCCW{animation:none!important}}
